@@ -1,18 +1,25 @@
 #include "UI.h"
 #include "gio/gio_esp32.h"
 #include "channelmap.h"
-
-#define EB_HOLD_TIME 500
 #include <EncButton.h>
 
+/* Объявление энкодера и дисплея */
 EncButton control(19, 18, 5);
 GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
+
+/* Таймеры FreeRTOS */
+TimerHandle_t xBacklightTimer = NULL;
+TimerHandle_t xActivityTimer = NULL;
 
 // обработка сигналов управления
 void LTDAUI::processCtrl()
 {
     control.tick();
+    if (control.action() == 0)
+        return;
 
+    brightDisplay();
+    xTimerReset(xActivityTimer, 1);
     // ======== клик на энкодер ========
     if (control.click()) {
         switch (screenID) {
@@ -80,6 +87,12 @@ void LTDAUI::refresh()
 {
     screen.clear();
 
+    if (screenID == 1) {
+		printXY(grp_labels[selectedGroup], 0, 0);
+        printValue(DSP.faderPositionDB[onScreenChannels[onScreenChSelect]],
+                   "dB", -1, 0);
+    }
+
     switch (screenID) {
     case 1: renderMixingConsole(); break;
     case 2: renderMenu(); break;
@@ -92,20 +105,31 @@ void LTDAUI::refresh()
 void LTDAUI::reload()
 {
     createMixingConsole(0);
+    brightDisplay();
 }
 
-// инициализация передней панели
+// инициализация юзер-интерфейса. ВСЕГО!
 void LTDAUI::prepare()
 {
-    pinMode(15, OUTPUT);
-    pinMode(4, OUTPUT);
-    pinMode(16, OUTPUT);
+    // настройка выводов передачи данных на индикатор (сдвиговые регистры там)
+    pinMode(15, OUTPUT);  // сигнал данных
+    pinMode(4, OUTPUT);   // сигнал защелки
+    pinMode(16, OUTPUT);  // сигнал тактирования
 
-    screen.init();
-    screen.clear();
-    screen.setContrast(70);
-    screen.drawBitmap(0, 0, splash_128x64, 128, 64);
-    screen.update();
+    // инициализация дисплея
+    screen.init();                                    // инициализация дисплея
+    screen.clear();                                   // очистка кадра
+    screen.setContrast(200);                          // установка яркости
+    screen.drawBitmap(0, 0, splash_128x64, 128, 64);  // вывод логотипа
+    screen.update();                                  // обновление кадра
+
+    // инициализация таймеров
+    xBacklightTimer = xTimerCreate("BacklightTimer",
+                                   DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
+                                   pdFALSE, 0, &vUITimerCallback);
+    xActivityTimer = xTimerCreate("UIActivityTimer",
+                                  UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
+                                  pdFALSE, 0, &vUITimerCallback);
 }
 
 /*
@@ -184,6 +208,22 @@ void LTDAUI::menuRotate(int8_t dir)
 void LTDAUI::callMenuHandler()
 {
     (this->*_handler)(menuChooseId);
+}
+
+void LTDAUI::brightDisplay()
+{
+    if (xTimerIsTimerActive(xBacklightTimer) == pdFALSE)
+        screen.setContrast(200);
+
+    xTimerReset(xBacklightTimer, 1);
+}
+
+void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
+{
+    if (pxTimer == xBacklightTimer)
+        screen.setContrast(10);
+    //else if (pxTimer == xActivityTimer)
+    //    screenState = 0;
 }
 
 LTDAUI UI;

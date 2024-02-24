@@ -4,10 +4,14 @@
 const byte _dsp_addr = DSP_I2C_ADDRESS;
 const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
+A2DPSyncedVolumeControl avrcp_volume_sync;
+
 ADAU1452::ADAU1452()
 {
     memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
     memset(&faderPositionDB, 0, DSP_FADER_COUNT);
+
+	bluetooth.set_volume_control(&avrcp_volume_sync);
 }
 
 // функция выполнения запроса к 16-бит регистру аудиопроцессора
@@ -60,9 +64,12 @@ void ADAU1452::setFaderPosition(byte id, int val)
     faderPositionDB[id] = findValue(db_calibration_24bit, 97, val) - 97;
 }
 
-void ADAU1452::setDecibelFaderPosition(byte id, int8_t val)
+void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
-    setFaderPosition(id, db_calibration_24bit[97 + constrain(val, -97, 0)]);
+	val = constrain(val, -97, 0);
+	if (sync && id == FADER_BLUETOOTH_ST)
+		bluetooth.sendAVRCPVolume(val);
+    setFaderPosition(id, db_calibration_24bit[97 + val]);
 }
 
 // int8_t ADAU1452::getDecibelSignalLevel(byte id, bool right)
