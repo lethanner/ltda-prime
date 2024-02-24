@@ -3,12 +3,10 @@
 // я обязательно освою FreeRTOS...
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <BluetoothA2DPSink.h>
 #include "../Hardware/DSP.h"
+#include "../Hardware/bluetooth.h"
 #include "../UI/UI.h"
 #include "../UI/localization.h"
-
-BluetoothA2DPSink bluetooth;
 
 void task_uiRefresh(void *pvParameters)
 {
@@ -44,15 +42,7 @@ void boot()
 
     /* Инициализация периферии микроконтроллера */
     Wire.setClock(400000L);
-    i2s_pin_config_t my_pin_config = {
-        .bck_io_num = 26,
-        .ws_io_num = 25,
-        .data_out_num = 23,
-        .data_in_num = I2S_PIN_NO_CHANGE
-    };
-    bluetooth.set_pin_config(my_pin_config);
-    bluetooth.start("LTDA Prime");
-
+	bluetooth.init();
     // TODO: DSP init
 
     /* Инициализация FreeRTOS */

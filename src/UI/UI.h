@@ -3,9 +3,11 @@
 #include <Arduino.h>
 #include <GyverOLED.h>
 #include <GyverIO.h>
+#include "config.h"
 #include "bitmaps.h"
 #include "localization.h"
 #include "../Hardware/DSP.h"
+#include "freertos/timers.h"
 
 class LTDAUI
 {
@@ -13,6 +15,7 @@ class LTDAUI
     // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printStatus(const char *text, byte y_coord);
     void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
+    void printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord);
 
     // ==== СЛУЖЕБКА ====
     void prepare();
@@ -34,7 +37,7 @@ class LTDAUI
     byte _chan_count;
 
     // для работы меню со скроллингом
-	void (LTDAUI::*_handler)(byte) = NULL;
+    void (LTDAUI::*_handler)(byte) = NULL;
     byte menuVisibleSelId, menuEntryRendererStartId, menuChooseId;
     const char *const *_entries;
     byte _entryCount, _title_x_coord;
@@ -48,8 +51,9 @@ class LTDAUI
     // ==== АКТИВНОСТИ ====
     // вспомогательные функции
     byte getCenterCoordinate(const char *text);
-	void menuRotate(int8_t dir);
-	void callMenuHandler();
+    void menuRotate(int8_t dir);
+    void callMenuHandler();
+    void brightDisplay();
     // отрисовщики
     void streamMonitorData();
     void renderMixingConsole();
@@ -63,8 +67,11 @@ class LTDAUI
                     bool handlerAutoCall = false,
                     int *menuBooleans = NULL);
 
-	// ==== ОБРАБОТЧИКИ МЕНЮ ====
-	void testHandler(byte sel);
+    // ==== ОБРАБОТЧИКИ МЕНЮ ====
+    void testHandler(byte sel);
+
+    // ==== FREERTOS ====
+    static void vUITimerCallback(TimerHandle_t pxTimer);
 };
 
 extern LTDAUI UI;

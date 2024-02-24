@@ -4,6 +4,8 @@
 #include <Wire.h>
 #include "slots.h"
 #include "../config.h"
+#include "bluetooth.h"
+#include <A2DPVolumeControl.h>
 
 class ADAU1452
 {
@@ -20,7 +22,7 @@ class ADAU1452
     void retrieveRTAValues();
 
     byte getRelativeSignalLevel(const unsigned int* tab, byte range, byte id, bool right);
-    void setDecibelFaderPosition(byte id, int8_t val);
+    void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     int8_t getDecibelSignalLevel(byte id, bool right);
     //int8_t getDecibelFaderPosition(byte id);
 
@@ -30,3 +32,17 @@ class ADAU1452
 };
 
 extern ADAU1452 DSP;
+
+class A2DPSyncedVolumeControl : public A2DPVolumeControl
+{
+  public:
+    virtual void update_audio_data(Frame* data, uint16_t frameCount) override
+    {
+        // пустая функция перебивает встроенные в библиотеку блютуза
+        // средства управления громкостью
+    }
+    virtual void set_volume(uint8_t volume) override
+    {
+        DSP.setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 0), false);
+    }
+};
