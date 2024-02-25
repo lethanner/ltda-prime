@@ -3,6 +3,5 @@
     "board": "esp32:esp32:esp32",
     "programmer": "esptool",
     "port": "COM3",
-    "sketch": "ltda-prime.ino",
-    "output": ".vscode/ArduinoCache"
+    "sketch": "ltda-prime.ino"
 }
