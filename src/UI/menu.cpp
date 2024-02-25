@@ -1,6 +1,15 @@
 #include "UI.h"
 
-void LTDAUI::testHandler(byte sel)
+void LTDAUI::chMenuHandler(byte sel)
 {
-	createMixingConsole(sel);
+    switch (sel) {
+    case 0:
+        setMonitorDataFeed(onScreenChannels[onScreenChSelect]);
+        break;
+    case 1:
+        break;
+    }
+
+    // выход
+    createMixingConsole(selectedGroup);
 }

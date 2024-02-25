@@ -3,5 +3,6 @@
     "board": "esp32:esp32:esp32",
     "programmer": "esptool",
     "port": "COM3",
-    "sketch": "ltda-prime.ino"
+    "sketch": "ltda-prime.ino",
+    "output": "./build"
 }
