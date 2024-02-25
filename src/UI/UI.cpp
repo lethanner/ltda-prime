@@ -25,7 +25,6 @@ void LTDAUI::processCtrl()
         switch (screenID) {
         case 1: {                                   // на экране микшера
             if (screenState == 1 && turnStarted) {  // если уже начали листать каналы
-                setMonitorDataFeed(onScreenChannels[onScreenChSelect]);
                 screenState = 0;  // сбрасываем действие
                 turnStarted = false;
             }
@@ -105,6 +104,7 @@ void LTDAUI::refresh()
 void LTDAUI::reload()
 {
     createMixingConsole(0);
+    setMonitorDataFeed(2);
     brightDisplay();
 }
 
