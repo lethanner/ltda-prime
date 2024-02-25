@@ -11,6 +11,8 @@ GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
+int menuBoolTestStub = 0;
+
 // обработка сигналов управления
 void LTDAUI::processCtrl()
 {
@@ -46,7 +48,7 @@ void LTDAUI::processCtrl()
     if (control.hold()) {
         switch (screenID) {
         case 1:  // на экране микшера
-            createMenu(testmenu, 4, &LTDAUI::testHandler);
+            createMenu(channelmenu, 2, &LTDAUI::chMenuHandler, false, &menuBoolTestStub);
             break;
         case 2:                      // на экране меню
             createMixingConsole(0);  // возврат взад на главный экран

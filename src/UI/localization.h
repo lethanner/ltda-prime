@@ -4,18 +4,20 @@
 // экран загрузки
 #define STR_DSP_INIT "Инициализация DSP"
 #define STR_RTOS_INIT "Запуск RTOS..."
+// меню канала
+const char channelmenu_title[] = "Канал";
+const char channelmenu_mon[] = "Отпр. на индикатор";
+const char channelmenu_vfltr[] = "?AПодавление голоса";
 #else
 // boot screen
 #define STR_DSP_INIT "Initializing DSP"
 #define STR_RTOS_INIT "Configuring RTOS"
+// channel menu
+const char channelmenu_title[] = "Channel";
+const char channelmenu_mon[] = "Send to monitor";
+const char channelmenu_vfltr[] = "?AVocal filter";
 #endif
 
-#define STR_DEV_INFO "LTDA Prime v0.0.6a"
+#define STR_DEV_INFO "LTDA Prime v0.1.5a"
 
-const char testmenu_title[] = "Суперменю";
-const char testmenu_1[] = "Тест 1";
-const char testmenu_2[] = "ТеКст";
-const char testmenu_3[] = "Я хочу пиццы";
-const char testmenu_4[] = "смари это сцена";
-
-const char *const testmenu[] = { testmenu_title, testmenu_1, testmenu_2, testmenu_3, testmenu_4 };
+const char *const channelmenu[] = { channelmenu_title, channelmenu_mon, channelmenu_vfltr };

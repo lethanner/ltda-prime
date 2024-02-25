@@ -68,7 +68,7 @@ class LTDAUI
                     int *menuBooleans = NULL);
 
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
-    void testHandler(byte sel);
+    void chMenuHandler(byte sel);
 
     // ==== FREERTOS ====
     static void vUITimerCallback(TimerHandle_t pxTimer);
