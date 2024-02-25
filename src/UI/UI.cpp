@@ -50,8 +50,8 @@ void LTDAUI::processCtrl()
         case 1:  // на экране микшера
             createMenu(channelmenu, 2, &LTDAUI::chMenuHandler, false, &menuBoolTestStub);
             break;
-        case 2:                      // на экране меню
-            createMixingConsole(0);  // возврат взад на главный экран
+        case 2:                                  // на экране меню
+            createMixingConsole(selectedGroup);  // возврат взад на главный экран
             break;
         }
     }
@@ -141,10 +141,12 @@ void LTDAUI::prepare()
 // запуск виртуального микшерного пульта
 void LTDAUI::createMixingConsole(byte groupNo)
 {
-    onScreenChSelect = 0;
-    selectedGroup = groupNo;
     onScreenChannels = ch_groups[groupNo];
     _chan_count = ch_count[groupNo];
+    if (groupNo != selectedGroup) {
+        onScreenChSelect = 0;
+        selectedGroup = groupNo;
+    }    
     // пересчёт координат для выравнивания каналов на дисплее
     gap_block = (128 - (_chan_count * 18)) / (_chan_count + 1);
 
