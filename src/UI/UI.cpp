@@ -126,10 +126,10 @@ void LTDAUI::prepare()
     // инициализация таймеров
     xBacklightTimer = xTimerCreate("BacklightTimer",
                                    DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
-                                   pdFALSE, 0, &vUITimerCallback);
+                                   pdFALSE, static_cast<void*>(this), &vUITimerCallback);
     xActivityTimer = xTimerCreate("UIActivityTimer",
                                   UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
-                                  pdFALSE, 0, &vUITimerCallback);
+                                  pdFALSE, static_cast<void*>(this), &vUITimerCallback);
 }
 
 /*
@@ -220,10 +220,12 @@ void LTDAUI::brightDisplay()
 
 void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
 {
+    LTDAUI* instance = static_cast<LTDAUI*>(pvTimerGetTimerID(pxTimer));
+    
     if (pxTimer == xBacklightTimer)
         screen.setContrast(10);
-    //else if (pxTimer == xActivityTimer)
-    //    screenState = 0;
+    else if (pxTimer == xActivityTimer)
+        instance->screenState = 0;
 }
 
 LTDAUI UI;
