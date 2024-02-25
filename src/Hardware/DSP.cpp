@@ -11,7 +11,7 @@ ADAU1452::ADAU1452()
     memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
     memset(&faderPositionDB, 0, DSP_FADER_COUNT);
 
-	bluetooth.set_volume_control(&avrcp_volume_sync);
+    bluetooth.set_volume_control(&avrcp_volume_sync);
 }
 
 // функция выполнения запроса к 16-бит регистру аудиопроцессора
@@ -38,9 +38,12 @@ byte ADAU1452::getCoreState()
 // обновление значений уровня сигнала всех каналов
 void ADAU1452::retrieveRTAValues()
 {
-    gotoRegister(DSP_READBACK_START_REG, DSP_READBACK_COUNT * 4);
     for (byte i = 0; i < DSP_READBACK_COUNT; i++) {
         int32_t value = 0;
+        // из-за того, что SigmaDSP не всегда делает адреса блоков порядковыми,
+        // пришлось убрать burst-чтение за одну передачу адреса регистра и
+        // на каждую итерацию сделать передачу нового адреса. :angry:
+        gotoRegister(dsp_readback_addr[i], 4);
         for (byte j = 0; j < 4; j++) {
             value += Wire.read() << (24 - (j * 8));
         }
@@ -66,9 +69,9 @@ void ADAU1452::setFaderPosition(byte id, int val)
 
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
-	val = constrain(val, -97, 0);
-	if (sync && id == FADER_BLUETOOTH_ST)
-		bluetooth.sendAVRCPVolume(val);
+    val = constrain(val, -97, 0);
+    if (sync && id == FADER_BLUETOOTH_ST)
+        bluetooth.sendAVRCPVolume(val);
     setFaderPosition(id, db_calibration_24bit[97 + val]);
 }
 

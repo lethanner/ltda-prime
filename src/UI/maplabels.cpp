@@ -1,14 +1,16 @@
 #include "channelmap.h"
 
 // подписи на каналах
-const char chan_labels[][6] = {
+const char chan_labels[][7] = {
     "SPDIF",
-    "BT"
+    "BT",
+    "Master"
 };
 
 // подписи групп
 const char* grp_labels[] = {
-    "Stereo",
+    "Inputs",
     "Test page",
-    "Single ch :)"
+    "Outputs",
+    "All"
 };
