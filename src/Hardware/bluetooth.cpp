@@ -16,7 +16,7 @@ void LTDABT::init()
 
 void LTDABT::sendAVRCPVolume(int8_t volume)
 {
-	volume_set_by_local_host(map(volume, -97, 0, 0, 127));
+	volume_set_by_local_host(map(volume, -97, 10, 0, 127));
 }
 
 LTDABT bluetooth;

@@ -64,12 +64,12 @@ void ADAU1452::setFaderPosition(byte id, int val)
     Wire.endTransmission();
 
     faderPosition[id] = val;
-    faderPositionDB[id] = findValue(db_calibration_24bit, 97, val) - 97;
+    faderPositionDB[id] = findValue(db_calibration_24bit, 107, val) - 97;
 }
 
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
-    val = constrain(val, -97, 0);
+    val = constrain(val, -97, 10);
     if (sync && id == FADER_BLUETOOTH_ST)
         bluetooth.sendAVRCPVolume(val);
     setFaderPosition(id, db_calibration_24bit[97 + val]);

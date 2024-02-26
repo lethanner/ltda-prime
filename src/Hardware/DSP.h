@@ -43,6 +43,6 @@ class A2DPSyncedVolumeControl : public A2DPVolumeControl
     }
     virtual void set_volume(uint8_t volume) override
     {
-        DSP.setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 0), false);
+        DSP.setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 10), false);
     }
 };
