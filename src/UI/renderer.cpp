@@ -16,7 +16,7 @@ void LTDAUI::renderMixingConsole()
         byte block_width = 18;  // TODO: разделение каналов на моно и стерео
         byte block_safe_zone = block_width + gap_block;
         byte x_coord = gap_block + (ch * block_safe_zone);
-        byte fader_pos = map(DSP.faderPositionDB[onScreenChannels[ch]], -97, 0, 52, 11);
+        byte fader_pos = map(DSP.faderPositionDB[onScreenChannels[ch]], -97, 10, 52, 11);
         byte levelL = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, onScreenChannels[ch], false);
         byte levelR = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, onScreenChannels[ch], true);
         //byte levelL = map(DSP.getDecibelSignalLevel(onScreenChannels[ch], false), -97, 0, 52, 11);
