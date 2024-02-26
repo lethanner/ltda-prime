@@ -16,7 +16,8 @@ class ADAU1452
     int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
 
   public:
-    ADAU1452();
+    ADAU1452(){};
+    void init();
 
     byte getCoreState();
     void retrieveRTAValues();
