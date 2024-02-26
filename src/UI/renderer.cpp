@@ -151,7 +151,7 @@ void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_
         else if (value < -9 || value > 99) length += 2;
         else if (value < 0 || value > 9) length += 1;
 
-        x_coord = 127 - (length * 6);
+        x_coord = 128 - (length * 6);
     }
 
 	screen.setCursorXY(x_coord, y_coord);
