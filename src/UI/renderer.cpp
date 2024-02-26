@@ -143,20 +143,27 @@ void LTDAUI::printXY(const char *text, byte y_coord, int8_t x_coord)
     screen.print(text);
 }
 
-void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord)
+void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord, bool center)
 {
-    if (x_coord < 0) {
-        byte length = strlen(label) + 1;
-        if (value < -99) length += 3;
-        else if (value < -9 || value > 99) length += 2;
-        else if (value < 0 || value > 9) length += 1;
+    byte length = strlen(label) + 1;
+    if (value < -99) length += 3;
+    else if (value < -9 || value > 99) length += 2;
+    else if (value < 0 || value > 9) length += 1;
 
-        x_coord = 128 - (length * 6);
-    }
+    if (x_coord < 0)
+        x_coord = 129 - (length * 6) + x_coord;
+    else if (center)
+        x_coord = (64 - ((length * 6) / 2));
 
 	screen.setCursorXY(x_coord, y_coord);
 	screen.print(value);
 	screen.print(label);
+}
+
+void LTDAUI::printRightAlign(const char *text, byte y_coord)
+{
+    screen.setCursorXY(128 - (strlen(text) * 6), y_coord);
+    screen.print(text);
 }
 
 // получение координаты для выравнивания текста посередине

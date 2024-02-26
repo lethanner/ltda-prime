@@ -100,8 +100,11 @@ void LTDAUI::refresh()
         case 1:  // в момент изменения громкости канала
             printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
             screen.print(" :");
-            printValue(DSP.faderPositionDB[onScreenChannels[onScreenChSelect]],
-                       "dB", -1, 0);
+            if (DSP.faderPositionDB[onScreenChannels[onScreenChSelect]] == -97)
+                printRightAlign("muted", 0);
+            else
+                printValue(DSP.faderPositionDB[onScreenChannels[onScreenChSelect]],
+                           "dB", -1, 0);
             break;
         }
     }
