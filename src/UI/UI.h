@@ -28,6 +28,7 @@ class LTDAUI
     // общие переменные
     byte screenID = 0;
     byte screenState = 0;
+    byte statusbarState = 0;
     bool turnStarted = false;
 
     // для экрана виртуального микшера

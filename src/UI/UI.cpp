@@ -61,11 +61,13 @@ void LTDAUI::processCtrl()
         switch (screenID) {
         case 1:  // на экране микшера
             switch (screenState) {
-            case 0:  // управление громкостью канала
+            case 0: {  // управление громкостью канала
                 DSP.setDecibelFaderPosition(
                   onScreenChannels[onScreenChSelect],
                   DSP.faderPositionDB[onScreenChannels[onScreenChSelect]] + control.dir());
+                statusbarState = 1;
                 break;
+            }
             case 1: {  // переход между каналами на странице
                 turnStarted = true;
                 onScreenChSelect = constrain(onScreenChSelect + control.dir(), 0, _chan_count - 1);
@@ -88,10 +90,20 @@ void LTDAUI::refresh()
 {
     screen.clear();
 
+    // статусбар
     if (screenID == 1) {
-		printXY(grp_labels[selectedGroup], 0, 0);
-        printValue(DSP.faderPositionDB[onScreenChannels[onScreenChSelect]],
-                   "dB", -1, 0);
+        switch (statusbarState) {
+        case 0:                          // непосредственно статусбар
+            printXY("Mixer", 0, 0);      // заглушка заголовка
+            printValue(0, "'C", -1, 0);  // заглушка датчика температуры
+            break;
+        case 1:  // в момент изменения громкости канала
+            printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
+            screen.print(" :");
+            printValue(DSP.faderPositionDB[onScreenChannels[onScreenChSelect]],
+                       "dB", -1, 0);
+            break;
+        }
     }
 
     switch (screenID) {
@@ -228,8 +240,10 @@ void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
     
     if (pxTimer == xBacklightTimer)
         screen.setContrast(10);
-    else if (pxTimer == xActivityTimer)
+    else if (pxTimer == xActivityTimer) {
         instance->screenState = 0;
+        instance->statusbarState = 0;
+    }
 }
 
 LTDAUI UI;
