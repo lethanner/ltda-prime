@@ -15,7 +15,9 @@ class LTDAUI
     // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printStatus(const char *text, byte y_coord);
     void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
-    void printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord);
+    void printValue(int8_t value, const char *label, int8_t x_coord,
+                    byte y_coord, bool center = false);
+    void printRightAlign(const char *text, byte y_coord);
 
     // ==== СЛУЖЕБКА ====
     void prepare();
