@@ -43,7 +43,9 @@ void boot()
     /* Инициализация периферии микроконтроллера */
     Wire.setClock(400000L);
 	bluetooth.init();
-    // TODO: DSP init
+    
+    /* Инициализация DSP */
+    DSP.init();
 
     /* Инициализация FreeRTOS */
     UI.printStatus(STR_RTOS_INIT, 56);

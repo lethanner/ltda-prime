@@ -6,11 +6,28 @@ const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
 A2DPSyncedVolumeControl avrcp_volume_sync;
 
-ADAU1452::ADAU1452()
-{
-    memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
-    memset(&faderPositionDB, 0, DSP_FADER_COUNT);
+// ADAU1452::ADAU1452()
+// {
+//     memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
+//     memset(&faderPositionDB, 0, DSP_FADER_COUNT);
 
+//     bluetooth.set_volume_control(&avrcp_volume_sync);
+// }
+
+void ADAU1452::init()
+{
+    // кэширование всех значений громкости из DSP
+    // для их восстановления в случае перезагрузки контроллера
+    int32_t val = 0;
+    for (byte i = 0; i < DSP_FADER_COUNT; i++) {
+        gotoRegister(dsp_fader_address[i], 4);
+        for (byte j = 0; j < 4; j++) {
+            val += Wire.read() << (24 - (j * 8));
+        }
+        faderPosition[i] = val;
+        faderPositionDB[i] = findValue(db_calibration_24bit, 107, val) - 97;
+    }
+    // вкл синхронизации громкости блютуза с громкостью на DSP
     bluetooth.set_volume_control(&avrcp_volume_sync);
 }
 
@@ -74,16 +91,6 @@ void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
         bluetooth.sendAVRCPVolume(val);
     setFaderPosition(id, db_calibration_24bit[97 + val]);
 }
-
-// int8_t ADAU1452::getDecibelSignalLevel(byte id, bool right)
-// {
-//     return getRelativeSignalLevel(db_calibration_24bit, 97, id, right) - 97;
-// }
-
-// int8_t ADAU1452::getDecibelFaderPosition(byte id)
-// {
-//     return convertToDecibels(faderPosition[id]);
-// }
 
 byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 {
