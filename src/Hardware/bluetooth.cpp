@@ -16,6 +16,8 @@ void LTDABT::init()
 
 void LTDABT::sendAVRCPVolume(int8_t volume)
 {
+    // нуууу... это protected-член класса в сторонней библиотеке.
+    // то, что не private - уже хорошо. как-то вот так.
 	volume_set_by_local_host(map(volume, -97, 10, 0, 127));
 }
 

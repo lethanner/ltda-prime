@@ -7,16 +7,19 @@
 #include "bluetooth.h"
 #include <A2DPVolumeControl.h>
 
+class A2DPExternalVolumeControl;
+
 class ADAU1452
 {
   private:
+    A2DPExternalVolumeControl *avrcp_volume_sync = NULL;
     void gotoRegister(short reg, byte requestSize = 0);
     void setFaderPosition(byte id, int val);
     byte findValue(const unsigned int* tab, byte max, int value);
     int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
 
   public:
-    ADAU1452(){};
+    ADAU1452();
     void init();
 
     byte getCoreState();
@@ -32,10 +35,11 @@ class ADAU1452
     int8_t faderPositionDB[DSP_FADER_COUNT];  // тот же буфер, только в децибелах
 };
 
-extern ADAU1452 DSP;
-
-class A2DPSyncedVolumeControl : public A2DPVolumeControl
+class A2DPExternalVolumeControl : public A2DPVolumeControl
 {
+  private:
+    ADAU1452* _dspptr;
+
   public:
     virtual void update_audio_data(Frame* data, uint16_t frameCount) override
     {
@@ -44,6 +48,13 @@ class A2DPSyncedVolumeControl : public A2DPVolumeControl
     }
     virtual void set_volume(uint8_t volume) override
     {
-        DSP.setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 10), false);
+        _dspptr->setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 10), false);
+    }
+
+    A2DPExternalVolumeControl(ADAU1452* dspptr)
+    {
+        _dspptr = dspptr;
     }
 };
+
+extern ADAU1452 DSP;

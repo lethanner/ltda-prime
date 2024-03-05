@@ -4,15 +4,15 @@
 const byte _dsp_addr = DSP_I2C_ADDRESS;
 const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
-A2DPSyncedVolumeControl avrcp_volume_sync;
+ADAU1452::ADAU1452()
+{
+    //memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
+    //memset(&faderPositionDB, 0, DSP_FADER_COUNT);
 
-// ADAU1452::ADAU1452()
-// {
-//     memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
-//     memset(&faderPositionDB, 0, DSP_FADER_COUNT);
-
-//     bluetooth.set_volume_control(&avrcp_volume_sync);
-// }
+    // вкл синхронизации громкости блютуза с громкостью на DSP
+    avrcp_volume_sync = new A2DPExternalVolumeControl(this);
+    bluetooth.set_volume_control(avrcp_volume_sync);
+}
 
 void ADAU1452::init()
 {
@@ -27,8 +27,6 @@ void ADAU1452::init()
         faderPosition[i] = val;
         faderPositionDB[i] = findValue(db_calibration_24bit, 107, val) - 97;
     }
-    // вкл синхронизации громкости блютуза с громкостью на DSP
-    bluetooth.set_volume_control(&avrcp_volume_sync);
 }
 
 // функция выполнения запроса к 16-бит регистру аудиопроцессора
