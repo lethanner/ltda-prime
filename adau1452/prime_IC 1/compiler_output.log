@@ -1,0 +1,45 @@
+ADAU145X Assembler, Analog Devices Inc.
+Version: 4.5.0,1779  (built 10/28/2019)
+
+##### Compile Started: Friday, March 8, 2024 6:05:23 PM #####
+ADAU145X Assembler, Analog Devices Inc.
+Version: 4.5.0,1779  (built 10/28/2019)
+
+##### Compile Started: Friday, March 8, 2024 6:05:23 PM #####
+##### Compile succeeded:  0 errors, 0 warnings #####
+
+##### Summary #####
+DM0 RAM used:       00138    (of 20480)
+DM1 RAM used:       05121    (of 20480)
+PM  RAM used(Data): 00000    (of 8192)
+PM  RAM used(Inst): 00754    (of 8192) 595 instructions (32bit: 436  64bit: 159)
+Total PM used:      00754    (of 8192)
+
+--------------------------------------------------------------------------------------
+STREAM                        Inst      Inst      DM0     DM1     PM
+Instance                      (cycles)  (size)    
+--------------------------------------------------------------------------------------
+STACK                          -         -        16      0       0       
+Reverb1                       447       558       81      5079    0
+FRAMEWORK                     52        33        4       7       0
+Nx1 Linear2                   19        24        13      2       0
+Nx1 Linear1                   9         9         4       1       0
+Master_out                    7         7         1       2       0
+Reverb_out                    7         7         1       2       0
+SPDIF_reverb                  7         7         1       2       0
+BT_reverb                     7         7         1       2       0
+SPDIF_master                  7         7         1       2       0
+BT_in                         7         7         1       2       0
+SPDIF_in                      7         7         1       2       0
+BT_master                     7         7         1       2       0
+Master_levels                 6         6         2       2       0
+Reverb_levels                 6         6         2       2       0
+BT_levels                     6         6         2       2       0
+SPDIF_levels                  6         6         2       2       0
+AsrcIn1                       5         5         0       4       0
+Master                        3         3         0       0       0
+--------------------------------------------------------------------------------------
+Total                         615       712       134     5117    0
+--------------------------------------------------------------------------------------
+(% Fs=48.0kHz)                11%       9%        1%      25%     0%
+
