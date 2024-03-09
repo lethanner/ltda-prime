@@ -5,6 +5,7 @@
 #include "slots.h"
 #include "../config.h"
 #include "bluetooth.h"
+#include <GyverIO.h>
 #include <A2DPVolumeControl.h>
 
 class A2DPExternalVolumeControl;

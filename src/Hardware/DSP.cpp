@@ -16,8 +16,24 @@ ADAU1452::ADAU1452()
 
 void ADAU1452::init()
 {
+    // сброс
+    gio::write(DSP_RESET, false);
+    pinMode(DSP_RESET, OUTPUT);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gio::write(DSP_RESET, true);
+
+    // ожидание запуска
+    while (getCoreState() == 0x00) {
+        // на деле этот цикл скорее всего нифига не выполняется.
+        // ибо SigmaDSP возвращает 0x03 как при работе, так и 
+        // когда ещё не полностью завёлся.
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+    }
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // контрольная задержка
+
     // кэширование всех значений громкости из DSP
     // для их восстановления в случае перезагрузки контроллера
+    // ПС: оно пока что нихрена нормально не работает.
     int32_t val = 0;
     for (byte i = 0; i < DSP_FADER_COUNT; i++) {
         gotoRegister(dsp_fader_address[i], 4);
