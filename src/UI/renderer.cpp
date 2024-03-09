@@ -116,11 +116,11 @@ void LTDAUI::streamMonitorData()
     short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitorChannel, true)];
     int shiftDispCache = dataL << 12 | dataR;
 
-    gio::write(4, false);
-    gio::shift::send_byte(15, 16, LSBFIRST, (shiftDispCache & 0xFF), 1);
-    gio::shift::send_byte(15, 16, LSBFIRST, ((shiftDispCache >> 8) & 0xFF), 1);
-    gio::shift::send_byte(15, 16, LSBFIRST, ((shiftDispCache >> 16) & 0xFF), 1);
-    gio::write(4, true);
+    gio::write(INDIC_LAT, false);
+    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, (shiftDispCache & 0xFF), 1);
+    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, ((shiftDispCache >> 8) & 0xFF), 1);
+    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, ((shiftDispCache >> 16) & 0xFF), 1);
+    gio::write(INDIC_LAT, true);
 }
 
 /*

@@ -129,9 +129,10 @@ void LTDAUI::reload()
 void LTDAUI::prepare()
 {
     // настройка выводов передачи данных на индикатор (сдвиговые регистры там)
-    pinMode(15, OUTPUT);  // сигнал данных
-    pinMode(4, OUTPUT);   // сигнал защелки
-    pinMode(16, OUTPUT);  // сигнал тактирования
+    // сдвиг пинов произошёл из-за 4-го вывода, ибо был нужен для pull-down
+    pinMode(INDIC_DAT, OUTPUT);  // сигнал данных
+    pinMode(INDIC_LAT, OUTPUT);  // сигнал защелки
+    pinMode(INDIC_CLK, OUTPUT);  // сигнал тактирования
 
     // инициализация дисплея
     screen.init();                                    // инициализация дисплея

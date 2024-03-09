@@ -38,19 +38,21 @@ void boot()
     /* Инициализация юзер-интерфейса */
     UI.prepare();
     UI.printStatus(STR_DEV_INFO, 56);
-    delay(500);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
 
     /* Инициализация периферии микроконтроллера */
     Wire.setClock(400000L);
 	bluetooth.init();
+    vTaskDelay(50 / portTICK_PERIOD_MS);
     
     /* Инициализация DSP */
+    UI.printStatus(STR_DSP_INIT, 56);
     DSP.init();
 
     /* Инициализация FreeRTOS */
     UI.printStatus(STR_RTOS_INIT, 56);
     xTaskCreateUniversal(&task_ctrlProcess, "ctrl_proc", 3072, NULL, 1, NULL, 0);
-    delay(200);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     xTaskCreateUniversal(&task_uiRefresh, "ui_refresh", 3072, NULL, 2, NULL, 1);
 
     /* Выход в рабочий режим и отрисовка интерфейса на экране */
