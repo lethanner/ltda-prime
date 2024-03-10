@@ -27,7 +27,7 @@ void LTDAUI::processCtrl()
         switch (screenID) {
         case 1: {                                   // на экране микшера
             if (screenState == 1 && turnStarted) {  // если уже начали листать каналы
-                screenState = 0;  // сбрасываем действие
+                screenState = 0;                    // сбрасываем действие
                 turnStarted = false;
             }
             // если на экране только один канал, переход сразу к переключению страниц
@@ -144,10 +144,10 @@ void LTDAUI::prepare()
     // инициализация таймеров
     xBacklightTimer = xTimerCreate("BacklightTimer",
                                    DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
-                                   pdFALSE, static_cast<void*>(this), &vUITimerCallback);
+                                   pdFALSE, static_cast<void *>(this), &vUITimerCallback);
     xActivityTimer = xTimerCreate("UIActivityTimer",
                                   UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
-                                  pdFALSE, static_cast<void*>(this), &vUITimerCallback);
+                                  pdFALSE, static_cast<void *>(this), &vUITimerCallback);
 }
 
 /*
@@ -162,7 +162,7 @@ void LTDAUI::createMixingConsole(byte groupNo)
     if (groupNo != selectedGroup) {
         onScreenChSelect = 0;
         selectedGroup = groupNo;
-    }    
+    }
     // пересчёт координат для выравнивания каналов на дисплее
     gap_block = (128 - (_chan_count * 18)) / (_chan_count + 1);
 
@@ -240,8 +240,8 @@ void LTDAUI::brightDisplay()
 
 void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
 {
-    LTDAUI* instance = static_cast<LTDAUI*>(pvTimerGetTimerID(pxTimer));
-    
+    LTDAUI *instance = static_cast<LTDAUI *>(pvTimerGetTimerID(pxTimer));
+
     if (pxTimer == xBacklightTimer)
         screen.setContrast(10);
     else if (pxTimer == xActivityTimer) {

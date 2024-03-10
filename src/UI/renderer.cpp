@@ -155,9 +155,9 @@ void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_
     else if (center)
         x_coord = (64 - ((length * 6) / 2));
 
-	screen.setCursorXY(x_coord, y_coord);
-	screen.print(value);
-	screen.print(label);
+    screen.setCursorXY(x_coord, y_coord);
+    screen.print(value);
+    screen.print(label);
 }
 
 void LTDAUI::printRightAlign(const char *text, byte y_coord)
