@@ -13,7 +13,7 @@ class A2DPExternalVolumeControl;
 class ADAU1452
 {
   private:
-    A2DPExternalVolumeControl *avrcp_volume_sync = NULL;
+    A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
     void gotoRegister(short reg, byte requestSize = 0);
     void setFaderPosition(byte id, int val);
     byte findValue(const unsigned int* tab, byte max, int value);

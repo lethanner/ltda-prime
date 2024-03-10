@@ -42,9 +42,9 @@ void boot()
 
     /* Инициализация периферии микроконтроллера */
     Wire.setClock(400000L);
-	bluetooth.init();
+    bluetooth.init();
     vTaskDelay(50 / portTICK_PERIOD_MS);
-    
+
     /* Инициализация DSP */
     UI.printStatus(STR_DSP_INIT, 56);
     DSP.init();
