@@ -4,13 +4,21 @@
 const char chan_labels[][7] = {
     "SPDIF",
     "BT",
+    "Reverb",
     "Master"
 };
 
 // подписи групп
 const char* grp_labels[] = {
     "Inputs",
-    "Test page",
+    "FX",
     "Outputs",
     "All"
+};
+
+// подписи шин для посылов
+const char* sendto_labels[] = {
+    // со входов на все шины
+    "Master",
+    "Reverb"
 };
