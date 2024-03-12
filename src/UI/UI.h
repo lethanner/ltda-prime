@@ -12,12 +12,7 @@
 class LTDAUI
 {
   public:
-    // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printStatus(const char *text, byte y_coord);
-    void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
-    void printValue(int8_t value, const char *label, int8_t x_coord,
-                    byte y_coord, bool center = false);
-    void printRightAlign(const char *text, byte y_coord);
 
     // ==== СЛУЖЕБКА ====
     void prepare();
@@ -38,6 +33,9 @@ class LTDAUI
     const unsigned char *onScreenChannels;
     byte gap_border, gap_block;
     byte _chan_count;
+    // sends on fader
+    byte SOF_dest = 0;
+    bool is_SOF_active = false;
 
     // для работы меню со скроллингом
     void (LTDAUI::*_handler)(byte) = NULL;
@@ -63,7 +61,7 @@ class LTDAUI
     void renderMenu();
     // инициализаторы
     void setMonitorDataFeed(byte ch);
-    void createMixingConsole(byte groupNo);
+    void createMixingConsole(byte groupNo, int8_t sof = -1);
     void createMenu(const char *const *entries,
                     byte entryCount,
                     void (LTDAUI::*handler)(byte),
@@ -71,7 +69,16 @@ class LTDAUI
                     int *menuBooleans = NULL);
 
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
-    void chMenuHandler(byte sel);
+    void _menu_channel_h(byte sel);
+    void _menu_group_h(byte sel);
+    void _menu_SOFdest_h(byte sel);
+
+    // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
+    void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
+    void printValue(int8_t value, const char *label, int8_t x_coord,
+                    byte y_coord, bool center = false);
+    void printRightAlign(const char *text, byte y_coord);
+    void printDecibelsRight(int8_t value);
 
     // ==== FREERTOS ====
     static void vUITimerCallback(TimerHandle_t pxTimer);

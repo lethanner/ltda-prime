@@ -16,11 +16,12 @@ void LTDAUI::renderMixingConsole()
         byte block_width = 18;  // TODO: разделение каналов на моно и стерео
         byte block_safe_zone = block_width + gap_block;
         byte x_coord = gap_block + (ch * block_safe_zone);
-        byte fader_pos = map(DSP.faderPositionDB[onScreenChannels[ch]], -97, 10, 52, 11);
         byte levelL = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, onScreenChannels[ch], false);
         byte levelR = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, onScreenChannels[ch], true);
-        //byte levelL = map(DSP.getDecibelSignalLevel(onScreenChannels[ch], false), -97, 0, 52, 11);
-        //byte levelR = map(DSP.getDecibelSignalLevel(onScreenChannels[ch], true), -97, 0, 52, 11);
+        byte fader_pos = map(is_SOF_active
+                               ? DSP.sendFaders_dB[SOF_dest][onScreenChannels[ch]]
+                               : DSP.faderPosition_dB[onScreenChannels[ch]],
+                             -97, 10, 52, 11);
 
         screen.line(x_coord + 2, 52, x_coord + 2, 11);                                                           // полоска фейдера
         screen.rect(x_coord, fader_pos, x_coord + 4, fader_pos + static_cast<byte>(onScreenChSelect == ch), 2);  // ручка фейдера
@@ -164,6 +165,14 @@ void LTDAUI::printRightAlign(const char *text, byte y_coord)
 {
     screen.setCursorXY(128 - (strlen(text) * 6), y_coord);
     screen.print(text);
+}
+
+void LTDAUI::printDecibelsRight(int8_t value)
+{
+    if (value == -97)
+        printRightAlign("muted", 0);
+    else
+        printValue(value, "dB", -1, 0);
 }
 
 // получение координаты для выравнивания текста посередине

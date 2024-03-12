@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "slots.h"
+#include "registers.h"
 #include "../config.h"
 #include "bluetooth.h"
 #include <GyverIO.h>
@@ -27,13 +27,18 @@ class ADAU1452
     void retrieveRTAValues();
 
     byte getRelativeSignalLevel(const unsigned int* tab, byte range, byte id, bool right);
-    void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     int8_t getDecibelSignalLevel(byte id, bool right);
+
+    void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
+    void setDecibelSendLevel(byte id, byte to, int8_t val);
     //int8_t getDecibelFaderPosition(byte id);
 
     int readbackVal[DSP_READBACK_COUNT];      // буфер значений уровней сигнала
     int faderPosition[DSP_FADER_COUNT];       // буфер положений фейдеров внутри DSP
-    int8_t faderPositionDB[DSP_FADER_COUNT];  // тот же буфер, только в децибелах
+    int8_t faderPosition_dB[DSP_FADER_COUNT];  // тот же буфер, только в децибелах
+
+    //int sendsLevel[];
+    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS / 2];
 };
 
 class A2DPExternalVolumeControl : public A2DPVolumeControl
