@@ -33,12 +33,9 @@ class ADAU1452
     void setDecibelSendLevel(byte id, byte to, int8_t val);
     //int8_t getDecibelFaderPosition(byte id);
 
-    int readbackVal[DSP_READBACK_COUNT];      // буфер значений уровней сигнала
-    int faderPosition[DSP_FADER_COUNT];       // буфер положений фейдеров внутри DSP
-    int8_t faderPosition_dB[DSP_FADER_COUNT];  // тот же буфер, только в децибелах
-
-    //int sendsLevel[];
-    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS / 2];
+    int readbackVal[DSP_READBACK_COUNT];                        // буфер значений уровней сигнала
+    int8_t faderPosition_dB[DSP_FADER_COUNT];                   // буфер положений фейдеров внутри DSP
+    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS / 2];  // буфер уровней посылов внутри DSP
 };
 
 class A2DPExternalVolumeControl : public A2DPVolumeControl
