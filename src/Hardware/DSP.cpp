@@ -6,7 +6,6 @@ const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
 ADAU1452::ADAU1452()
 {
-    memset(&faderPosition, 0xFFFFFF, DSP_FADER_COUNT * 4);
     memset(&faderPosition_dB, 0, DSP_FADER_COUNT);
     memset(&sendFaders_dB, 0, DSP_BUS_COUNT * (DSP_BUS_CHANNELS / 2));
 
@@ -87,30 +86,27 @@ void ADAU1452::retrieveRTAValues()
     }
 }
 
-void ADAU1452::setFaderPosition(byte id, int val)
-{
-    gotoRegister(dsp_fader_address[id]);
-    for (byte i = 0; i < 4; i++) {
-        Wire.write((val >> (24 - (i * 8))) & 0xFF);
-    }
-    Wire.endTransmission();
-
-    faderPosition[id] = val;
-    faderPosition_dB[id] = findValue(db_calibration_24bit, 107, val) - 97;
-}
-
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
     val = constrain(val, -97, 10);
+    uint32_t _val = db_calibration_24bit[97 + val];
+    
     if (sync && id == FADER_BLUETOOTH_ST)
         bluetooth.sendAVRCPVolume(val);
-    setFaderPosition(id, db_calibration_24bit[97 + val]);
+    
+    gotoRegister(dsp_fader_address[id]);
+    for (byte i = 0; i < 4; i++) {
+        Wire.write((_val >> (24 - (i * 8))) & 0xFF);
+    }
+    Wire.endTransmission();
+
+    faderPosition_dB[id] = val;
 }
 
 void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
 {
     val = constrain(val, -97, 10);
-    int _val = db_calibration_24bit[97 + val];
+    uint32_t _val = db_calibration_24bit[97 + val];
 
     for (byte j = 0; j < 2; j++) {
         gotoRegister(dsp_bus_send_addr[to][(id * 2) + j]);
