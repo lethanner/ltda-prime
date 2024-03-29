@@ -1,19 +1,19 @@
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Saturday, March 9, 2024 6:16:59 PM #####
+##### Compile Started: Friday, March 29, 2024 9:43:37 PM #####
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Saturday, March 9, 2024 6:16:59 PM #####
+##### Compile Started: Friday, March 29, 2024 9:43:37 PM #####
 ##### Compile succeeded:  0 errors, 0 warnings #####
 
 ##### Summary #####
-DM0 RAM used:       00142    (of 20480)
-DM1 RAM used:       05113    (of 20480)
+DM0 RAM used:       00151    (of 20480)
+DM1 RAM used:       05119    (of 20480)
 PM  RAM used(Data): 00000    (of 8192)
-PM  RAM used(Inst): 00750    (of 8192) 579 instructions (32bit: 408  64bit: 171)
-Total PM used:      00750    (of 8192)
+PM  RAM used(Inst): 00779    (of 8192) 603 instructions (32bit: 427  64bit: 176)
+Total PM used:      00779    (of 8192)
 
 --------------------------------------------------------------------------------------
 STREAM                        Inst      Inst      DM0     DM1     PM
@@ -22,20 +22,22 @@ Instance                      (cycles)  (size)
 STACK                          -         -        16      0       0       
 Reverb                        447       558       81      5079    0
 FRAMEWORK                     52        33        4       7       0
-Master_sends                  19        24        13      2       0
+Reverb_sends                  19        24        13      1       0
+Master_sends                  14        16        8       2       0
 BT_in                         10        13        3       2       0
 SPDIF_in                      10        13        3       2       0
+USB_in                        10        13        3       2       0
 Reverb_out                    10        13        3       2       0
 Master_out                    10        13        3       2       0
-Reverb_sends                  9         9         4       1       0
+AsrcIn1                       8         8         0       6       0
 SPDIF_Readback                6         6         2       2       0
 BT_Readback                   6         6         2       2       0
+USB_Readback                  6         6         2       2       0
 Reverb_Readback               6         6         2       2       0
 Master_Readback               6         6         2       2       0
-AsrcIn1                       5         5         0       4       0
 Master                        3         3         0       0       0
 --------------------------------------------------------------------------------------
-Total                         599       708       138     5109    0
+Total                         623       737       147     5115    0
 --------------------------------------------------------------------------------------
-(% Fs=48.0kHz)                10%       9%        1%      25%     0%
+(% Fs=48.0kHz)                11%       9%        1%      25%     0%
 
