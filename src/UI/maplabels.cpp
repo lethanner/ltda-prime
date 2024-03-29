@@ -4,6 +4,7 @@
 const char chan_labels[][7] = {
     "SPDIF",
     "BT",
+    "USB",
     "Reverb",
     "Master"
 };
