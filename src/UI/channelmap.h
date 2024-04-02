@@ -11,6 +11,7 @@ const unsigned char chan_all[] = { 0, 1, 2, 3, 4 };
 const unsigned char* const ch_groups[] = {
     chan_inputs, chan_fx, chan_outs, chan_all
 };
+// количество каналов в группах (КОСТЫЛЬ)
 const unsigned char ch_count[] = { 3, 1, 1, 5 };
 
 extern const char chan_labels[][7];

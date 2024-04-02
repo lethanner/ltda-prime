@@ -14,6 +14,7 @@ void LTDABT::init()
     start(BLUETOOTH_NAME);
 }
 
+// синхронизация уровня громкости с подключенным Bluetooth-устройством
 void LTDABT::sendAVRCPVolume(int8_t volume)
 {
     // нуууу... это protected-член класса в сторонней библиотеке.
