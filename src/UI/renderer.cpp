@@ -28,7 +28,7 @@ void LTDAUI::renderMixingConsole()
         screen.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);                                           // столбик уровня левого канала
         screen.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);                                          // столбик уровня правого канала
 
-        // подписи каналов
+        // подписи каналов с выравниванием
         if (screenState == 0) {
             byte label_len = strlen(chan_labels[onScreenChannels[ch]]);
             byte max_label_chars = (block_safe_zone / 6 < label_len) ? block_safe_zone / 6 : label_len;
@@ -40,15 +40,16 @@ void LTDAUI::renderMixingConsole()
         }
     }
 
+    // селектор вместо подписей каналов (по необходимости)
     switch (screenState) {
-    case 1:
+    case 1:  // выбор канала на дисплее
         if (onScreenChSelect > 0)
             printXY("<", 56, 0);
         if (onScreenChSelect < _chan_count - 1)
             printXY(">", 56, 122);
         printXY(chan_labels[onScreenChannels[onScreenChSelect]], 56);
         break;
-    case 2:
+    case 2:  // выбор группы каналов
         if (selectedGroup > 0)
             printXY("<<<", 56, 0);
         if (selectedGroup < CH_GROUP_COUNT - 1)
@@ -117,6 +118,7 @@ void LTDAUI::streamMonitorData()
     short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitorChannel, true)];
     int shiftDispCache = dataL << 12 | dataR;
 
+    // передать собранный битовый пакет на паровозик из сдвиговых регистров
     gio::write(INDIC_LAT, false);
     gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, (shiftDispCache & 0xFF), 1);
     gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, ((shiftDispCache >> 8) & 0xFF), 1);
@@ -144,6 +146,7 @@ void LTDAUI::printXY(const char *text, byte y_coord, int8_t x_coord)
     screen.print(text);
 }
 
+// вывод значения с подписью - в центр или с выравниванием справа
 void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord, bool center)
 {
     byte length = strlen(label) + 1;
@@ -161,12 +164,14 @@ void LTDAUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_
     screen.print(label);
 }
 
+// вывод текста с выравниванием справа
 void LTDAUI::printRightAlign(const char *text, byte y_coord)
 {
     screen.setCursorXY(128 - (strlen(text) * 6), y_coord);
     screen.print(text);
 }
 
+// вывод уровня дБ для статусной строки
 void LTDAUI::printDecibelsRight(int8_t value)
 {
     if (value == -97)

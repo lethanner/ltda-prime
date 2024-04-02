@@ -14,6 +14,7 @@ ADAU1452::ADAU1452()
     bluetooth.set_volume_control(avrcp_volume_sync);
 }
 
+// запуск и инициализация аудиопроцессора
 void ADAU1452::init()
 {
     // сброс
@@ -86,6 +87,7 @@ void ADAU1452::retrieveRTAValues()
     }
 }
 
+// установка уровня громкости канала (в децибелах от -97 до 10, где -97 = MUTE)
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
     val = constrain(val, -97, 10);
@@ -103,6 +105,7 @@ void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
     faderPosition_dB[id] = val;
 }
 
+// установка уровня посыла канала на шину (в децибелах от -97 до 10, где -97 = MUTE)
 void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
 {
     val = constrain(val, -97, 10);
@@ -119,6 +122,7 @@ void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
     sendFaders_dB[to][id] = val;
 }
 
+// поиск ID ближайшего значения в массиве (для конвертации значения уровня в децибелы)
 byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 {
     for (byte i = 0; i < max; i++) {
@@ -128,6 +132,7 @@ byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
     return max;
 }
 
+// получение децибельного уровня сигнала на канале (согласно подаваемой калибровочной таблице)
 byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, byte id, bool right)
 {
     return findValue(tab, max, readbackVal[(id * 2) + static_cast<byte>(right)]);

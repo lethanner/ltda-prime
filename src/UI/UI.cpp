@@ -11,6 +11,7 @@ GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
+// временный тестовый костыль
 int menuBoolTestStub = 0;
 
 // обработка сигналов управления
@@ -123,6 +124,7 @@ void LTDAUI::refresh()
     streamMonitorData();
 }
 
+// (пере)запуск юзер-интерфейса
 void LTDAUI::reload()
 {
     createMixingConsole(0);
@@ -232,11 +234,13 @@ void LTDAUI::menuRotate(int8_t dir)
         callMenuHandler();
 }
 
+// вызов триггера при выборе пункта меню
 void LTDAUI::callMenuHandler()
 {
     (this->*_handler)(menuChooseId);
 }
 
+// подсветка дисплея на время
 void LTDAUI::brightDisplay()
 {
     if (xTimerIsTimerActive(xBacklightTimer) == pdFALSE)
@@ -247,6 +251,8 @@ void LTDAUI::brightDisplay()
 
 void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
 {
+    // повезло, что у таймеров FreeRTOS есть место, куда пихнуть указатель
+    // https://stackoverflow.com/questions/71199868/c-use-a-class-non-static-method-as-a-function-pointer-callback-in-freertos-xti
     LTDAUI *instance = static_cast<LTDAUI *>(pvTimerGetTimerID(pxTimer));
 
     if (pxTimer == xBacklightTimer)
