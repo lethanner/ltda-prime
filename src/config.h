@@ -10,6 +10,6 @@
 #define OLED_I2C_ADDRESS 0x3C
 
 #define INDIC_DAT 15
-#define INDIC_LAT 16
-#define INDIC_CLK 17
+#define INDIC_CLK 16
+#define INDIC_LAT 17
 #define DSP_RESET 4
