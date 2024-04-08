@@ -30,7 +30,30 @@ void ADAU1452::init()
         // когда ещё не полностью завёлся.
         vTaskDelay(20 / portTICK_PERIOD_MS);
     }
-    vTaskDelay(1000 / portTICK_PERIOD_MS);  // контрольная задержка
+    vTaskDelay(900 / portTICK_PERIOD_MS);  // контрольная задержка
+
+    // https://ez.analog.com/dsp/sigmadsp/f/q-a/108225/spdif-src-dc-offset/320804
+    // костыль с переключением ASRC, который был предложен лично одним из представителей Analog Devices.
+    // для того чтобы избавиться от постоянки при отсутствии клоков ¯\_(ツ)_/¯.
+    // по дефолту все три ASRC натравлены на I2S-выход с ESP32, который работает всегда так же, как магнит в МРТ (шучу).
+    // это помогает обнулить ASRC, после чего можно с помощью команд переключить их туда, куда надо
+
+    // ASRC 2 (на нём висит USB), тупо переключаем номер serial input
+    gotoRegister(0xF102);
+    Wire.write(0x00);
+    Wire.write(0xA1);
+    Wire.endTransmission();
+
+    // ASRC 0, переключаем род работы с serial input на S/PDIF receiver
+    gotoRegister(0xF100);
+    Wire.write(0x00);
+    Wire.write(0x83);
+    Wire.endTransmission();
+
+    // контрольная задержка
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    // и только после всего включаем звук на Master
+    setDecibelFaderPosition(FADER_MASTER_ST, 0);
 
     // кэширование всех значений громкости из DSP
     // для их восстановления в случае перезагрузки контроллера
