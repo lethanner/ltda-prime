@@ -32,7 +32,7 @@ const char sofdestmenu_master[] = "Master";
 const char sofdestmenu_reverb[] = "Reverb";
 #endif
 
-#define STR_DEV_INFO "LTDA Prime v0.2.2a"
+#define STR_DEV_INFO "LTDA Prime v0.3.0a"
 
 const char *const channelmenu[] = { channelmenu_title, channelmenu_mon, channelmenu_vfltr };
 const char *const groupmenu[] = { groupmenu_title, groupmenu_sof };

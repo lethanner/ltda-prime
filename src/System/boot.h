@@ -5,6 +5,7 @@
 #include "freertos/task.h"
 #include "../Hardware/DSP.h"
 #include "../Hardware/bluetooth.h"
+#include "../Hardware/shiftreg.h"
 #include "../UI/UI.h"
 #include "../UI/localization.h"
 
@@ -35,6 +36,9 @@ void task_ctrlProcess(void *pvParameters)
 
 void boot()
 {
+    /* Инициализация сдвигового регистра */
+    shifters.quickInit();
+    
     /* Инициализация юзер-интерфейса */
     UI.prepare();
     UI.printStatus(STR_DEV_INFO, 56);

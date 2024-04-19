@@ -1,6 +1,7 @@
 #include "UI.h"
 #include "channelmap.h"
 #include "decibels.h"
+#include "../Hardware/shiftreg.h"
 
 extern GyverOLED<SSD1306_128x64, OLED_BUFFER> screen;
 
@@ -116,14 +117,10 @@ void LTDAUI::streamMonitorData()
     // Максим, поменяй 7 на 12 после допайки светодиодиков!
     short dataL = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitorChannel, false)];
     short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitorChannel, true)];
-    int shiftDispCache = dataL << 12 | dataR;
+    int combined = dataL << 12 | dataR;
 
     // передать собранный битовый пакет на паровозик из сдвиговых регистров
-    gio::write(INDIC_LAT, false);
-    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, (shiftDispCache & 0xFF), 1);
-    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, ((shiftDispCache >> 8) & 0xFF), 1);
-    gio::shift::send_byte(INDIC_DAT, INDIC_CLK, LSBFIRST, ((shiftDispCache >> 16) & 0xFF), 1);
-    gio::write(INDIC_LAT, true);
+    shifters.sendToIndicators(combined);
 }
 
 /*
