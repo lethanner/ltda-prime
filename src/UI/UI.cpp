@@ -1,10 +1,9 @@
 #include "UI.h"
-#include "gio/gio_esp32.h"
 #include "channelmap.h"
 #include <EncButton.h>
 
 /* Объявление энкодера и дисплея */
-EncButton control(19, 18, 5);
+EncButton control(CTRL_S1, CTRL_S2, CTRL_KEY);
 GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
 
 /* Таймеры FreeRTOS */
@@ -135,12 +134,6 @@ void LTDAUI::reload()
 // инициализация юзер-интерфейса. ВСЕГО!
 void LTDAUI::prepare()
 {
-    // настройка выводов передачи данных на индикатор (сдвиговые регистры там)
-    // сдвиг пинов произошёл из-за 4-го вывода, ибо был нужен для pull-down
-    pinMode(INDIC_DAT, OUTPUT);  // сигнал данных
-    pinMode(INDIC_LAT, OUTPUT);  // сигнал защелки
-    pinMode(INDIC_CLK, OUTPUT);  // сигнал тактирования
-
     // инициализация дисплея
     screen.init();                                    // инициализация дисплея
     screen.clear();                                   // очистка кадра

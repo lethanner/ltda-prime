@@ -1,5 +1,6 @@
 #include "DSP.h"
 #include "decibels.h"
+#include "shiftreg.h"
 
 const byte _dsp_addr = DSP_I2C_ADDRESS;
 const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
@@ -18,10 +19,9 @@ ADAU1452::ADAU1452()
 void ADAU1452::init()
 {
     // сброс
-    gio::write(DSP_RESET, false);
-    pinMode(DSP_RESET, OUTPUT);
+    shifters.setOnBoardBit(SHIFT_DSP_RESET, true);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    gio::write(DSP_RESET, true);
+    shifters.setOnBoardBit(SHIFT_DSP_RESET, false);
 
     // ожидание запуска
     while (getCoreState() == 0x00) {
