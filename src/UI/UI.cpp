@@ -46,8 +46,11 @@ void LTDAUI::processCtrl()
     // ======== удержание энкодера ========
     if (control.hold()) {
         switch (screenID) {
-        case 1:                                                        // на экране микшера
+        case 1:                                                     // на экране микшера
             if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
+            else if (screenState == 1) is_SOF_active                // удержание на выборе канала - MUTE
+                                         ? DSP.toggleMute(onScreenChannels[onScreenChSelect], SOF_dest)
+                                         : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
             else if (screenState == 2 && selectedGroup < 2) createMenu(groupmenu, 1, &LTDAUI::_menu_group_h);
             else createMenu(channelmenu, 2, &LTDAUI::_menu_channel_h, false, &menuBoolTestStub);
             break;
@@ -100,7 +103,7 @@ void LTDAUI::refresh()
     // статусбар
     if (screenID == 1) {
         if (is_SOF_active) {  // "sends on fader" вместо статусбара
-            printDecibelsRight(DSP.sendFaders_dB[SOF_dest][onScreenChannels[onScreenChSelect]]);
+            printDecibelsRight();
             printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
             screen.print(" to ");
             screen.print(sendto_labels[SOF_dest]);
@@ -108,7 +111,7 @@ void LTDAUI::refresh()
             printXY("Mixer", 0, 0);        // заглушка заголовка
             printValue(0, "'C", -1, 0);    // заглушка датчика температуры
         } else if (statusbarState == 1) {  // в момент изменения громкости канала
-            printDecibelsRight(DSP.faderPosition_dB[onScreenChannels[onScreenChSelect]]);
+            printDecibelsRight();
             printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
             screen.print(":");
         }

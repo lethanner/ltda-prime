@@ -114,7 +114,7 @@ void ADAU1452::retrieveRTAValues()
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
     val = constrain(val, -97, 10);
-    uint32_t _val = db_calibration_24bit[97 + val];
+    uint32_t _val = muteFlags[id] ? 0 : db_calibration_24bit[97 + val];
     
     if (sync && id == FADER_BLUETOOTH_ST)
         bluetooth.sendAVRCPVolume(val);
@@ -132,7 +132,7 @@ void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
 {
     val = constrain(val, -97, 10);
-    uint32_t _val = db_calibration_24bit[97 + val];
+    uint32_t _val = sendMuteFlags[to][id] ? 0 : db_calibration_24bit[97 + val];
 
     for (byte j = 0; j < 2; j++) {
         gotoRegister(dsp_bus_send_addr[to][(id * 2) + j]);
@@ -143,6 +143,18 @@ void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
     }
 
     sendFaders_dB[to][id] = val;
+}
+
+void ADAU1452::toggleMute(byte id)
+{
+    muteFlags[id] = !muteFlags[id];
+    setDecibelFaderPosition(id, faderPosition_dB[id], false);
+}
+
+void ADAU1452::toggleMute(byte id, byte to)
+{
+    sendMuteFlags[to][id] = !sendMuteFlags[to][id];
+    setDecibelSendLevel(id, to, sendFaders_dB[to][id]);
 }
 
 // поиск ID ближайшего значения в массиве (для конвертации значения уровня в децибелы)

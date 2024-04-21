@@ -78,7 +78,7 @@ class LTDAUI
     void printValue(int8_t value, const char *label, int8_t x_coord,
                     byte y_coord, bool center = false);
     void printRightAlign(const char *text, byte y_coord);
-    void printDecibelsRight(int8_t value);
+    void printDecibelsRight();
 
     // ==== FREERTOS ====
     static void vUITimerCallback(TimerHandle_t pxTimer);
