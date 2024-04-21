@@ -23,11 +23,23 @@ void LTDAUI::renderMixingConsole()
                                ? DSP.sendFaders_dB[SOF_dest][onScreenChannels[ch]]
                                : DSP.faderPosition_dB[onScreenChannels[ch]],
                              -97, 10, 52, 11);
+        bool is_muted = is_SOF_active
+                          ? DSP.sendMuteFlags[SOF_dest][onScreenChannels[ch]]
+                          : DSP.muteFlags[onScreenChannels[ch]];
 
-        screen.line(x_coord + 2, 52, x_coord + 2, 11);                                                           // полоска фейдера
-        screen.rect(x_coord, fader_pos, x_coord + 4, fader_pos + static_cast<byte>(onScreenChSelect == ch), 2);  // ручка фейдера
-        screen.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);                                           // столбик уровня левого канала
-        screen.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);                                          // столбик уровня правого канала
+        screen.line(x_coord + 2, 52, x_coord + 2, 11);  // полоска фейдера
+        if (is_muted) {
+            // если MUTED, то рисуем крестик вместо ручки фейдера
+            screen.line(x_coord + 1, fader_pos - 1, x_coord + 3, fader_pos + 1);
+            screen.line(x_coord + 1, fader_pos + 1, x_coord + 3, fader_pos - 1);
+            // если замьюченный канал выбран, то дорисовываем крестик до звездочки
+            if (onScreenChSelect == ch) screen.line(x_coord + 1, fader_pos, x_coord + 3, fader_pos);
+        } else
+            // если не MUTED, то рисуем обычную ручку фейдера
+            screen.rect(x_coord, fader_pos, x_coord + 4, fader_pos + static_cast<byte>(onScreenChSelect == ch), 2);
+
+        screen.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);   // столбик уровня левого канала
+        screen.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);  // столбик уровня правого канала
 
         // подписи каналов с выравниванием
         if (screenState == 0) {
@@ -169,9 +181,15 @@ void LTDAUI::printRightAlign(const char *text, byte y_coord)
 }
 
 // вывод уровня дБ для статусной строки
-void LTDAUI::printDecibelsRight(int8_t value)
+void LTDAUI::printDecibelsRight()
 {
-    if (value == -97)
+    int8_t value = is_SOF_active
+                     ? DSP.sendFaders_dB[SOF_dest][onScreenChannels[onScreenChSelect]]
+                     : DSP.faderPosition_dB[onScreenChannels[onScreenChSelect]];
+    bool is_muted = is_SOF_active
+                      ? DSP.sendMuteFlags[SOF_dest][onScreenChannels[onScreenChSelect]]
+                      : DSP.muteFlags[onScreenChannels[onScreenChSelect]];
+    if (value == -97 || is_muted)
         printRightAlign("muted", 0);
     else
         printValue(value, "dB", -1, 0);
