@@ -7,8 +7,12 @@ const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
 ADAU1452::ADAU1452()
 {
+    // инициализировать значения всех фейдеров
     memset(&faderPosition_dB, 0, DSP_FADER_COUNT);
     memset(&sendFaders_dB, 0, DSP_BUS_COUNT * (DSP_BUS_CHANNELS / 2));
+    // инициализировать все флаги MUTE
+    memset(&muteFlags, 0, DSP_FADER_COUNT);
+    memset(&sendMuteFlags, 0, DSP_BUS_COUNT * (DSP_BUS_CHANNELS * 2));
 
     // вкл синхронизации громкости блютуза с громкостью на DSP
     avrcp_volume_sync = new A2DPExternalVolumeControl(this);
