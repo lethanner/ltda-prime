@@ -46,11 +46,11 @@ void LTDAUI::processCtrl()
     // ======== удержание энкодера ========
     if (control.hold()) {
         switch (screenID) {
-        case 1:                                                     // на экране микшера
-            if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
-            else if (screenState == 1) is_SOF_active                // удержание на выборе канала - MUTE
-                                         ? DSP.toggleMute(onScreenChannels[onScreenChSelect], SOF_dest)
-                                         : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
+        case 1:                                  // на экране микшера
+            if (screenState == 1) is_SOF_active  // удержание на выборе канала - MUTE
+                                    ? DSP.toggleMute(onScreenChannels[onScreenChSelect], SOF_dest)
+                                    : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
+            else if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
             else if (screenState == 2 && selectedGroup < 2) createMenu(groupmenu, 1, &LTDAUI::_menu_group_h);
             else createMenu(channelmenu, 2, &LTDAUI::_menu_channel_h, false, &menuBoolTestStub);
             break;
