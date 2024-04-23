@@ -29,11 +29,11 @@ void LTDAUI::renderMixingConsole()
 
         screen.line(x_coord + 2, 52, x_coord + 2, 11);  // полоска фейдера
         if (is_muted) {
-            // если MUTED, то рисуем крестик вместо ручки фейдера
-            screen.line(x_coord + 1, fader_pos - 1, x_coord + 3, fader_pos + 1);
-            screen.line(x_coord + 1, fader_pos + 1, x_coord + 3, fader_pos - 1);
-            // если замьюченный канал выбран, то дорисовываем крестик до звездочки
-            if (onScreenChSelect == ch) screen.line(x_coord + 1, fader_pos, x_coord + 3, fader_pos);
+            // если MUTED, то рисуем (какую-то фигню) вместо ручки фейдера
+            screen.fastLineH(fader_pos + 1, x_coord + 1, x_coord + 3);
+            screen.fastLineH(fader_pos - 1, x_coord + 1, x_coord + 3);
+            // если замьюченный канал выбран, то дорисовываем (фигню) до квадратика
+            if (onScreenChSelect == ch) screen.fastLineH(fader_pos, x_coord + 1, x_coord + 3);
         } else
             // если не MUTED, то рисуем обычную ручку фейдера
             screen.rect(x_coord, fader_pos, x_coord + 4, fader_pos + static_cast<byte>(onScreenChSelect == ch), 2);
