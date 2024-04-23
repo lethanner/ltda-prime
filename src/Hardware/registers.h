@@ -15,8 +15,9 @@ const short dsp_fader_address[] = {
 
 /* Регистры управления посылами */
 #define DSP_BUS_COUNT 2
-#define DSP_BUS_CHANNELS 8
-const short dsp_bus_send_addr[][DSP_BUS_CHANNELS] = {
+#define DSP_BUS_CHANNELS 4
+#define DSP_IN_TO_BUS 3
+const short dsp_bus_send_addr[][DSP_BUS_CHANNELS * 2] = {
     {
       0x0083,  // SPDIF -> Master левый
       0x0087,  // SPDIF -> Master правый

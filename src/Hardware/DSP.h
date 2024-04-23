@@ -37,9 +37,9 @@ class ADAU1452
 
     int readbackVal[DSP_READBACK_COUNT];                        // буфер значений уровней сигнала
     int8_t faderPosition_dB[DSP_FADER_COUNT];                   // буфер положений фейдеров внутри DSP
-    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS / 2];  // буфер уровней посылов внутри DSP
+    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
     bool muteFlags[DSP_FADER_COUNT];                            // флаги MUTE для каналов
-    bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS / 2];    // флаги MUTE для посылов
+    bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];    // флаги MUTE для посылов
 };
 
 class A2DPExternalVolumeControl : public A2DPVolumeControl
