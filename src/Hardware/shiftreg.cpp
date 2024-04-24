@@ -1,6 +1,6 @@
 #include "shiftreg.h"
 
-SemaphoreHandle_t _sspi_lock;
+SemaphoreHandle_t _sspi_lock = NULL;
 
 ShiftRegisters::ShiftRegisters()
 {
@@ -24,11 +24,17 @@ void ShiftRegisters::quickInit()
 
 void ShiftRegisters::refresh()
 {
-    xSemaphoreTake(_sspi_lock, portMAX_DELAY);
-    gio::write(SHIFT_LAT, false);
-    gio::shift::send(SHIFT_DAT, SHIFT_CLK, LSB_REVERSE, _buffer, SHIFT_COUNT, 1);
-    gio::write(SHIFT_LAT, true);
-    xSemaphoreGive(_sspi_lock);
+    // в этом участке кода неверная работа с семафором приводила к лагам при УПРАВЛЕНИИ ГРОМКОСТЬЮ ПО I2C.
+    // чудеса, не иначе
+    if (xSemaphoreTake(_sspi_lock, portMAX_DELAY) == pdTRUE) {
+        // отправить данные на сдвиговые регистры
+        // под семафором во избежание конфликтов при вызове из нескольких потоков
+        gio::write(SHIFT_LAT, false);
+        gio::shift::send(SHIFT_DAT, SHIFT_CLK, LSB_REVERSE, _buffer, SHIFT_COUNT, 1);
+        gio::write(SHIFT_LAT, true);
+
+        xSemaphoreGive(_sspi_lock);
+    }
 }
 
 void ShiftRegisters::sendToIndicators(int buf)
