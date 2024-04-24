@@ -1,10 +1,10 @@
 #include "shiftreg.h"
 
-SemaphoreHandle_t lock;
+SemaphoreHandle_t _sspi_lock;
 
 ShiftRegisters::ShiftRegisters()
 {
-    lock = xSemaphoreCreateMutex();
+    _sspi_lock = xSemaphoreCreateMutex();
 }
 
 void ShiftRegisters::quickInit()
@@ -24,11 +24,11 @@ void ShiftRegisters::quickInit()
 
 void ShiftRegisters::refresh()
 {
-    xSemaphoreTake(lock, portMAX_DELAY);
+    xSemaphoreTake(_sspi_lock, portMAX_DELAY);
     gio::write(SHIFT_LAT, false);
     gio::shift::send(SHIFT_DAT, SHIFT_CLK, LSB_REVERSE, _buffer, SHIFT_COUNT, 1);
     gio::write(SHIFT_LAT, true);
-    xSemaphoreGive(lock);
+    xSemaphoreGive(_sspi_lock);
 }
 
 void ShiftRegisters::sendToIndicators(int buf)
