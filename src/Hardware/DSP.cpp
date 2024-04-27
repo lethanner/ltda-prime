@@ -19,6 +19,11 @@ ADAU1452::ADAU1452()
     bluetooth.set_volume_control(avrcp_volume_sync);
 }
 
+int* ADAU1452::getFlagRegisterPtr()
+{
+    return &flagRegister;
+}
+
 // запуск и инициализация аудиопроцессора
 void ADAU1452::init()
 {
@@ -181,6 +186,20 @@ byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, byte id, bool right)
 {
     return findValue(tab, max, readbackVal[(id * 2) + static_cast<byte>(right)]);
+}
+
+// переключение режима bassboost
+void ADAU1452::toggleBassBoost()
+{
+    bitToggle(flagRegister, DSPSETS_IS_BASSBOOSTED);
+    bool state = !bitRead(flagRegister, DSPSETS_IS_BASSBOOSTED);
+
+    gotoRegister(DSP_BASSBOOST_REG);
+    Wire.write(state);
+    for (byte i = 0; i < 3; i++) {
+        Wire.write(0x00);
+    }
+    Wire.endTransmission();
 }
 
 ADAU1452 DSP;

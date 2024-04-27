@@ -8,6 +8,7 @@
 const char channelmenu_title[] = "Канал";
 const char channelmenu_mon[] = "Отпр. на индикатор";
 const char channelmenu_vfltr[] = "?AПодавление голоса";
+const char channelmenu_sbass[] = "?AУсиление баса";
 // меню группы каналов
 const char groupmenu_title[] = "Группа";
 const char groupmenu_sof[] = "Посылы на фейдерах";
@@ -23,6 +24,7 @@ const char sofdestmenu_reverb[] = "Reverb";
 const char channelmenu_title[] = "Channel";
 const char channelmenu_mon[] = "Send to monitor";
 const char channelmenu_vfltr[] = "?AVocal filter";
+const char channelmenu_sbass[] = "?ABassboost";
 // channel group menu
 const char groupmenu_title[] = "Group";
 const char groupmenu_sof[] = "Sends on fader";
@@ -32,8 +34,9 @@ const char sofdestmenu_master[] = "Master";
 const char sofdestmenu_reverb[] = "Reverb";
 #endif
 
-#define STR_DEV_INFO "LTDA Prime v0.3.1a"
+#define STR_DEV_INFO "LTDA Prime v0.3.2a"
 
-const char *const channelmenu[] = { channelmenu_title, channelmenu_mon, channelmenu_vfltr };
+const char *const chmenu_generic[] = { channelmenu_title, channelmenu_mon };
+const char *const chmenu_master[] = { channelmenu_title, channelmenu_mon, channelmenu_sbass };
 const char *const groupmenu[] = { groupmenu_title, groupmenu_sof };
 const char *const sofdestmenu[] = { sofdestmenu_title, sofdestmenu_master, sofdestmenu_reverb };
