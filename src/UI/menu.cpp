@@ -6,12 +6,23 @@ void LTDAUI::_menu_channel_h(byte sel)
     case 0:
         setMonitorDataFeed(onScreenChannels[onScreenChSelect]);
         break;
-    case 1:
-        break;
     }
 
     // выход
     createMixingConsole(selectedGroup);
+}
+
+void LTDAUI::_menu_master_h(byte sel)
+{
+    switch (sel) {
+    case 0:
+        setMonitorDataFeed(onScreenChannels[onScreenChSelect]);
+        createMixingConsole(selectedGroup); // выход
+        break;
+    case 1:
+        DSP.toggleBassBoost();
+        break;
+    }
 }
 
 void LTDAUI::_menu_group_h(byte sel)

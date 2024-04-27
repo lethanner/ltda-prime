@@ -10,9 +10,6 @@ GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
-// временный тестовый костыль
-int menuBoolTestStub = 0;
-
 // обработка сигналов управления
 void LTDAUI::processCtrl()
 {
@@ -52,7 +49,12 @@ void LTDAUI::processCtrl()
                                     : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
             else if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
             else if (screenState == 2 && selectedGroup < 2) createMenu(groupmenu, 1, &LTDAUI::_menu_group_h);
-            else createMenu(channelmenu, 2, &LTDAUI::_menu_channel_h, false, &menuBoolTestStub);
+            else {
+                if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST) // если выбрали канал Master, открываем меню для него
+                    createMenu(chmenu_master, 2, &LTDAUI::_menu_master_h, false, DSP.getFlagRegisterPtr());
+                else // иначе меню для всех остальных
+                    createMenu(chmenu_generic, 1, &LTDAUI::_menu_channel_h, false);
+            }
             break;
         case 2:                                  // на экране меню
             createMixingConsole(selectedGroup);  // возврат взад на главный экран

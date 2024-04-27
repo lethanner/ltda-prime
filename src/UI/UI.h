@@ -70,6 +70,7 @@ class LTDAUI
 
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
     void _menu_channel_h(byte sel);
+    void _menu_master_h(byte sel);
     void _menu_group_h(byte sel);
     void _menu_SOFdest_h(byte sel);
 
