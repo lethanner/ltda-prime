@@ -4,8 +4,8 @@
 #include "../config.h"
 #include "freertos/semphr.h"
 
-#define SHIFT_DSP_RESET 0
-#define SHIFT_AMP_RESET 7
+#define SHIFT_AMP_RESET 0
+#define SHIFT_DSP_RESET 7
 
 #define SHIFT_MAIN_DEFAULT 0b10000001
 #define SHIFT_COUNT 4
