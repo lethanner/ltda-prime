@@ -32,6 +32,8 @@ void LTDAUI::processCtrl()
                 screenState = 2;
             else if (++screenState > 2)  // а так просто по кругу переключаем действия
                 screenState = 0;
+
+            statusbarState = 1;
             break;
         }
         case 2:  // на экране меню

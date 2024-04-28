@@ -16,6 +16,8 @@ const char groupmenu_sof[] = "Посылы на фейдерах";
 const char sofdestmenu_title[] = "To?";
 const char sofdestmenu_master[] = "Master";
 const char sofdestmenu_reverb[] = "Reverb";
+// главный экран
+#define SELECTION "Выбор"
 #else
 // boot screen
 #define STR_DSP_INIT "Initializing DSP"
@@ -32,9 +34,11 @@ const char groupmenu_sof[] = "Sends on fader";
 const char sofdestmenu_title[] = "To?";
 const char sofdestmenu_master[] = "Master";
 const char sofdestmenu_reverb[] = "Reverb";
+// main screen
+#define SELECTION "Select"
 #endif
 
-#define STR_DEV_INFO "LTDA Prime v0.3.2a"
+#define STR_DEV_INFO "LTDA Prime v0.3.3a"
 
 const char *const chmenu_generic[] = { channelmenu_title, channelmenu_mon };
 const char *const chmenu_master[] = { channelmenu_title, channelmenu_mon, channelmenu_sbass };

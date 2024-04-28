@@ -60,7 +60,8 @@ void LTDAUI::renderMixingConsole()
             printXY("<", 56, 0);
         if (onScreenChSelect < _chan_count - 1)
             printXY(">", 56, 122);
-        printXY(chan_labels[onScreenChannels[onScreenChSelect]], 56);
+        //printXY(chan_labels[onScreenChannels[onScreenChSelect]], 56);
+        printXY(SELECTION, 56);
         break;
     case 2:  // выбор группы каналов
         if (selectedGroup > 0)
