@@ -17,6 +17,7 @@ class ADAU1452
   private:
     A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
     void gotoRegister(short reg, byte requestSize = 0);
+    int32_t get32BitRegister(short reg);
     byte findValue(const unsigned int* tab, byte max, int value);
     int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
     int flagRegister = 0x00000000;            // импровизированный регистр настроек
@@ -24,6 +25,7 @@ class ADAU1452
   public:
     ADAU1452();
     void init();
+    void cacheReload();
 
     byte getCoreState();
     void retrieveRTAValues();

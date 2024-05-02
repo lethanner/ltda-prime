@@ -4,6 +4,7 @@
 // экран загрузки
 #define STR_DSP_INIT "Инициализация DSP"
 #define STR_RTOS_INIT "Запуск RTOS..."
+#define STR_DSP_RECOVER "Восстановление..."
 // меню канала
 const char channelmenu_title[] = "Канал";
 const char channelmenu_mon[] = "Отпр. на индикатор";
@@ -22,6 +23,7 @@ const char sofdestmenu_reverb[] = "Reverb";
 // boot screen
 #define STR_DSP_INIT "Initializing DSP"
 #define STR_RTOS_INIT "Configuring RTOS"
+#define STR_DSP_RECOVER "Recovering..."
 // channel menu
 const char channelmenu_title[] = "Channel";
 const char channelmenu_mon[] = "Send to monitor";
@@ -38,7 +40,7 @@ const char sofdestmenu_reverb[] = "Reverb";
 #define SELECTION "Select"
 #endif
 
-#define STR_DEV_INFO "LTDA Prime v0.3.3a"
+#define STR_DEV_INFO "LTDA Prime v0.3.4a"
 
 const char *const chmenu_generic[] = { channelmenu_title, channelmenu_mon };
 const char *const chmenu_master[] = { channelmenu_title, channelmenu_mon, channelmenu_sbass };

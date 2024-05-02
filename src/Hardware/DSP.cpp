@@ -69,22 +69,31 @@ void ADAU1452::init()
     vTaskDelay(100 / portTICK_PERIOD_MS);
     // и только после всего включаем звук на Master
     setDecibelFaderPosition(FADER_MASTER_ST, 0);
-
-    // кэширование всех значений громкости из DSP
-    // для их восстановления в случае перезагрузки контроллера
-    // ПС: оно пока что нихрена нормально не работает.
-    // int32_t val = 0;
-    // for (byte i = 0; i < DSP_FADER_COUNT; i++) {
-    //     gotoRegister(dsp_fader_address[i], 4);
-    //     for (byte j = 0; j < 4; j++) {
-    //         val += Wire.read() << (24 - (j * 8));
-    //     }
-    //     faderPosition[i] = val;
-    //     faderPosition_dB[i] = findValue(db_calibration_24bit, 107, val) - 97;
-    // }
 }
 
-// функция выполнения запроса к 16-бит регистру аудиопроцессора
+// просто повторная загрузка всех настроек из аудиопроцессора
+void ADAU1452::cacheReload()
+{
+    // положение основных фейдеров
+    for (byte i = 0; i < DSP_FADER_COUNT; i++) {
+        int32_t value = get32BitRegister(dsp_fader_address[i]);
+        faderPosition_dB[i] = findValue(db_calibration_24bit, 97, value) - 97;
+    }
+
+    // положение фейдеров посылов
+    for (byte i = 0; i < DSP_BUS_COUNT; i++) {
+        for (byte j = 0; j < (DSP_BUS_CHANNELS * 2); j += 2) {
+            int32_t value = get32BitRegister(dsp_bus_send_addr[i][j]);
+            sendFaders_dB[i][j] = findValue(db_calibration_24bit, 107, value) - 97;
+        }
+    }
+
+    // регистр включенных и выключенных функций
+    gotoRegister(DSP_BASSBOOST_REG, 1);
+    bitWrite(flagRegister, DSPSETS_IS_BASSBOOSTED, !static_cast<bool>(Wire.read()));
+}
+
+// функция выполнения запроса к регистру аудиопроцессора с 16-бит адресом
 void ADAU1452::gotoRegister(short reg, byte requestSize)
 {
     Wire.beginTransmission(_dsp_addr);
@@ -95,6 +104,18 @@ void ADAU1452::gotoRegister(short reg, byte requestSize)
         Wire.endTransmission(false);
         Wire.requestFrom(_dsp_addr, requestSize);
     }
+}
+
+// функция получения данных из 32-битного регистра DSP
+int32_t ADAU1452::get32BitRegister(short reg)
+{
+    int32_t result = 0;
+    gotoRegister(reg, 4);
+    for (byte i = 0; i < 4; i++) {
+        result += Wire.read() << (24 - (i * 8));
+    }
+
+    return result;
 }
 
 // получение состояния ядра аудиопроцессора
@@ -109,14 +130,10 @@ byte ADAU1452::getCoreState()
 void ADAU1452::retrieveRTAValues()
 {
     for (byte i = 0; i < DSP_READBACK_COUNT; i++) {
-        int32_t value = 0;
         // из-за того, что SigmaDSP не всегда делает адреса блоков порядковыми,
         // пришлось убрать burst-чтение за одну передачу адреса регистра и
         // на каждую итерацию сделать передачу нового адреса. :angry:
-        gotoRegister(dsp_readback_addr[i], 4);
-        for (byte j = 0; j < 4; j++) {
-            value += Wire.read() << (24 - (j * 8));
-        }
+        int32_t value = get32BitRegister(dsp_readback_addr[i]);        
 
         readbackVal[i] = (value < 0 ? -value : value);
         // запаздывающий фильтр (код нагло украден из проекта спектроанализатора от AlexGyver)
