@@ -14,10 +14,9 @@ class ShiftRegisters
 {
   public:
     ShiftRegisters();
-    void quickInit(bool reset);
+    void quickInit();
     void refresh();
 
-    void modifyBit(uint8_t reg, uint8_t bit, bool state);
     void setOnBoardBit(uint8_t bit, bool state);
     void sendToIndicators(int buf);
   private:
