@@ -36,11 +36,8 @@ void task_ctrlProcess(void *pvParameters)
 
 void boot()
 {
-    soc_reset_reason_t rst = esp_rom_get_reset_reason(1);
     /* Инициализация сдвигового регистра */
-    // не обнулять состояние сдвиговика на плате, если контроллер был перезапущен
-    // т.к. он по сути выступает в качестве буфера
-    shifters.quickInit(rst == ESP_RST_POWERON);
+    shifters.quickInit();
     
     /* Инициализация юзер-интерфейса */
     UI.prepare();
@@ -53,15 +50,8 @@ void boot()
     vTaskDelay(50 / portTICK_PERIOD_MS);
 
     /* Инициализация DSP */
-    // если контроллер был перезагружен, а не запущен, то сбрасывать DSP не нужно
-    if (rst != ESP_RST_POWERON) {
-        UI.printStatus(STR_DSP_RECOVER, 56);
-        shifters.modifyBit(0, SHIFT_DSP_RESET, false);
-        DSP.cacheReload();
-    } else {
-        UI.printStatus(STR_DSP_INIT, 56);
-        DSP.init();
-    }
+    UI.printStatus(STR_DSP_INIT, 56);
+    DSP.init();
 
     /* Инициализация FreeRTOS */
     UI.printStatus(STR_RTOS_INIT, 56);
