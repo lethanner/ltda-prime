@@ -7,7 +7,7 @@ ShiftRegisters::ShiftRegisters()
     _sspi_lock = xSemaphoreCreateMutex();
 }
 
-void ShiftRegisters::quickInit()
+void ShiftRegisters::quickInit(bool hard_reset)
 {
     pinMode(SHIFT_DAT, OUTPUT);  // сигнал данных
     pinMode(SHIFT_LAT, OUTPUT);  // сигнал защелки
@@ -15,10 +15,11 @@ void ShiftRegisters::quickInit()
 
     // БЫСТРО сбрасываем первый регистр, пока у него не поднялся Output Enable
     // на остальных ранний запуск не такой уж и страшный
-    gio::write(SHIFT_LAT, false);
-    gio::shift::send_byte(SHIFT_DAT, SHIFT_CLK, LSBFIRST, SHIFT_MAIN_DEFAULT, 1);
-    gio::write(SHIFT_LAT, true);
-
+    if (hard_reset) {
+        gio::write(SHIFT_LAT, false);
+        gio::shift::send_byte(SHIFT_DAT, SHIFT_CLK, LSBFIRST, SHIFT_MAIN_DEFAULT, 1);
+        gio::write(SHIFT_LAT, true);
+    }
     _buffer[0] = SHIFT_MAIN_DEFAULT;
 }
 
@@ -50,6 +51,11 @@ void ShiftRegisters::setOnBoardBit(uint8_t bit, bool state)
 {
     bitWrite(_buffer[0], bit, state);
     refresh();
+}
+
+void ShiftRegisters::modifyBit(uint8_t reg, uint8_t bit, bool state)
+{
+    bitWrite(_buffer[reg], bit, state);
 }
 
 ShiftRegisters shifters;
