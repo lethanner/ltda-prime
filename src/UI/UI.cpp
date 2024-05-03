@@ -196,6 +196,12 @@ void LTDAUI::createMenu(const char *const *entries, byte entryCount, void (LTDAU
     screenID = 2;
 }
 
+// вывод фиговины для подстройки чего бы то ни было
+void LTDAUI::createAdjustScreen(const char *title, const char *unit, int16_t *value_p, void (*handler)(byte), int16_t min, int16_t max)
+{
+
+}
+
 /*
  * =========== Прочее добро ===========
 */

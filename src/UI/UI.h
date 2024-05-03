@@ -67,12 +67,24 @@ class LTDAUI
                     void (LTDAUI::*handler)(byte),
                     bool handlerAutoCall = false,
                     int *menuBooleans = NULL);
+    void createAdjustScreen(const char *title,
+                            const char *unit,
+                            int16_t *value_p,
+                            void (*handler)(byte),
+                            int16_t min,
+                            int16_t max);
 
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
     void _menu_channel_h(byte sel);
     void _menu_master_h(byte sel);
     void _menu_group_h(byte sel);
     void _menu_SOFdest_h(byte sel);
+    void _adjust_handler();
+    enum AdjustParameter {
+      DSP_BASSBOOST_FREQ,
+      DSP_BASSBOOST_INTENSITY,
+      DSP_BASSBOOST_GAIN
+    };
 
     // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
