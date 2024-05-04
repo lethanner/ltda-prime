@@ -64,7 +64,7 @@ void LTDAUI::_menu_bassboost_h(byte sel)
 // обработчик всего, что связано с подстройками чего бы то ни было
 void LTDAUI::adjustHandler(int8_t dir)
 {
-    switch (*adj_current) {
+    switch (adj_current) {
         case DSP_BASSBOOST_FREQ:
             // TODO
             break;
