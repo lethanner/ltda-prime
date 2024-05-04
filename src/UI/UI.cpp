@@ -52,14 +52,18 @@ void LTDAUI::processCtrl()
             else if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
             else if (screenState == 2 && selectedGroup < 2) createMenu(groupmenu, 1, &LTDAUI::_menu_group_h);
             else {
-                if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST) // если выбрали канал Master, открываем меню для него
+                if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST)  // если выбрали канал Master, открываем меню для него
                     createMenu(chmenu_master, 2, &LTDAUI::_menu_master_h, false, DSP.getFlagRegisterPtr());
-                else // иначе меню для всех остальных
+                else  // иначе меню для всех остальных
                     createMenu(chmenu_generic, 1, &LTDAUI::_menu_channel_h, false);
             }
             break;
         case 2:                                  // на экране меню
             createMixingConsole(selectedGroup);  // возврат взад на главный экран
+            break;
+        case 3:                                                                                        // на экране подстройки чего-то...
+            if (*adj_current == DSP_BASSBOOST_GAIN || *adj_current == DSP_BASSBOOST_INTENSITY)         // бассбуста
+                createMenu(bassmenu, 3, &LTDAUI::_menu_bassboost_h, false, DSP.getFlagRegisterPtr());  // назад в меню (потом переделать!!!)
             break;
         }
     }
@@ -95,6 +99,9 @@ void LTDAUI::processCtrl()
         case 2:  // на экране меню
             menuRotate(control.dir());
             break;
+        case 3:  // на экране подстройки
+            adjustHandler(control.dir());
+            break;
         }
     }
 }
@@ -124,6 +131,7 @@ void LTDAUI::refresh()
     switch (screenID) {
     case 1: renderMixingConsole(); break;
     case 2: renderMenu(); break;
+    case 3: renderAdjustScreen(); break;
     }
 
     screen.update();
@@ -197,9 +205,16 @@ void LTDAUI::createMenu(const char *const *entries, byte entryCount, void (LTDAU
 }
 
 // вывод фиговины для подстройки чего бы то ни было
-void LTDAUI::createAdjustScreen(const char *title, const char *unit, int16_t *value_p, void (*handler)(byte), int16_t min, int16_t max)
+void LTDAUI::createAdjustScreen(const char *title, const char *unit, AdjustParameter param, int8_t *value, int8_t min, int8_t max)
 {
+    _title_x_coord = getCenterCoordinate(title);
+    adj_title = title;
+    adj_unit = unit;
+    adj_current = &param;
+    adj_borders[0] = min, adj_borders[1] = max;
+    adj_value = value;
 
+    screenID = 3;
 }
 
 /*

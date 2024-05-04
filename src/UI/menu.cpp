@@ -22,7 +22,7 @@ void LTDAUI::_menu_master_h(byte sel)
         createMixingConsole(selectedGroup); // выход
         break;
     case 1: // bassboost
-        DSP.toggleBassBoost();
+        createMenu(bassmenu, 3, &LTDAUI::_menu_bassboost_h, false, DSP.getFlagRegisterPtr());
         break;
     }
 }
@@ -44,4 +44,35 @@ void LTDAUI::_menu_group_h(byte sel)
 void LTDAUI::_menu_SOFdest_h(byte sel)
 {
     createMixingConsole(selectedGroup, sel);
+}
+
+void LTDAUI::_menu_bassboost_h(byte sel)
+{
+    switch (sel) {
+        case 0:
+            DSP.toggleBassBoost();
+            break;
+        case 1:
+            createAdjustScreen(bassmenu_intens, " parrots", DSP_BASSBOOST_INTENSITY, &DSP.bassboostIntensity, 1, 30);
+            break;
+        case 2:
+            createAdjustScreen(bassmenu_gain, " parrots", DSP_BASSBOOST_GAIN, &DSP.bassboostGain, 1, 30);
+            break;
+    }
+}
+
+// обработчик всего, что связано с подстройками чего бы то ни было
+void LTDAUI::adjustHandler(int8_t dir)
+{
+    switch (*adj_current) {
+        case DSP_BASSBOOST_FREQ:
+            // TODO
+            break;
+        case DSP_BASSBOOST_INTENSITY:
+            DSP.setBBIntensity(DSP.bassboostIntensity + dir);
+            break;
+        case DSP_BASSBOOST_GAIN:
+            DSP.setBBGain(DSP.bassboostGain + dir);
+            break;
+    }
 }
