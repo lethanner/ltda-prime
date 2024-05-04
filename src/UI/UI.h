@@ -21,6 +21,14 @@ class LTDAUI
     void reload();
 
   private:
+    // ==== ЕНУМЫ ====
+    enum AdjustParameter
+    {
+        DSP_BASSBOOST_FREQ,
+        DSP_BASSBOOST_INTENSITY,
+        DSP_BASSBOOST_GAIN
+    };
+
     // ==== ПЕРЕМЕННЫЕ ====
     // общие переменные
     byte screenID = 0;
@@ -49,6 +57,23 @@ class LTDAUI
     byte monitorChannel = 0;
     //int *monitorDataFeed;
 
+    // для работы меню подстройки чего-нибудь
+    // TODO: переделать это всё (в том числе функции createMenu и adjustScreen)
+    // на использование структур или классов
+    const char *adj_title = NULL;
+    const char *adj_unit = NULL;
+    int8_t adj_borders[2] = { 0, 0 };
+    int8_t *adj_value = NULL;
+    AdjustParameter *adj_current = NULL;
+
+    // ==== ОБРАБОТЧИКИ МЕНЮ ====
+    void _menu_channel_h(byte sel);
+    void _menu_master_h(byte sel);
+    void _menu_group_h(byte sel);
+    void _menu_SOFdest_h(byte sel);
+    void _menu_bassboost_h(byte sel);
+    void adjustHandler(int8_t dir);
+
     // ==== АКТИВНОСТИ ====
     // вспомогательные функции
     byte getCenterCoordinate(const char *text);
@@ -59,6 +84,7 @@ class LTDAUI
     void streamMonitorData();
     void renderMixingConsole();
     void renderMenu();
+    void renderAdjustScreen();
     // инициализаторы
     void setMonitorDataFeed(byte ch);
     void createMixingConsole(byte groupNo, int8_t sof = -1);
@@ -69,22 +95,10 @@ class LTDAUI
                     int *menuBooleans = NULL);
     void createAdjustScreen(const char *title,
                             const char *unit,
-                            int16_t *value_p,
-                            void (*handler)(byte),
-                            int16_t min,
-                            int16_t max);
-
-    // ==== ОБРАБОТЧИКИ МЕНЮ ====
-    void _menu_channel_h(byte sel);
-    void _menu_master_h(byte sel);
-    void _menu_group_h(byte sel);
-    void _menu_SOFdest_h(byte sel);
-    void _adjust_handler();
-    enum AdjustParameter {
-      DSP_BASSBOOST_FREQ,
-      DSP_BASSBOOST_INTENSITY,
-      DSP_BASSBOOST_GAIN
-    };
+                            AdjustParameter param,
+                            int8_t* value,
+                            int8_t min,
+                            int8_t max);
 
     // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printXY(const char *text, byte y_coord, int8_t x_coord = -1);

@@ -2,6 +2,8 @@
 
 #define DSP_CORE_STATUS_REG 0xF405
 #define DSP_BASSBOOST_REG 0x6016
+#define DSP_BB_INTENSITY_REG 0x600B
+#define DSP_BB_GAIN_REG 0x6014
 //#define DSP_READBACK_START_REG 0x0014
 
 /* Регистры управления громкостью */

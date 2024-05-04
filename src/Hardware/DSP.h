@@ -17,6 +17,7 @@ class ADAU1452
   private:
     A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
     void gotoRegister(short reg, byte requestSize = 0);
+    void writeAsFloat(short reg, byte value);
     byte findValue(const unsigned int* tab, byte max, int value);
     int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
     int flagRegister = 0x00000000;            // импровизированный регистр настроек
@@ -33,17 +34,27 @@ class ADAU1452
 
     void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     void setDecibelSendLevel(byte id, byte to, int8_t val);
-    void toggleMute(byte id);
-    void toggleMute(byte id, byte to);
-    //int8_t getDecibelFaderPosition(byte id);
-    void toggleBassBoost();
-
-    int readbackVal[DSP_READBACK_COUNT];                    // буфер значений уровней сигнала
     int8_t faderPosition_dB[DSP_FADER_COUNT];               // буфер положений фейдеров внутри DSP
     int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
+
+    // Mute
+    void toggleMute(byte id);
+    void toggleMute(byte id, byte to);
     bool muteFlags[DSP_FADER_COUNT];                        // флаги MUTE для каналов
     bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];    // флаги MUTE для посылов
+    //int8_t getDecibelFaderPosition(byte id);
 
+    // бассбуст
+    void toggleBassBoost();
+    void setBBIntensity(byte value);
+    void setBBGain(byte value);
+    int8_t bassboostIntensity = 10;  // min 0.1, max 3 (* 10)
+    int8_t bassboostGain = 20;       // min 0.1, max 3 (* 10)
+
+    // буфер значений уровней сигнала
+    int readbackVal[DSP_READBACK_COUNT];
+
+    // прочие костыли
     int* getFlagRegisterPtr();
 };
 

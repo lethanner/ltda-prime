@@ -97,6 +97,19 @@ void ADAU1452::gotoRegister(short reg, byte requestSize)
     }
 }
 
+void ADAU1452::writeAsFloat(short reg, byte value)
+{
+    int ig = value / 10;
+    int fr = value % 10;
+
+    gotoRegister(reg);
+    Wire.write(ig & 0xFF);
+    for (byte i = 0; i < 3; i++) {
+        Wire.write(sigmastudio_fractions[fr][i]);
+    }
+    Wire.endTransmission();
+}
+
 // получение состояния ядра аудиопроцессора
 byte ADAU1452::getCoreState()
 {
@@ -200,6 +213,22 @@ void ADAU1452::toggleBassBoost()
         Wire.write(0x00);
     }
     Wire.endTransmission();
+}
+
+void ADAU1452::setBBGain(byte value)
+{
+    value = constrain(value, 1, 30);
+    
+    writeAsFloat(DSP_BB_GAIN_REG, value);
+    bassboostGain = value;
+}
+
+void ADAU1452::setBBIntensity(byte value)
+{
+    value = constrain(value, 1, 30);
+
+    writeAsFloat(DSP_BB_INTENSITY_REG, value);
+    bassboostIntensity = value;
 }
 
 ADAU1452 DSP;

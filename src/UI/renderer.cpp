@@ -113,6 +113,20 @@ void LTDAUI::renderMenu()
     screen.invertText(0);
 }
 
+void LTDAUI::renderAdjustScreen()
+{
+    screen.invertText(1);
+    screen.rect(0, 0, 127, 7, OLED_FILL);
+    screen.setCursor(_title_x_coord, 0);
+    screen.print(adj_title);
+
+    screen.invertText(0);
+    printValue(*adj_value, adj_unit, 0, 24, true);
+    // TODO: сделать так, чтобы эта дичь могла рисовать эту полоску и для отрицательных значений
+    byte x_end = map(*adj_value, adj_borders[0], adj_borders[1], 10, 116);
+    screen.rect(10, 44, x_end, 49, OLED_FILL);
+}
+
 // отправка данных на сдвиговики на внешнем индикаторе уровня
 void LTDAUI::streamMonitorData()
 {
