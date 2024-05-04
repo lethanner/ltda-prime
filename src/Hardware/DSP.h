@@ -40,16 +40,24 @@ class ADAU1452
     // Mute
     void toggleMute(byte id);
     void toggleMute(byte id, byte to);
-    bool muteFlags[DSP_FADER_COUNT];                        // флаги MUTE для каналов
-    bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];    // флаги MUTE для посылов
+    bool muteFlags[DSP_FADER_COUNT];                      // флаги MUTE для каналов
+    bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // флаги MUTE для посылов
     //int8_t getDecibelFaderPosition(byte id);
 
     // бассбуст
     void toggleBassBoost();
     void setBBIntensity(byte value);
     void setBBGain(byte value);
-    int8_t bassboostIntensity = 10;  // min 0.1, max 3 (* 10)
-    int8_t bassboostGain = 20;       // min 0.1, max 3 (* 10)
+    int8_t bassboostIntensity = 10,
+           bassboostGain = 20;  // min 0.1, max 3 (* 10)
+
+    // реверб
+    void setReverbTime(byte value);
+    void setReverbHFDamping(byte value);
+    void setReverbBassGain(byte value);
+    int8_t reverbTime = 2,
+           reverbHFDamp = 1,
+           reverbBassGain = 1;
 
     // буфер значений уровней сигнала
     int readbackVal[DSP_READBACK_COUNT];

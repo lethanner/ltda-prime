@@ -1,5 +1,5 @@
 #include "DSP.h"
-#include "decibels.h"
+#include "tables.h"
 #include "shiftreg.h"
 
 const byte _dsp_addr = DSP_I2C_ADDRESS;
@@ -229,6 +229,45 @@ void ADAU1452::setBBIntensity(byte value)
 
     writeAsFloat(DSP_BB_INTENSITY_REG, value);
     bassboostIntensity = value;
+}
+
+void ADAU1452::setReverbTime(byte value)
+{
+    value = constrain(value, 0, 3);
+
+    gotoRegister(DSP_REVERB_TIME_REG);
+    for (byte i = 0; i < 8; i++) {
+        Wire.write(ss_reverbtime[value][i]);
+    }
+    Wire.endTransmission();
+
+    reverbTime = value;
+}
+
+void ADAU1452::setReverbHFDamping(byte value)
+{
+    value = constrain(value, 0, 2);
+
+    gotoRegister(DSP_REVERB_HFDAMP_REG);
+    for (byte i = 0; i < 4; i++) {
+        Wire.write(ss_rev_hf_damping[value][i]);
+    }
+    Wire.endTransmission();
+
+    reverbHFDamp = value;
+}
+
+void ADAU1452::setReverbBassGain(byte value)
+{
+    value = constrain(value, 0, 2);
+    
+    gotoRegister(DSP_REVERB_BGAIN_REG);
+    for (byte i = 0; i < 4; i++) {
+        Wire.write(ss_rev_bass_gain[value][i]);
+    }
+    Wire.endTransmission();
+
+    reverbBassGain = value;
 }
 
 ADAU1452 DSP;

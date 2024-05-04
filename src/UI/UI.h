@@ -26,7 +26,10 @@ class LTDAUI
     {
         DSP_BASSBOOST_FREQ,
         DSP_BASSBOOST_INTENSITY,
-        DSP_BASSBOOST_GAIN
+        DSP_BASSBOOST_GAIN,
+        DSP_REVERB_TIME,
+        DSP_REVERB_HFDAMPING,
+        DSP_REVERB_BASSGAIN
     };
 
     // ==== ПЕРЕМЕННЫЕ ====
@@ -69,6 +72,7 @@ class LTDAUI
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
     void _menu_channel_h(byte sel);
     void _menu_master_h(byte sel);
+    void _menu_reverb_h(byte sel);
     void _menu_group_h(byte sel);
     void _menu_SOFdest_h(byte sel);
     void _menu_bassboost_h(byte sel);

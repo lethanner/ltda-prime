@@ -61,6 +61,21 @@ void LTDAUI::_menu_bassboost_h(byte sel)
     }
 }
 
+void LTDAUI::_menu_reverb_h(byte sel)
+{
+    switch (sel) {
+        case 0: // time
+            createAdjustScreen(reverbmenu_time, parrots, DSP_REVERB_TIME, &DSP.reverbTime, 0, 3);
+            break;
+        case 1: // hf damping
+            createAdjustScreen(reverbmenu_hfdmp, parrots, DSP_REVERB_HFDAMPING, &DSP.reverbHFDamp, 0, 2);
+            break;
+        case 2: // bass gain
+            createAdjustScreen(reverbmenu_bgain, parrots, DSP_REVERB_BASSGAIN, &DSP.reverbBassGain, 0, 2);
+            break;
+    }
+}
+
 // обработчик всего, что связано с подстройками чего бы то ни было
 void LTDAUI::adjustHandler(int8_t dir)
 {
@@ -73,6 +88,15 @@ void LTDAUI::adjustHandler(int8_t dir)
             break;
         case DSP_BASSBOOST_GAIN:
             DSP.setBBGain(DSP.bassboostGain + dir);
+            break;
+        case DSP_REVERB_TIME:
+            DSP.setReverbTime(DSP.reverbTime + dir);
+            break;
+        case DSP_REVERB_BASSGAIN:
+            DSP.setReverbBassGain(DSP.reverbBassGain + dir);
+            break;
+        case DSP_REVERB_HFDAMPING:
+            DSP.setReverbHFDamping(DSP.reverbHFDamp + dir);
             break;
     }
 }
