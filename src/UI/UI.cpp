@@ -54,6 +54,8 @@ void LTDAUI::processCtrl()
             else {
                 if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST)  // если выбрали канал Master, открываем меню для него
                     createMenu(chmenu_master, 2, &LTDAUI::_menu_master_h, false, DSP.getFlagRegisterPtr());
+                else if (onScreenChannels[onScreenChSelect] == FADER_REVERB_ST)  // если выбрали канал reverb, то для него меню
+                    createMenu(reverbmenu, 3, &LTDAUI::_menu_reverb_h);
                 else  // иначе меню для всех остальных
                     createMenu(chmenu_generic, 1, &LTDAUI::_menu_channel_h, false);
             }
@@ -64,8 +66,10 @@ void LTDAUI::processCtrl()
         case 3:                                                                                        // на экране подстройки чего-то...
             if (adj_current == DSP_BASSBOOST_GAIN || adj_current == DSP_BASSBOOST_INTENSITY)           // бассбуста
                 createMenu(bassmenu, 3, &LTDAUI::_menu_bassboost_h, false, DSP.getFlagRegisterPtr());  // назад в меню (потом переделать!!!)
-            else
-                createMixingConsole(selectedGroup);
+            else if (adj_current >= DSP_REVERB_TIME && adj_current <= DSP_REVERB_BASSGAIN)             // реверба
+                createMenu(reverbmenu, 3, &LTDAUI::_menu_reverb_h);                                    // то же самое - переделать как-нибудь!!!
+            else                                                                                       // любом другом
+                createMixingConsole(selectedGroup);                                                    // выход
             break;
         }
     }

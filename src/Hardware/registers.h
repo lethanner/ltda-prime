@@ -4,6 +4,9 @@
 #define DSP_BASSBOOST_REG 0x6016
 #define DSP_BB_INTENSITY_REG 0x600B
 #define DSP_BB_GAIN_REG 0x6014
+#define DSP_REVERB_TIME_REG 0x6008
+#define DSP_REVERB_HFDAMP_REG 0x0079
+#define DSP_REVERB_BGAIN_REG 0x007B
 //#define DSP_READBACK_START_REG 0x0014
 
 /* Регистры управления громкостью */
