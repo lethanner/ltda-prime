@@ -62,8 +62,10 @@ void LTDAUI::processCtrl()
             createMixingConsole(selectedGroup);  // возврат взад на главный экран
             break;
         case 3:                                                                                        // на экране подстройки чего-то...
-            if (*adj_current == DSP_BASSBOOST_GAIN || *adj_current == DSP_BASSBOOST_INTENSITY)         // бассбуста
+            if (adj_current == DSP_BASSBOOST_GAIN || adj_current == DSP_BASSBOOST_INTENSITY)           // бассбуста
                 createMenu(bassmenu, 3, &LTDAUI::_menu_bassboost_h, false, DSP.getFlagRegisterPtr());  // назад в меню (потом переделать!!!)
+            else
+                createMixingConsole(selectedGroup);
             break;
         }
     }
@@ -210,7 +212,7 @@ void LTDAUI::createAdjustScreen(const char *title, const char *unit, AdjustParam
     _title_x_coord = getCenterCoordinate(title);
     adj_title = title;
     adj_unit = unit;
-    adj_current = &param;
+    adj_current = param;
     adj_borders[0] = min, adj_borders[1] = max;
     adj_value = value;
 

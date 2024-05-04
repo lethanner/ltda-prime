@@ -64,7 +64,7 @@ class LTDAUI
     const char *adj_unit = NULL;
     int8_t adj_borders[2] = { 0, 0 };
     int8_t *adj_value = NULL;
-    AdjustParameter *adj_current = NULL;
+    AdjustParameter adj_current;
 
     // ==== ОБРАБОТЧИКИ МЕНЮ ====
     void _menu_channel_h(byte sel);
