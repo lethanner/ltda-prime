@@ -213,13 +213,13 @@ void LTDAUI::printDecibelsRight()
 // получение координаты для выравнивания текста посередине
 byte LTDAUI::getCenterCoordinate(const char *text)
 {
-    // юникод, шож поделать
-    byte i = 0, j = 0;
-    do {
-        if (text[i] < 0)
-            continue;
-        j++;
-    } while (text[++i] != '\0');
+    // спасибо ChatGPT за эту реализацию strlen() для юникода
+    byte length = 0;
+    while (*text != '\0') {
+        if ((*text & 0xC0) != 0x80) // Check if it's the beginning of a UTF-8 character
+            length++;
+        text++;
+    }
 
-    return (64 - ((j * 6) / 2));
+    return (64 - ((length * 6) / 2));
 }
