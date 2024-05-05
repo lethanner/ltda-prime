@@ -53,10 +53,10 @@ void LTDAUI::_menu_bassboost_h(byte sel)
             DSP.toggleBassBoost();
             break;
         case 1:
-            createAdjustScreen(bassmenu_intens, " parrots", DSP_BASSBOOST_INTENSITY, &DSP.bassboostIntensity, 1, 30);
+            createAdjustScreen(bassmenu_intens, parrots, DSP_BASSBOOST_INTENSITY, &DSP.bassboostIntensity, 1, 30);
             break;
         case 2:
-            createAdjustScreen(bassmenu_gain, " parrots", DSP_BASSBOOST_GAIN, &DSP.bassboostGain, 1, 30);
+            createAdjustScreen(bassmenu_gain, parrots, DSP_BASSBOOST_GAIN, &DSP.bassboostGain, 1, 30);
             break;
     }
 }
