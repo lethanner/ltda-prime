@@ -1,4 +1,5 @@
 #pragma once
+#include "../config.h"
 
 #ifdef RUSSIAN
 // экран загрузки
