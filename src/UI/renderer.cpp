@@ -79,14 +79,14 @@ void LTDAUI::renderMenu()
     // заголовок
     screen.invertText(1);
     screen.rect(0, 0, 127, 7, OLED_FILL);
-    screen.setCursor(_title_x_coord, 0);
-    screen.print(_entries[0]);
+    screen.setCursor(title_xCoord, 0);
+    screen.print(currentMenuScreen->entries[0]);
 
     // сами пункты
     uint8_t currentLine = 1;
-    byte endLine = ((_entryCount < 7) ? _entryCount + 1 : 7) + menuEntryRendererStartId;
+    byte endLine = ((currentMenuScreen->entryCount < 7) ? currentMenuScreen->entryCount + 1 : 7) + menuEntryRendererStartId;
     for (byte line = menuEntryRendererStartId; line < endLine; line++) {
-        const char *ptr = _entries[line + 1];
+        const char *ptr = currentMenuScreen->entries[line + 1];
 
         byte flagId = 0;
         bool isBoolEntry = false;
@@ -103,7 +103,7 @@ void LTDAUI::renderMenu()
         // отображение плюсиков и минусиков возле boolean-пунктов меню
         if (isBoolEntry) {
             screen.setCursor(120, currentLine);
-            if ((*_menuBooleans >> flagId) & 0x01)
+            if ((*currentMenuScreen->menuBooleans >> flagId) & 0x01)
                 screen.write('+');
             else
                 screen.write('-');
@@ -117,13 +117,13 @@ void LTDAUI::renderAdjustScreen()
 {
     screen.invertText(1);
     screen.rect(0, 0, 127, 7, OLED_FILL);
-    screen.setCursor(_title_x_coord, 0);
-    screen.print(adj_title);
+    screen.setCursor(title_xCoord, 0);
+    screen.print(currentAdjScreen->title);
 
     screen.invertText(0);
-    printValue(*adj_value, adj_unit, 0, 24, true);
+    printValue(*currentAdjScreen->value, currentAdjScreen->unit, 0, 24, true);
     // TODO: сделать так, чтобы эта дичь могла рисовать эту полоску и для отрицательных значений
-    byte x_end = map(*adj_value, adj_borders[0], adj_borders[1], 10, 116);
+    byte x_end = map(*currentAdjScreen->value, currentAdjScreen->min, currentAdjScreen->max, 10, 116);
     screen.rect(10, 44, x_end, 49, OLED_FILL);
 }
 

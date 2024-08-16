@@ -50,27 +50,21 @@ void LTDAUI::processCtrl()
                                     ? DSP.toggleMute(onScreenChannels[onScreenChSelect], SOF_dest)
                                     : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
             else if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
-            else if (screenState == 2 && selectedGroup < 2) createMenu(groupmenu, 1, &LTDAUI::_menu_group_h);
+            else if (screenState == 2 && selectedGroup < 2) createMenu(&chGroupMenu);
             else {
                 if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST)  // если выбрали канал Master, открываем меню для него
-                    createMenu(chmenu_master, 2, &LTDAUI::_menu_master_h, false, DSP.getFlagRegisterPtr());
+                    createMenu(&masterChannelMenu);
                 else if (onScreenChannels[onScreenChSelect] == FADER_REVERB_ST)  // если выбрали канал reverb, то для него меню
-                    createMenu(reverbmenu, 3, &LTDAUI::_menu_reverb_h);
+                    createMenu(&reverbChannelMenu);
                 else  // иначе меню для всех остальных
-                    createMenu(chmenu_generic, 1, &LTDAUI::_menu_channel_h, false);
+                    createMenu(&stdChannelMenu);
             }
             break;
         case 2:                                  // на экране меню
             createMixingConsole(selectedGroup);  // возврат взад на главный экран
             break;
-        case 3:                                                                                        // на экране подстройки чего-то...
-            if (adj_current == DSP_BASSBOOST_GAIN || adj_current == DSP_BASSBOOST_INTENSITY)           // бассбуста
-                createMenu(bassmenu, 3, &LTDAUI::_menu_bassboost_h, false, DSP.getFlagRegisterPtr());  // назад в меню (потом переделать!!!)
-            else if (adj_current >= DSP_REVERB_TIME && adj_current <= DSP_REVERB_BASSGAIN)             // реверба
-                createMenu(reverbmenu, 3, &LTDAUI::_menu_reverb_h);                                    // то же самое - переделать как-нибудь!!!
-            else                                                                                       // любом другом
-                createMixingConsole(selectedGroup);                                                    // выход
-            break;
+        case 3:              // на экране подстройки чего-то...
+            returnToMenu();  // назад в меню
         }
     }
 
@@ -106,7 +100,7 @@ void LTDAUI::processCtrl()
             menuRotate(control.dir());
             break;
         case 3:  // на экране подстройки
-            adjustHandler(control.dir());
+            currentAdjScreen->handler(control.dir());
             break;
         }
     }
@@ -194,31 +188,35 @@ void LTDAUI::createMixingConsole(byte groupNo, int8_t sof)
 }
 
 // вывод меню
-void LTDAUI::createMenu(const char *const *entries, byte entryCount, void (LTDAUI::*handler)(byte), bool handlerAutoCall, int *menuBooleans)
+void LTDAUI::createMenu(MenuScreen *scr)
 {
     // сижу я такой, переписываю код, скопипастенный из исходника DA50X.
     // и думаю - а что если убрать аргумент с заголовком и оставить
     // в качестве заголовка первую строку в entries?
     menuChooseId = menuEntryRendererStartId = menuVisibleSelId = 0;
-    _title_x_coord = getCenterCoordinate(entries[0]);
-    _handler = handler;
-    _handlerAutoCall = handlerAutoCall;
-    _menuBooleans = menuBooleans;
-    _entryCount = entryCount - 1;
-    _entries = entries;
+    title_xCoord = getCenterCoordinate(scr->entries[0]);
+    currentMenuScreen = scr;
+    // _title_x_coord = getCenterCoordinate(entries[0]);
+    // _handler = handler;
+    // _handlerAutoCall = handlerAutoCall;
+    // _menuBooleans = menuBooleans;
+    // _entryCount = entryCount - 1;
+    // _entries = entries;
 
     screenID = 2;
 }
 
 // вывод фиговины для подстройки чего бы то ни было
-void LTDAUI::createAdjustScreen(const char *title, const char *unit, AdjustParameter param, int8_t *value, int8_t min, int8_t max)
+void LTDAUI::createAdjustScreen(AdjustScreen *scr)
 {
-    _title_x_coord = getCenterCoordinate(title);
-    adj_title = title;
-    adj_unit = unit;
-    adj_current = param;
-    adj_borders[0] = min, adj_borders[1] = max;
-    adj_value = value;
+    // _title_x_coord = getCenterCoordinate(title);
+    // adj_title = title;
+    // adj_unit = unit;
+    // adj_current = param;
+    // adj_borders[0] = min, adj_borders[1] = max;
+    // adj_value = value;
+    title_xCoord = getCenterCoordinate(scr->title);
+    currentAdjScreen = scr;
 
     screenID = 3;
 }
@@ -238,11 +236,11 @@ void LTDAUI::menuRotate(int8_t dir)
 {
     if (dir > 0) {  // вправо
         if (menuVisibleSelId < 6) {
-            if (menuVisibleSelId < _entryCount)
+            if (menuVisibleSelId < currentMenuScreen->entryCount)
                 menuVisibleSelId++;
             else return;
         } else {
-            if (menuEntryRendererStartId + 6 < _entryCount)
+            if (menuEntryRendererStartId + 6 < currentMenuScreen->entryCount)
                 menuEntryRendererStartId++;
             else return;
         }
@@ -257,14 +255,14 @@ void LTDAUI::menuRotate(int8_t dir)
     }
 
     menuChooseId = menuEntryRendererStartId + menuVisibleSelId;
-    if (_handlerAutoCall)
+    if (currentMenuScreen->handlerAutoCall)
         callMenuHandler();
 }
 
 // вызов триггера при выборе пункта меню
 void LTDAUI::callMenuHandler()
 {
-    (this->*_handler)(menuChooseId);
+    (currentMenuScreen->handler)(menuChooseId);
 }
 
 // подсветка дисплея на время

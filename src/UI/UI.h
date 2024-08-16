@@ -9,6 +9,8 @@
 #include "../Hardware/DSP.h"
 #include "freertos/timers.h"
 
+#define returnToMenu() createMenu(currentMenuScreen)
+
 class LTDAUI
 {
   public:
@@ -19,18 +21,26 @@ class LTDAUI
     void processCtrl();
     void refresh();
     void reload();
+    LTDAUI();
 
   private:
-    // ==== ЕНУМЫ ====
-    enum AdjustParameter
+    // ==== СТРУКТУРЫ ====
+    // меню
+    struct MenuScreen
     {
-        DSP_BASSBOOST_FREQ,
-        DSP_BASSBOOST_INTENSITY,
-        DSP_BASSBOOST_GAIN,
-        DSP_REVERB_TIME,
-        DSP_REVERB_HFDAMPING,
-        DSP_REVERB_BASSGAIN
-    };
+        std::function<void(byte)> handler;
+        const char *const *entries;
+        byte entryCount;
+        bool handlerAutoCall;
+        int *menuBooleans;
+    } *currentMenuScreen;
+    // меню подстройки
+    struct AdjustScreen
+    {
+        std::function<void(byte)> handler;
+        const char *title, *unit;
+        int8_t min, max, *value;
+    } *currentAdjScreen;
 
     // ==== ПЕРЕМЕННЫЕ ====
     // общие переменные
@@ -49,34 +59,12 @@ class LTDAUI
     bool is_SOF_active = false;
 
     // для работы меню со скроллингом
-    void (LTDAUI::*_handler)(byte) = NULL;
     byte menuVisibleSelId, menuEntryRendererStartId, menuChooseId;
-    const char *const *_entries;
-    byte _entryCount, _title_x_coord;
-    bool _handlerAutoCall;
-    int *_menuBooleans;
+    byte title_xCoord;
 
     // для внешнего индикатора
     byte monitorChannel = 0;
     //int *monitorDataFeed;
-
-    // для работы меню подстройки чего-нибудь
-    // TODO: переделать это всё (в том числе функции createMenu и adjustScreen)
-    // на использование структур или классов
-    const char *adj_title = NULL;
-    const char *adj_unit = NULL;
-    int8_t adj_borders[2] = { 0, 0 };
-    int8_t *adj_value = NULL;
-    AdjustParameter adj_current;
-
-    // ==== ОБРАБОТЧИКИ МЕНЮ ====
-    void _menu_channel_h(byte sel);
-    void _menu_master_h(byte sel);
-    void _menu_reverb_h(byte sel);
-    void _menu_group_h(byte sel);
-    void _menu_SOFdest_h(byte sel);
-    void _menu_bassboost_h(byte sel);
-    void adjustHandler(int8_t dir);
 
     // ==== АКТИВНОСТИ ====
     // вспомогательные функции
@@ -92,17 +80,28 @@ class LTDAUI
     // инициализаторы
     void setMonitorDataFeed(byte ch);
     void createMixingConsole(byte groupNo, int8_t sof = -1);
-    void createMenu(const char *const *entries,
-                    byte entryCount,
-                    void (LTDAUI::*handler)(byte),
-                    bool handlerAutoCall = false,
-                    int *menuBooleans = NULL);
-    void createAdjustScreen(const char *title,
-                            const char *unit,
-                            AdjustParameter param,
-                            int8_t* value,
-                            int8_t min,
-                            int8_t max);
+    void createMenu(MenuScreen *scr);
+    void createAdjustScreen(AdjustScreen *scr);
+
+    // ==== ЭКРАНЫ ====
+    // меню каналов
+    MenuScreen stdChannelMenu;
+    MenuScreen reverbChannelMenu;
+    MenuScreen masterChannelMenu;
+
+    MenuScreen chGroupMenu;
+    MenuScreen sofSelectMenu;
+    MenuScreen sofSelectMenu_FX;
+
+    MenuScreen bassParamMenu;
+
+    // подстроечные
+    AdjustScreen bassIntensAdj;
+    AdjustScreen bassGainAdj;
+
+    AdjustScreen reverbTimeAdj;
+    AdjustScreen reverbHFDampAdj;
+    AdjustScreen reverbBGainAdj;
 
     // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
     void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
