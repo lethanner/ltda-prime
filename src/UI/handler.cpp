@@ -21,7 +21,7 @@ LTDAUI::LTDAUI()
         [this](byte sel) {
             switch (sel) {
             case 0:  // send to monitor
-                setMonitorDataFeed(onScreenChannels[onScreenChSelect]);
+                setMonitorDataFeed(FADER_MASTER_ST);
                 createMixingConsole(selectedGroup);  // выход
                 break;
             case 1:  // bassboost
@@ -30,6 +30,21 @@ LTDAUI::LTDAUI()
             }
         },
         chmenu_master, 1, false, DSP.getFlagRegisterPtr()
+    };
+
+    btChannelMenu = {
+        [this](byte sel) {
+            switch (sel) {
+            case 0:  // send to monitor
+                setMonitorDataFeed(FADER_BLUETOOTH_ST);
+                break;
+            case 1:  // disconnect
+                bluetooth.disconnect();
+                break;
+            }
+            createMixingConsole(selectedGroup);  // выход
+        },
+        btmenu, 1, false, NULL
     };
 
     // ================ МЕНЮ КАНАЛА REVERB ================

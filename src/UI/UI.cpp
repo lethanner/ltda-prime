@@ -56,6 +56,8 @@ void LTDAUI::processCtrl()
                     createMenu(&masterChannelMenu);
                 else if (onScreenChannels[onScreenChSelect] == FADER_REVERB_ST)  // если выбрали канал reverb, то для него меню
                     createMenu(&reverbChannelMenu);
+                else if (onScreenChannels[onScreenChSelect] == FADER_BLUETOOTH_ST)  // если выбрали канал bluetooth, то для него меню
+                    createMenu(&btChannelMenu);
                 else  // иначе меню для всех остальных
                     createMenu(&stdChannelMenu);
             }
