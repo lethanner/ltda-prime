@@ -88,6 +88,7 @@ class LTDAUI
     MenuScreen stdChannelMenu;
     MenuScreen reverbChannelMenu;
     MenuScreen masterChannelMenu;
+    MenuScreen btChannelMenu;
 
     MenuScreen chGroupMenu;
     MenuScreen sofSelectMenu;
