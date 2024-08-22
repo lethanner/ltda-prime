@@ -1,10 +1,12 @@
-//#define RUSSIAN
 #define RTA_SMOOTH_MULTIPLIER 0.4
 #define DISPLAY_AUTO_DIMM_TIMEOUT 15000
+#define BRIGHTNESS_DEFAULT 200
+#define BRIGHTNESS_MINIMUM 10
 #define UI_ACTIVITY_TIMEOUT 2000
 #define EB_HOLD_TIME 400
 
 #define BLUETOOTH_NAME "LTDA Prime"
+#define STR_DEV_INFO "LTDA Prime v0.3.6a-r"
 
 /* Аппаратные настройки */
 #define DSP_I2C_ADDRESS 0x38
