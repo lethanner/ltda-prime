@@ -116,6 +116,13 @@ void LEDUI::printYX(const char *text, byte y_coord, int8_t x_coord)
     display.print(text);
 }
 
+// вывод текста с выравниванием справа
+void LEDUI::printRightAlign(const char *text, byte y_coord)
+{
+    display.setCursorXY(128 - (strlen(text) * 6), y_coord);
+    display.print(text);
+}
+
 // подсветка дисплея на время
 void LEDUI::brightDisplay()
 {

@@ -38,6 +38,7 @@ namespace LEDUI
     void printValue(int8_t value, const char *label, int8_t x_coord,
                     byte y_coord, bool center = false);
     void printYX(const char *text, byte y_coord, int8_t x_coord = -1);
+    void printRightAlign(const char *text, byte y_coord);
     void bootStatus(const char *text, byte y_coord);
 
     void vUITimerCallback(TimerHandle_t pxTimer);
@@ -106,6 +107,8 @@ public:
     byte getSelectedChannel() const { return _group->onScreenChannels[selected]; }
 
 private:
+    void statusbarDecibels() const;
+
     void init(void* params = NULL) const override;
     void render() const override;
     void onClick() const override;

@@ -18,6 +18,20 @@ void LEDUI::MixerScreen::init(void* params) const
 void LEDUI::MixerScreen::render() const
 {
     display.clear();
+    if (usingSoF) {  // "sends on fader" вместо статусбара
+        statusbarDecibels();
+        printYX(ch_labels[_group->onScreenChannels[selected]], 0, 0);
+        display.print(" to ");
+        //display.print(sendto_labels[SOF_dest]);
+    } else if (statusbar == 0) {  // непосредственно статусбар
+        printYX("Mixer", 0, 0);         // заглушка заголовка
+        printValue(0, "'C", -1, 0);     // заглушка датчика температуры
+    } else if (statusbar == 1) {   // в момент изменения громкости канала
+        statusbarDecibels();
+        printYX(ch_labels[_group->onScreenChannels[selected]], 0, 0);
+        display.print(":");
+    }
+
     byte label_offset = gap_block / 2;
     for (byte ch = 0; ch < _group->count; ch++) {
         byte block_width = 18;  // TODO: разделение каналов на моно и стерео
@@ -148,4 +162,17 @@ void LEDUI::MixerScreen::onTurn(int8_t dir) const
         open(&Mixers::mixers[constrain(_group->num + dir, 0, GROUPS_COUNT - 1)]);
         break;
     }
+}
+
+void LEDUI::MixerScreen::statusbarDecibels() const {
+    int8_t value = usingSoF
+                     ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[selected]]
+                     : DSP.faderPosition_dB[_group->onScreenChannels[selected]];
+    bool is_muted = usingSoF
+                      ? DSP.sendMuteFlags[SoFdest][_group->onScreenChannels[selected]]
+                      : DSP.muteFlags[_group->onScreenChannels[selected]];
+    if (value == -97 || is_muted)
+        printRightAlign("muted", 0);
+    else
+        printValue(value, "dB", -1, 0);
 }
