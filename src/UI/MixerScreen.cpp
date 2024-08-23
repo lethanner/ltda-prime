@@ -106,16 +106,16 @@ void LEDUI::MixerScreen::onHold() const
         // TODO: использовать массив соотношения каналов к их меню
         switch (_group->onScreenChannels[selected]) {
         case FADER_MASTER_ST:  // если выбрали канал Master, открываем меню для него
-            open(&menu_masterChannel);
+            open(&Menus::MasterChannel::it());
             break;
         case FADER_REVERB_ST:  // если выбрали канал reverb, то для него меню
-            open(&menu_reverbChannel);
+            open(&Menus::ReverbChannel::it());
             break;
         case FADER_BLUETOOTH_ST:  // если выбрали канал bluetooth, то для него меню
-            open(&menu_bluetoothChannel);
+            open(&Menus::BluetoothChannel::it());
             break;
         default:  // иначе меню для всех остальных
-            open(&menu_genericChannel);
+            open(&Menus::GenericChannel::it());
             break;
         }
     }

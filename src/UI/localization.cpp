@@ -1,6 +1,6 @@
 #include "localization.h"
 
-const Localization::Strings const russian = {
+Localization::Strings russian = {
     .channel = "Канал",
     .send_to_monitor = "Отпр. на индикатор",
     .vocal_filter = "?AПодавление голоса",
@@ -24,7 +24,7 @@ const Localization::Strings const russian = {
     .bluetooth = "Bluetooth"
 };
 
-const Localization::Strings const english = {
+Localization::Strings english = {
     .channel = "Channel",
     .send_to_monitor = "Send to monitor",
     .vocal_filter = "?AVocal filter",

@@ -4,7 +4,6 @@
 #include <GyverIO.h>
 #include "config.h"
 #include "bitmaps.h"
-#include "screens.h"
 #include "localization.h"
 #include "../Hardware/DSP.h"
 #include "freertos/timers.h"
@@ -44,10 +43,10 @@ namespace LEDUI
     void vUITimerCallback(TimerHandle_t pxTimer);
     void brightDisplay();
 
+    static inline byte monitor_ch;
     void streamMonitorData();
     void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
-    static inline byte monitor_ch;
-
+    
     static inline byte title_xCoord;
     static inline byte screen_state, statusbar;
     static inline const Screen *active;
@@ -58,7 +57,7 @@ namespace LEDUI
 class LEDUI::MenuScreen : public LEDUI::Screen
 {
 public:
-    explicit MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
+    MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
         : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
     static inline const MenuScreen *active;
 
@@ -78,18 +77,18 @@ private:
 
 protected:
     static inline byte selected;
-    void __exit() const { open(MixerScreen::active); }
+    //void return_to_mixer() const { open(MixerScreen::active); }
 };
 
 class LEDUI::MixerScreen : public LEDUI::Screen
 {
 public:
-    const enum SoFMode {
+    enum SoFMode {
         NO_SOF,
         FX_SOF,
         ALL_SOF
     };
-    const struct ChannelGroup {
+    struct ChannelGroup {
         const byte num;
         const char *name;
         const byte *onScreenChannels;
@@ -99,8 +98,8 @@ public:
     static inline const MixerScreen *active;
     // зачем я это делаю... если все равно один обьект MixerScreen - одна группа каналов...
     // зачем я тогда пихаю все свои группы в сам класс MixerScreen...
-    static const ChannelGroup const groups[GROUPS_COUNT];
-    static const char const ch_labels[][7];
+    static const ChannelGroup groups[GROUPS_COUNT];
+    static const char ch_labels[][7];
 
     MixerScreen(const ChannelGroup *group) : _group(group) {};
     SoFMode isSoFAllowed() const { return _group->sof; }
@@ -115,7 +114,7 @@ private:
 
     // const byte *onScreenChannels, _count;
     // const bool _allowSoF;
-    const ChannelGroup const *_group;
+    const ChannelGroup *_group;
 
     static inline byte gap_block;
     static inline byte selected;
@@ -127,7 +126,7 @@ private:
 class LEDUI::AdjustScreen : public LEDUI::Screen
 {
 public:
-    explicit AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
+    AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
         : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
 
 private:

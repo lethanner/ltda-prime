@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Localization {
-    const struct Strings {
+    struct Strings {
         const char* channel;
         const char* send_to_monitor;
         const char* vocal_filter;
@@ -27,8 +27,8 @@ namespace Localization {
     static inline const Strings *active;
     void set(const Strings *loc) { active = loc; }
 
-    const Strings const russian;
-    const Strings const english;
+    static inline const Strings russian = Strings();
+    static inline const Strings english = Strings();
 
     const char *const chmenu_generic[] = { active->channel, active->send_to_monitor };
     const char *const chmenu_master[] = { active->master, active->send_to_monitor, active->bassboost };

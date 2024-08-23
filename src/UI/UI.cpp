@@ -38,7 +38,7 @@ void LEDUI::init()
 
 void LEDUI::reset()
 {
-    open(&mix_inputs);
+    //open(&Mixers::mix_inputs);
     setMonitorDataFeed(FADER_MASTER_ST);
     brightDisplay();
 }
@@ -129,7 +129,7 @@ void LEDUI::streamMonitorData()
     // не кидайтесь помидорами! я знаю, что это можно реализовать через
     // возведение двойки в степень! с технической точки зрения такое решение
     // однозначно быстрее и удобнее, а с 520 килобайтами оперативки
-    // вообще не жалко ради оптимизации лишний раз занять 26 байт.
+    // вообще не жалко ради оптимизации лишний раз занять около 26 байт.
     // это не DA50X всего с двумя килобайтами.
     const DRAM_ATTR static short ledbitmap[13] = {
         0b000000000000, 0b100000000000, 0b110000000000, 0b111000000000,
@@ -148,8 +148,8 @@ void LEDUI::streamMonitorData()
 
 void LEDUI::vUITimerCallback(TimerHandle_t pxTimer)
 {
-    if (pxTimer == xBacklightTimer)
+    if (pxTimer == xBacklightTimer) // таймер снижения яркости подсветки
         display.setContrast(BRIGHTNESS_MINIMUM);
-    else if (pxTimer == xActivityTimer)
+    else if (pxTimer == xActivityTimer) // таймер возврата на главный экран
         screen_state = statusbar = 0;
 }
