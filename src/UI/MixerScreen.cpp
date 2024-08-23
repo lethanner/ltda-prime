@@ -1,4 +1,5 @@
 #include "UI.h"
+#include "screens.h"
 #include "decibels.h"
 
 void LEDUI::MixerScreen::init(void* params) const
