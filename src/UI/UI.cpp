@@ -39,7 +39,7 @@ void LEDUI::init()
 
 void LEDUI::reset()
 {
-    //open(&Mixers::mix_inputs);
+    open(&Mixers::mix_inputs);
     setMonitorDataFeed(FADER_MASTER_ST);
     brightDisplay();
 }
@@ -56,6 +56,7 @@ void LEDUI::pollCtrl()
     if (control.action() == 0)
         return;
 
+    brightDisplay();
     if (control.click())
         active->onClick();
     if (control.hold())

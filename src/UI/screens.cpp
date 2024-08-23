@@ -54,7 +54,24 @@ void Menus::ReverbChannel::onClick() const
 
 void Menus::ChannelGroup::onClick() const
 {
-    // TODO: sends on fader
+    switch (selected) {
+    case 0:  // sends on fader
+        if (LEDUI::MixerScreen::active->isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
+            open(&Menus::SendsOnFaderFX::it());
+        else if (LEDUI::MixerScreen::active->isSoFAllowed() == LEDUI::MixerScreen::ALL_SOF)
+            open(&Menus::SendsOnFaderAll::it());
+        break;
+    }
+}
+
+void Menus::SendsOnFaderAll::onClick() const
+{
+    open(LEDUI::MixerScreen::active, &selected);
+}
+
+void Menus::SendsOnFaderFX::onClick() const
+{
+    open(LEDUI::MixerScreen::active, &selected);
 }
 
 void Menus::Bassboost::onClick() const
@@ -97,7 +114,11 @@ void Adjusters::BassboostIntens::onTurn(int8_t dir) const
     DSP.setBBIntensity(DSP.bassboostIntensity + dir);
 }
 
+// :|
+// TODO: зачем я делаю так, если могу просто структуры из groups[] передавать...
 LEDUI::MixerScreen Mixers::mix_inputs(&LEDUI::MixerScreen::groups[0]);
 LEDUI::MixerScreen Mixers::mix_fx(&LEDUI::MixerScreen::groups[1]);
 LEDUI::MixerScreen Mixers::mix_outputs(&LEDUI::MixerScreen::groups[2]);
 LEDUI::MixerScreen Mixers::mix_all(&LEDUI::MixerScreen::groups[3]);
+LEDUI::MixerScreen mixers[] = { Mixers::mix_inputs, Mixers::mix_fx,
+                                Mixers::mix_outputs, Mixers::mix_all };

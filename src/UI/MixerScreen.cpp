@@ -6,6 +6,7 @@ void LEDUI::MixerScreen::init(void* params) const
 {
     MixerScreen::active = this;
     gap_block = (128 - (_group->count * 18)) / (_group->count + 1);
+    selected = 0;
 
     if (params != NULL && _group->sof > NO_SOF) {
         byte paramSoF = *static_cast<byte*>(params);
@@ -100,10 +101,10 @@ void LEDUI::MixerScreen::onHold() const
           : DSP.toggleMute(_group->onScreenChannels[selected]);
     else if (usingSoF)              // удержание на экране sends on fader
         open(MixerScreen::active);  // - возврат
-    else if (screen_state == 2)     // удержание на выборе группы каналов - меню группы
-    {
-    }  //open(); TODO: FX_SOF и ALL_SOF
-    else {
+    else if (screen_state == 2) {   // удержание на выборе группы каналов - меню группы
+        if (_group->sof > NO_SOF)
+            open(&Menus::ChannelGroup::it());
+    } else {
         // TODO: использовать массив соотношения каналов к их меню
         switch (_group->onScreenChannels[selected]) {
         case FADER_MASTER_ST:  // если выбрали канал Master, открываем меню для него
@@ -144,8 +145,7 @@ void LEDUI::MixerScreen::onTurn(int8_t dir) const
         break;
     }
     case 2:  // переход между страницами каналов
-        // TODO: тут надо сделать массив уже точно
-        //createMixingConsole(constrain(selectedGroup + dir, 0, GROUPS_COUNT - 1));
+        open(&Mixers::mixers[constrain(_group->num + dir, 0, GROUPS_COUNT)]);
         break;
     }
 }
