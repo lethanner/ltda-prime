@@ -25,7 +25,7 @@ namespace Localization {
         const char* bluetooth;
     };
     static inline const Strings *active;
-    void set(const Strings *loc) { active = loc; }
+    inline void set(const Strings *loc) { active = loc; }
 
     static inline const Strings russian = Strings();
     static inline const Strings english = Strings();

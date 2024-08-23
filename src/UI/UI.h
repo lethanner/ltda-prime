@@ -44,8 +44,8 @@ namespace LEDUI
     void brightDisplay();
 
     static inline byte monitor_ch;
+    inline void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
     void streamMonitorData();
-    void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
     
     static inline byte title_xCoord;
     static inline byte screen_state, statusbar;
