@@ -145,7 +145,7 @@ void LEDUI::MixerScreen::onTurn(int8_t dir) const
         break;
     }
     case 2:  // переход между страницами каналов
-        open(&Mixers::mixers[constrain(_group->num + dir, 0, GROUPS_COUNT)]);
+        open(&Mixers::mixers[constrain(_group->num + dir, 0, GROUPS_COUNT - 1)]);
         break;
     }
 }
