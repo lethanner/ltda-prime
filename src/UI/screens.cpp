@@ -120,5 +120,5 @@ LEDUI::MixerScreen Mixers::mix_inputs(&LEDUI::MixerScreen::groups[0]);
 LEDUI::MixerScreen Mixers::mix_fx(&LEDUI::MixerScreen::groups[1]);
 LEDUI::MixerScreen Mixers::mix_outputs(&LEDUI::MixerScreen::groups[2]);
 LEDUI::MixerScreen Mixers::mix_all(&LEDUI::MixerScreen::groups[3]);
-LEDUI::MixerScreen mixers[] = { Mixers::mix_inputs, Mixers::mix_fx,
-                                Mixers::mix_outputs, Mixers::mix_all };
+LEDUI::MixerScreen Mixers::mixers[] = { Mixers::mix_inputs, Mixers::mix_fx,
+                                        Mixers::mix_outputs, Mixers::mix_all };

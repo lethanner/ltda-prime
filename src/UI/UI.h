@@ -44,13 +44,13 @@ namespace LEDUI
     void vUITimerCallback(TimerHandle_t pxTimer);
     void brightDisplay();
 
-    static inline byte monitor_ch;
+    extern byte monitor_ch;
     inline void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
     void streamMonitorData();
     
-    static inline byte title_xCoord;
-    static inline byte screen_state, statusbar;
-    static inline const Screen *active;
+    extern byte title_xCoord;
+    extern byte screen_state, statusbar;
+    extern const Screen *active;
 
     extern GyverOLED<SSD1306_128x64, OLED_BUFFER> display;
 };
@@ -60,7 +60,7 @@ class LEDUI::MenuScreen : public LEDUI::Screen
 public:
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
         : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
-    static inline const MenuScreen *active;
+    static const MenuScreen *active;
 
 private:
     void init(void* params = NULL) const override;
@@ -74,10 +74,10 @@ private:
     const bool _autoclick;
     const int *_booleans;
 
-    static inline byte visibleSel, entryRendererStart;
+    static byte visibleSel, entryRendererStart;
 
 protected:
-    static inline byte selected;
+    static byte selected;
     //void return_to_mixer() const { open(MixerScreen::active); }
 };
 
@@ -96,7 +96,7 @@ public:
         const byte count;
         const SoFMode sof;
     };
-    static inline const MixerScreen *active;
+    static const MixerScreen *active;
     // зачем я это делаю... если все равно один обьект MixerScreen - одна группа каналов...
     // зачем я тогда пихаю все свои группы в сам класс MixerScreen...
     static const ChannelGroup groups[GROUPS_COUNT];
@@ -119,11 +119,11 @@ private:
     // const bool _allowSoF;
     const ChannelGroup *_group;
 
-    static inline byte gap_block;
-    static inline byte selected;
-    static inline byte SoFdest;
-    static inline bool turn_started;
-    static inline bool usingSoF;
+    static byte gap_block;
+    static byte selected;
+    static byte SoFdest;
+    static bool turn_started;
+    static bool usingSoF;
 };
 
 class LEDUI::AdjustScreen : public LEDUI::Screen

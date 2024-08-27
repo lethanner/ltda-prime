@@ -16,6 +16,11 @@ EncButton control(CTRL_S1, CTRL_S2, CTRL_KEY);
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
+byte LEDUI::monitor_ch = FADER_MASTER_ST;
+byte LEDUI::title_xCoord = 0;
+byte LEDUI::screen_state = 0, LEDUI::statusbar = 0;
+const LEDUI::Screen *LEDUI::active;
+
 void LEDUI::init()
 {
     // TODO: переключение языка из меню

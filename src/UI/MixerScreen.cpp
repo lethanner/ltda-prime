@@ -2,6 +2,13 @@
 #include "screens.h"
 #include "decibels.h"
 
+const LEDUI::MixerScreen *LEDUI::MixerScreen::active = nullptr;
+byte LEDUI::MixerScreen::gap_block = 0,
+     LEDUI::MixerScreen::selected = 0,
+     LEDUI::MixerScreen::SoFdest = 0;
+bool LEDUI::MixerScreen::turn_started = false,
+     LEDUI::MixerScreen::usingSoF = false;
+
 void LEDUI::MixerScreen::init(void* params) const
 {
     MixerScreen::active = this;

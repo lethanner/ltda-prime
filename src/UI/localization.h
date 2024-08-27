@@ -24,11 +24,11 @@ namespace Localization {
         const char* master;
         const char* bluetooth;
     };
-    static inline const Strings *active;
+    extern const Strings *active;
     inline void set(const Strings *loc) { active = loc; }
 
-    static inline const Strings russian = Strings();
-    static inline const Strings english = Strings();
+    extern const Strings russian;
+    extern const Strings english;
 
     const char *const chmenu_generic[] = { active->channel, active->send_to_monitor };
     const char *const chmenu_master[] = { active->master, active->send_to_monitor, active->bassboost };
