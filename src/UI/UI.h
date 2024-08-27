@@ -20,11 +20,11 @@ namespace LEDUI
     {
     public:
         Screen() {};
-        virtual void init(void* params) const = 0;
-        virtual void render() const = 0;
-        virtual void onClick() const = 0;
-        virtual void onHold() const = 0;
-        virtual void onTurn(int8_t dir) const = 0;
+        virtual void init(void* params) = 0;
+        virtual void render() = 0;
+        virtual void onClick() = 0;
+        virtual void onHold() = 0;
+        virtual void onTurn(int8_t dir) = 0;
     };
 
     void init();
@@ -32,7 +32,7 @@ namespace LEDUI
     void render();
     void pollCtrl();
 
-    void open(const Screen *scr, void *params = NULL);
+    void open(Screen *scr, void *params = NULL);
 
     byte getCenterCoordinate(const char *text);
     void printValue(int8_t value, const char *label, int8_t x_coord,
@@ -50,7 +50,7 @@ namespace LEDUI
     
     extern byte title_xCoord;
     extern byte screen_state, statusbar;
-    extern const Screen *active;
+    extern Screen *active;
 
     extern GyverOLED<SSD1306_128x64, OLED_BUFFER> display;
 };
@@ -60,14 +60,14 @@ class LEDUI::MenuScreen : public LEDUI::Screen
 public:
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
         : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
-    static const MenuScreen *active;
+    static MenuScreen *active;
 
 private:
-    void init(void* params = NULL) const override;
-    void render() const override;
+    void init(void* params = NULL) override;
+    void render() override;
     // void onClick() const override;
-    void onHold() const override;
-    void onTurn(int8_t dir) const override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
 
     const char *const *_entries;
     const byte _e_count;
@@ -84,46 +84,43 @@ protected:
 class LEDUI::MixerScreen : public LEDUI::Screen
 {
 public:
+    static MixerScreen& it() {
+        static MixerScreen ins;
+        return ins;
+    }
+
     enum SoFMode {
         NO_SOF,
         FX_SOF,
         ALL_SOF
     };
     struct ChannelGroup {
-        const byte num;
         const char *name;
         const byte *onScreenChannels;
         const byte count;
         const SoFMode sof;
     };
-    static const MixerScreen *active;
-    // зачем я это делаю... если все равно один обьект MixerScreen - одна группа каналов...
-    // зачем я тогда пихаю все свои группы в сам класс MixerScreen...
+
     static const ChannelGroup groups[GROUPS_COUNT];
     static const char ch_labels[][7];
 
-    MixerScreen(const ChannelGroup *group) : _group(group) {};
+    void setGroup(int8_t num);
     SoFMode isSoFAllowed() const { return _group->sof; }
     byte getSelectedChannel() const { return _group->onScreenChannels[selected]; }
 
 private:
+    MixerScreen() : _group(&groups[0]) {};
     void statusbarDecibels() const;
 
-    void init(void* params = NULL) const override;
-    void render() const override;
-    void onClick() const override;
-    void onHold() const override;
-    void onTurn(int8_t dir) const override;
+    void init(void* params = NULL) override;
+    void render() override;
+    void onClick() override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
 
-    // const byte *onScreenChannels, _count;
-    // const bool _allowSoF;
     const ChannelGroup *_group;
-
-    static byte gap_block;
-    static byte selected;
-    static byte SoFdest;
-    static bool turn_started;
-    static bool usingSoF;
+    byte gap_block = 0, selected = 0, SoFdest = 0, selectedGroup = 0;
+    bool turn_started = false, usingSoF = false;
 };
 
 class LEDUI::AdjustScreen : public LEDUI::Screen
@@ -133,10 +130,10 @@ public:
         : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
 
 private:
-    void init(void* params = NULL) const override;
-    void render() const override;
-    void onClick() const override;
-    void onHold() const override;
+    void init(void* params = NULL) override;
+    void render() override;
+    void onClick() override;
+    void onHold() override;
     // void onTurn(int8_t dir) const override;
 
     const char *_title, *_unit;

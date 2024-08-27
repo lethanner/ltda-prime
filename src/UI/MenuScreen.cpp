@@ -1,17 +1,17 @@
 #include "UI.h"
 
-const LEDUI::MenuScreen *LEDUI::MenuScreen::active = nullptr;
+LEDUI::MenuScreen *LEDUI::MenuScreen::active = nullptr;
 byte LEDUI::MenuScreen::visibleSel = 0,
      LEDUI::MenuScreen::entryRendererStart = 0,
      LEDUI::MenuScreen::selected = 0;
 
-void LEDUI::MenuScreen::init(void* params) const {
+void LEDUI::MenuScreen::init(void* params) {
     MenuScreen::active = this;
     selected = entryRendererStart = visibleSel = 0;
     title_xCoord = getCenterCoordinate(_entries[0]);
 }
 
-void LEDUI::MenuScreen::render() const {
+void LEDUI::MenuScreen::render() {
     display.clear();
     // заголовок
     display.invertText(1);
@@ -52,12 +52,12 @@ void LEDUI::MenuScreen::render() const {
 
 /* onClick() реализуется только при наследовании от класса MenuScreen */
 
-void LEDUI::MenuScreen::onHold() const {
+void LEDUI::MenuScreen::onHold() {
     // возврат в микшер
-    open(MixerScreen::active);
+    open(&MixerScreen::it());
 }
 
-void LEDUI::MenuScreen::onTurn(int8_t dir) const {
+void LEDUI::MenuScreen::onTurn(int8_t dir) {
     if (dir > 0) {  // вправо
         if (visibleSel < 6) {
             if (visibleSel < _e_count)

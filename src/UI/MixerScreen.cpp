@@ -2,16 +2,9 @@
 #include "screens.h"
 #include "decibels.h"
 
-const LEDUI::MixerScreen *LEDUI::MixerScreen::active = nullptr;
-byte LEDUI::MixerScreen::gap_block = 0,
-     LEDUI::MixerScreen::selected = 0,
-     LEDUI::MixerScreen::SoFdest = 0;
-bool LEDUI::MixerScreen::turn_started = false,
-     LEDUI::MixerScreen::usingSoF = false;
-
-void LEDUI::MixerScreen::init(void* params) const
+void LEDUI::MixerScreen::init(void* params)
 {
-    MixerScreen::active = this;
+    //MixerScreen::active = this;
     gap_block = (128 - (_group->count * 18)) / (_group->count + 1);
     selected = 0;
 
@@ -22,7 +15,7 @@ void LEDUI::MixerScreen::init(void* params) const
         usingSoF = false;
 }
 
-void LEDUI::MixerScreen::render() const
+void LEDUI::MixerScreen::render()
 {
     display.clear();
     if (usingSoF) {  // "sends on fader" вместо статусбара
@@ -90,16 +83,16 @@ void LEDUI::MixerScreen::render() const
         printYX(Localization::active->select, 56);
         break;
     case 2:  // выбор группы каналов
-        if (_group->num > 0)
+        if (selectedGroup > 0)
             printYX("<<<", 56, 0);
-        if (_group->num < GROUPS_COUNT - 1)
+        if (selectedGroup < GROUPS_COUNT - 1)
             printYX(">>>", 56, 110);
         printYX(_group->name, 56);
         break;
     }
 }
 
-void LEDUI::MixerScreen::onClick() const
+void LEDUI::MixerScreen::onClick()
 {
     if (screen_state == 1 && (turn_started || usingSoF)) {  // если уже начали листать каналы или если режим "sends on fader"
         screen_state = 0;                                  // сбрасываем действие
@@ -114,14 +107,14 @@ void LEDUI::MixerScreen::onClick() const
     statusbar = 1;
 }
 
-void LEDUI::MixerScreen::onHold() const
+void LEDUI::MixerScreen::onHold()
 {
     if (screen_state == 1)
         usingSoF  // удержание на выборе канала - MUTE
           ? DSP.toggleMute(_group->onScreenChannels[selected], SoFdest)
           : DSP.toggleMute(_group->onScreenChannels[selected]);
     else if (usingSoF)              // удержание на экране sends on fader
-        open(MixerScreen::active);  // - возврат
+        open(&MixerScreen::it());  // - возврат
     else if (screen_state == 2) {   // удержание на выборе группы каналов - меню группы
         if (_group->sof > NO_SOF)
             open(&Menus::ChannelGroup::it());
@@ -144,7 +137,7 @@ void LEDUI::MixerScreen::onHold() const
     }
 }
 
-void LEDUI::MixerScreen::onTurn(int8_t dir) const
+void LEDUI::MixerScreen::onTurn(int8_t dir)
 {
     switch (screen_state) {
     case 0: {  // управление громкостью канала
@@ -166,7 +159,7 @@ void LEDUI::MixerScreen::onTurn(int8_t dir) const
         break;
     }
     case 2:  // переход между страницами каналов
-        open(&Mixers::mixers[constrain(_group->num + dir, 0, GROUPS_COUNT - 1)]);
+        setGroup(selectedGroup + dir);
         break;
     }
 }
@@ -182,4 +175,9 @@ void LEDUI::MixerScreen::statusbarDecibels() const {
         printRightAlign("muted", 0);
     else
         printValue(value, "dB", -1, 0);
+}
+
+void LEDUI::MixerScreen::setGroup(int8_t num) {
+    selectedGroup = constrain(num, 0, GROUPS_COUNT - 1);
+    _group = &groups[selectedGroup];
 }

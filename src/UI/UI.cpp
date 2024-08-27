@@ -19,7 +19,7 @@ TimerHandle_t xActivityTimer = NULL;
 byte LEDUI::monitor_ch = FADER_MASTER_ST;
 byte LEDUI::title_xCoord = 0;
 byte LEDUI::screen_state = 0, LEDUI::statusbar = 0;
-const LEDUI::Screen *LEDUI::active;
+LEDUI::Screen *LEDUI::active = nullptr;
 
 void LEDUI::init()
 {
@@ -44,7 +44,8 @@ void LEDUI::init()
 
 void LEDUI::reset()
 {
-    open(&Mixers::mix_inputs);
+    MixerScreen::it().setGroup(0);
+    open(&MixerScreen::it());
     setMonitorDataFeed(FADER_MASTER_ST);
     brightDisplay();
 }
@@ -70,7 +71,7 @@ void LEDUI::pollCtrl()
         active->onTurn(control.dir());
 }
 
-void LEDUI::open(const Screen *scr, void *params)
+void LEDUI::open(Screen *scr, void *params)
 {
     scr->init(params);
     active = scr;

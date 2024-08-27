@@ -1,16 +1,16 @@
 #include "screens.h"
 
-void Menus::GenericChannel::onClick() const
+void Menus::GenericChannel::onClick()
 {
     switch (selected) {
     case 0:  // send to monitor
-        LEDUI::setMonitorDataFeed(LEDUI::MixerScreen::active->getSelectedChannel());
+        LEDUI::setMonitorDataFeed(LEDUI::MixerScreen::it().getSelectedChannel());
         break;
     }
-    open(LEDUI::MixerScreen::active);  // выход
+    open(&LEDUI::MixerScreen::it());  // выход
 }
 
-void Menus::MasterChannel::onClick() const
+void Menus::MasterChannel::onClick()
 {
     switch (selected) {
     case 0:  // send to monitor
@@ -20,15 +20,15 @@ void Menus::MasterChannel::onClick() const
         open(&Menus::Bassboost::it());
         break;
     }
-    open(LEDUI::MixerScreen::active);  // выход
+    open(&LEDUI::MixerScreen::it());  // выход
 }
 
-void Menus::BluetoothChannel::onClick() const
+void Menus::BluetoothChannel::onClick()
 {
     switch (selected) {
     case 0:  // send to monitor
         LEDUI::setMonitorDataFeed(FADER_BLUETOOTH_ST);
-        open(LEDUI::MixerScreen::active);  // выход
+        open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 1:  // disconnect
         bluetooth.disconnect();
@@ -36,7 +36,7 @@ void Menus::BluetoothChannel::onClick() const
     }
 }
 
-void Menus::ReverbChannel::onClick() const
+void Menus::ReverbChannel::onClick()
 {
     // TODO: переделать на использование массива adjustscreen'ов
     switch (selected) {
@@ -52,29 +52,29 @@ void Menus::ReverbChannel::onClick() const
     }
 }
 
-void Menus::ChannelGroup::onClick() const
+void Menus::ChannelGroup::onClick()
 {
     switch (selected) {
     case 0:  // sends on fader
-        if (LEDUI::MixerScreen::active->isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
+        if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
             open(&Menus::SendsOnFaderFX::it());
-        else if (LEDUI::MixerScreen::active->isSoFAllowed() == LEDUI::MixerScreen::ALL_SOF)
+        else if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::ALL_SOF)
             open(&Menus::SendsOnFaderAll::it());
         break;
     }
 }
 
-void Menus::SendsOnFaderAll::onClick() const
+void Menus::SendsOnFaderAll::onClick()
 {
-    open(LEDUI::MixerScreen::active, &selected);
+    open(&LEDUI::MixerScreen::it(), &selected);
 }
 
-void Menus::SendsOnFaderFX::onClick() const
+void Menus::SendsOnFaderFX::onClick()
 {
-    open(LEDUI::MixerScreen::active, &selected);
+    open(&LEDUI::MixerScreen::it(), &selected);
 }
 
-void Menus::Bassboost::onClick() const
+void Menus::Bassboost::onClick()
 {
     switch (selected) {
     case 0:
@@ -89,36 +89,27 @@ void Menus::Bassboost::onClick() const
     }
 }
 
-void Adjusters::ReverbTime::onTurn(int8_t dir) const
+void Adjusters::ReverbTime::onTurn(int8_t dir)
 {
     DSP.setReverbTime(DSP.reverbTime + dir);
 }
 
-void Adjusters::ReverbBGain::onTurn(int8_t dir) const
+void Adjusters::ReverbBGain::onTurn(int8_t dir)
 {
     DSP.setReverbBassGain(DSP.reverbBassGain + dir);
 }
 
-void Adjusters::ReverbHFDamp::onTurn(int8_t dir) const
+void Adjusters::ReverbHFDamp::onTurn(int8_t dir)
 {
     DSP.setReverbHFDamping(DSP.reverbHFDamp + dir);
 }
 
-void Adjusters::BassboostGain::onTurn(int8_t dir) const
+void Adjusters::BassboostGain::onTurn(int8_t dir)
 {
     DSP.setBBGain(DSP.bassboostGain + dir);
 }
 
-void Adjusters::BassboostIntens::onTurn(int8_t dir) const
+void Adjusters::BassboostIntens::onTurn(int8_t dir)
 {
     DSP.setBBIntensity(DSP.bassboostIntensity + dir);
 }
-
-// :|
-// TODO: зачем я делаю так, если могу просто структуры из groups[] передавать...
-LEDUI::MixerScreen Mixers::mix_inputs(&LEDUI::MixerScreen::groups[0]);
-LEDUI::MixerScreen Mixers::mix_fx(&LEDUI::MixerScreen::groups[1]);
-LEDUI::MixerScreen Mixers::mix_outputs(&LEDUI::MixerScreen::groups[2]);
-LEDUI::MixerScreen Mixers::mix_all(&LEDUI::MixerScreen::groups[3]);
-LEDUI::MixerScreen Mixers::mixers[] = { Mixers::mix_inputs, Mixers::mix_fx,
-                                        Mixers::mix_outputs, Mixers::mix_all };

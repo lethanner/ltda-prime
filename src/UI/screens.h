@@ -10,7 +10,7 @@
             static _name ins; \
             return ins; \
         } \
-        void onClick() const override; \
+        void onClick() override; \
       private: \
         _name() : MenuScreen(_entr, _count, _aclick, _bools) {}; \
     }
@@ -23,7 +23,7 @@
             static _name ins; \
             return ins; \
         } \
-        void onTurn(int8_t dir) const override; \
+        void onTurn(int8_t dir) override; \
       private: \
         _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
     }
@@ -53,13 +53,4 @@ DECLARE_ADJUST(BassboostGain, Localization::active->gain,
                Localization::active->parrots, 1, 30, &DSP.bassboostGain);
 DECLARE_ADJUST(BassboostIntens, Localization::active->intensity,
                Localization::active->parrots, 1, 30, &DSP.bassboostIntensity);
-};
-
-namespace Mixers
-{
-extern LEDUI::MixerScreen mix_inputs;
-extern LEDUI::MixerScreen mix_fx;
-extern LEDUI::MixerScreen mix_outputs;
-extern LEDUI::MixerScreen mix_all;
-extern LEDUI::MixerScreen mixers[];
 };
