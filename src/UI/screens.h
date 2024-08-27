@@ -43,14 +43,14 @@ DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegist
 
 namespace Adjusters
 {
-DECLARE_ADJUST(ReverbTime, Localization::active->reverb_time,
-               Localization::active->parrots, 0, 3, &DSP.reverbTime);
-DECLARE_ADJUST(ReverbBGain, Localization::active->bassreverbgain,
-               Localization::active->parrots, 0, 2, &DSP.reverbBassGain);
-DECLARE_ADJUST(ReverbHFDamp, Localization::active->hf_damping,
-               Localization::active->parrots, 0, 2, &DSP.reverbHFDamp);
-DECLARE_ADJUST(BassboostGain, Localization::active->gain,
-               Localization::active->parrots, 1, 30, &DSP.bassboostGain);
-DECLARE_ADJUST(BassboostIntens, Localization::active->intensity,
-               Localization::active->parrots, 1, 30, &DSP.bassboostIntensity);
+DECLARE_ADJUST(ReverbTime, Localization::active()->reverb_time,
+               Localization::active()->parrots, 0, 3, &DSP.reverbTime);
+DECLARE_ADJUST(ReverbBGain, Localization::active()->bassreverbgain,
+               Localization::active()->parrots, 0, 2, &DSP.reverbBassGain);
+DECLARE_ADJUST(ReverbHFDamp, Localization::active()->hf_damping,
+               Localization::active()->parrots, 0, 2, &DSP.reverbHFDamp);
+DECLARE_ADJUST(BassboostGain, Localization::active()->gain,
+               Localization::active()->parrots, 1, 30, &DSP.bassboostGain);
+DECLARE_ADJUST(BassboostIntens, Localization::active()->intensity,
+               Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
 };

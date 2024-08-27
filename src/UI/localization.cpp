@@ -1,7 +1,5 @@
 #include "localization.h"
 
-const Localization::Strings *Localization::active = nullptr;
-
 const Localization::Strings Localization::russian = {
     .channel = "Канал",
     .send_to_monitor = "Отпр. на индикатор",

@@ -24,7 +24,7 @@ LEDUI::Screen *LEDUI::active = nullptr;
 void LEDUI::init()
 {
     // TODO: переключение языка из меню
-    Localization::set(&Localization::english);
+    //Localization::set(&Localization::english);
 
     // инициализация дисплея
     display.init();                                             // инициализация дисплея

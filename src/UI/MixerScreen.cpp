@@ -80,7 +80,7 @@ void LEDUI::MixerScreen::render()
             printYX("<", 56, 0);
         if (selected < _group->count - 1)
             printYX(">", 56, 122);
-        printYX(Localization::active->select, 56);
+        printYX(Localization::active()->select, 56);
         break;
     case 2:  // выбор группы каналов
         if (selectedGroup > 0)

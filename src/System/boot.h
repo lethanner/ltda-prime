@@ -50,11 +50,11 @@ void boot()
     vTaskDelay(50 / portTICK_PERIOD_MS);
 
     /* Инициализация DSP */
-    LEDUI::bootStatus(Localization::active->init_dsp, 56);
+    LEDUI::bootStatus(Localization::active()->init_dsp, 56);
     DSP.init();
 
     /* Инициализация FreeRTOS */
-    LEDUI::bootStatus(Localization::active->init_rtos, 56);
+    LEDUI::bootStatus(Localization::active()->init_rtos, 56);
     xTaskCreateUniversal(&task_ctrlProcess, "ctrl_proc", 3072, NULL, 1, NULL, 0);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     xTaskCreateUniversal(&task_uiRefresh, "ui_refresh", 3072, NULL, 2, NULL, 1);
