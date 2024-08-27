@@ -1,10 +1,10 @@
 #include "UI.h"
 
-void LEDUI::AdjustScreen::init(void* params) const {
+void LEDUI::AdjustScreen::init(void* params) {
     title_xCoord = getCenterCoordinate(_title);
 }
 
-void LEDUI::AdjustScreen::render() const {
+void LEDUI::AdjustScreen::render() {
     display.clear();
     // заголовок
     display.invertText(1);
@@ -20,12 +20,12 @@ void LEDUI::AdjustScreen::render() const {
     display.rect(10, 44, x_end, 49, OLED_FILL);
 }
 
-void LEDUI::AdjustScreen::onHold() const {
+void LEDUI::AdjustScreen::onHold() {
     // возврат в меню
     open(MenuScreen::active);
 }
 
-void LEDUI::AdjustScreen::onClick() const {
+void LEDUI::AdjustScreen::onClick() {
     // to be continued... возможно
 }
 
