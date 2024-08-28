@@ -28,12 +28,12 @@ void Menus::BluetoothChannel::onClick()
     switch (selected) {
     case 0:  // send to monitor
         LEDUI::setMonitorDataFeed(FADER_BLUETOOTH_ST);
-        open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 1:  // disconnect
         bluetooth.disconnect();
         break;
     }
+    open(&LEDUI::MixerScreen::it());  // выход
 }
 
 void Menus::ReverbChannel::onClick()
