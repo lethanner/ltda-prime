@@ -103,6 +103,7 @@ public:
 
     static const ChannelGroup groups[GROUPS_COUNT];
     static const char ch_labels[][7];
+    static const char* sendto_labels[];
 
     void setGroup(int8_t num);
     SoFMode isSoFAllowed() const { return _group->sof; }

@@ -22,7 +22,7 @@ void LEDUI::MixerScreen::render()
         statusbarDecibels();
         printYX(ch_labels[_group->onScreenChannels[selected]], 0, 0);
         display.print(" to ");
-        //display.print(sendto_labels[SOF_dest]);
+        display.print(sendto_labels[SoFdest]);
     } else if (statusbar == 0) {  // непосредственно статусбар
         printYX("Mixer", 0, 0);         // заглушка заголовка
         printValue(0, "'C", -1, 0);     // заглушка датчика температуры

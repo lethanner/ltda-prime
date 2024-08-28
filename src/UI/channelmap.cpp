@@ -15,3 +15,8 @@ const char LEDUI::MixerScreen::ch_labels[][7] = {
     "Reverb",
     "Master"
 };
+
+const char* LEDUI::MixerScreen::sendto_labels[] = {
+    "Master",
+    "Reverb"
+};
