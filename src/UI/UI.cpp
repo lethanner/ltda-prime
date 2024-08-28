@@ -1,17 +1,63 @@
 #include "UI.h"
-#include "channelmap.h"
 #include <EncButton.h>
+// по неизвестной причине библиотека EncButton не рассчитана на множественные #include.
+// поэтому при её появлении в заголовочном файле возникают ошибки multiple definition.
+// её использование вряд ли будет где-то дальше этого файла, поэтому оставлю её здесь
+// и не буду пихать инстанс её класса в общий namespace.
+#include "screens.h"
+#include "decibels.h"
+#include "../Hardware/shiftreg.h"
 
 /* Объявление энкодера и дисплея */
+GyverOLED<SSD1306_128x64, OLED_BUFFER> LEDUI::display(OLED_I2C_ADDRESS);
 EncButton control(CTRL_S1, CTRL_S2, CTRL_KEY);
-GyverOLED<SSD1306_128x64, OLED_BUFFER> screen(OLED_I2C_ADDRESS);
 
 /* Таймеры FreeRTOS */
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
-// обработка сигналов управления
-void LTDAUI::processCtrl()
+byte LEDUI::monitor_ch = FADER_MASTER_ST;
+byte LEDUI::title_xCoord = 0;
+byte LEDUI::screen_state = 0, LEDUI::statusbar = 0;
+LEDUI::Screen *LEDUI::active = nullptr;
+
+void LEDUI::init()
+{
+    // TODO: переключение языка из меню
+    //Localization::set(&Localization::english);
+
+    // инициализация дисплея
+    display.init();                                             // инициализация дисплея
+    display.clear();                                            // очистка кадра
+    display.setContrast(BRIGHTNESS_DEFAULT);                    // установка яркости
+    display.drawBitmap(0, 0, Bitmaps::splash_128x64, 128, 64);  // вывод логотипа
+    display.update();                                           // обновление кадра
+
+    // инициализация таймеров
+    xBacklightTimer = xTimerCreate("BacklightTimer",
+                                   DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
+                                   pdFALSE, NULL, &vUITimerCallback);
+    xActivityTimer = xTimerCreate("UIActivityTimer",
+                                  UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
+                                  pdFALSE, NULL, &vUITimerCallback);
+}
+
+void LEDUI::reset()
+{
+    MixerScreen::it().setGroup(0);
+    open(&MixerScreen::it());
+    setMonitorDataFeed(FADER_MASTER_ST);
+    brightDisplay();
+}
+
+void LEDUI::render()
+{
+    active->render();
+    display.update();     // обновление изображения на дисплее
+    streamMonitorData();  // обновление индикатора уровня
+}
+
+void LEDUI::pollCtrl()
 {
     control.tick();
     if (control.action() == 0)
@@ -19,275 +65,114 @@ void LTDAUI::processCtrl()
 
     brightDisplay();
     xTimerReset(xActivityTimer, 1);
-    // ======== клик на энкодер ========
+    log_i("Encoder state: %u", control.action());
+
     if (control.click()) {
-        switch (screenID) {
-        case 1: {                                                      // на экране микшера
-            if (screenState == 1 && (turnStarted || is_SOF_active)) {  // если уже начали листать каналы или если режим "sends on fader"
-                screenState = 0;                                       // сбрасываем действие
-                turnStarted = false;
-            }
-            // если на экране только один канал, переход сразу к переключению страниц
-            else if (screenState == 0 && _chan_count == 1)
-                screenState = 2;
-            else if (++screenState > 2)  // а так просто по кругу переключаем действия
-                screenState = 0;
-
-            statusbarState = 1;
-            break;
-        }
-        case 2:  // на экране меню
-            callMenuHandler();
-            break;
-        }
+        active->onClick();
+        log_i("Click triggered");
     }
-
-    // ======== удержание энкодера ========
     if (control.hold()) {
-        switch (screenID) {
-        case 1:                                  // на экране микшера
-            if (screenState == 1) is_SOF_active  // удержание на выборе канала - MUTE
-                                    ? DSP.toggleMute(onScreenChannels[onScreenChSelect], SOF_dest)
-                                    : DSP.toggleMute(onScreenChannels[onScreenChSelect]);
-            else if (is_SOF_active) createMixingConsole(selectedGroup);  // удержание на экране sends on fader - возврат
-            else if (screenState == 2 && selectedGroup < 2) createMenu(&chGroupMenu);
-            else {
-                if (onScreenChannels[onScreenChSelect] == FADER_MASTER_ST)  // если выбрали канал Master, открываем меню для него
-                    createMenu(&masterChannelMenu);
-                else if (onScreenChannels[onScreenChSelect] == FADER_REVERB_ST)  // если выбрали канал reverb, то для него меню
-                    createMenu(&reverbChannelMenu);
-                else if (onScreenChannels[onScreenChSelect] == FADER_BLUETOOTH_ST)  // если выбрали канал bluetooth, то для него меню
-                    createMenu(&btChannelMenu);
-                else  // иначе меню для всех остальных
-                    createMenu(&stdChannelMenu);
-            }
-            break;
-        case 2:                                  // на экране меню
-            createMixingConsole(selectedGroup);  // возврат взад на главный экран
-            break;
-        case 3:              // на экране подстройки чего-то...
-            returnToMenu();  // назад в меню
-        }
+        active->onHold();
+        log_i("Hold triggered");
+    }
+    if (control.turn())
+        active->onTurn(control.dir());
+}
+
+void LEDUI::open(Screen *scr, void *params)
+{
+    scr->init(params);
+    active = scr;
+}
+
+byte LEDUI::getCenterCoordinate(const char *text)
+{
+    // спасибо ChatGPT за эту реализацию strlen() для юникода
+    byte length = 0;
+    while (*text != '\0') {
+        if ((*text & 0xC0) != 0x80)  // Check if it's the beginning of a UTF-8 character
+            length++;
+        text++;
     }
 
-    // ======== вращение энкодера ========
-    if (control.turn()) {
-        switch (screenID) {
-        case 1:  // на экране микшера
-            switch (screenState) {
-            case 0: {  // управление громкостью канала
-                if (is_SOF_active) {
-                    DSP.setDecibelSendLevel(
-                      onScreenChannels[onScreenChSelect], SOF_dest,
-                      DSP.sendFaders_dB[SOF_dest][onScreenChannels[onScreenChSelect]] + control.dir());
-                } else {
-                    DSP.setDecibelFaderPosition(
-                      onScreenChannels[onScreenChSelect],
-                      DSP.faderPosition_dB[onScreenChannels[onScreenChSelect]] + control.dir());
-                    statusbarState = 1;
-                }
-                break;
-            }
-            case 1: {  // переход между каналами на странице
-                turnStarted = true;
-                onScreenChSelect = constrain(onScreenChSelect + control.dir(), 0, _chan_count - 1);
-                break;
-            }
-            case 2:  // переход между страницами каналов
-                createMixingConsole(constrain(selectedGroup + control.dir(), 0, CH_GROUP_COUNT - 1));
-                break;
-            }
-            break;
-        case 2:  // на экране меню
-            menuRotate(control.dir());
-            break;
-        case 3:  // на экране подстройки
-            currentAdjScreen->handler(control.dir());
-            break;
-        }
-    }
+    return (64 - ((length * 6) / 2));
 }
 
-// обновление содержимого интерфейса (вызов отрисовщиков в зависимости от активности)
-void LTDAUI::refresh()
+void LEDUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord, bool center)
 {
-    screen.clear();
+    byte length = strlen(label) + 1;
+    if (value < -99) length += 3;
+    else if (value < -9 || value > 99) length += 2;
+    else if (value < 0 || value > 9) length += 1;
 
-    // статусбар
-    if (screenID == 1) {
-        if (is_SOF_active) {  // "sends on fader" вместо статусбара
-            printDecibelsRight();
-            printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
-            screen.print(" to ");
-            screen.print(sendto_labels[SOF_dest]);
-        } else if (statusbarState == 0) {  // непосредственно статусбар
-            printXY("Mixer", 0, 0);        // заглушка заголовка
-            printValue(0, "'C", -1, 0);    // заглушка датчика температуры
-        } else if (statusbarState == 1) {  // в момент изменения громкости канала
-            printDecibelsRight();
-            printXY(chan_labels[onScreenChannels[onScreenChSelect]], 0, 0);
-            screen.print(":");
-        }
-    }
+    if (x_coord < 0)
+        x_coord = 129 - (length * 6) + x_coord;
+    else if (center)
+        x_coord = (64 - ((length * 6) / 2));
 
-    switch (screenID) {
-    case 1: renderMixingConsole(); break;
-    case 2: renderMenu(); break;
-    case 3: renderAdjustScreen(); break;
-    }
-
-    screen.update();
-    streamMonitorData();
+    display.setCursorXY(x_coord, y_coord);
+    display.print(value);
+    display.print(label);
 }
 
-// (пере)запуск юзер-интерфейса
-void LTDAUI::reload()
+void LEDUI::bootStatus(const char *text, byte y_coord)
 {
-    createMixingConsole(0);
-    setMonitorDataFeed(FADER_MASTER_ST);
-    brightDisplay();
+    display.clear(0, y_coord, 127, y_coord + 7);
+    display.setCursorXY(getCenterCoordinate(text), y_coord);
+    display.print(text);
+    display.update();
 }
 
-// инициализация юзер-интерфейса. ВСЕГО!
-void LTDAUI::prepare()
+// вывод текста сразу по координатам (с возможностью выравнивания в центре)
+void LEDUI::printYX(const char *text, byte y_coord, int8_t x_coord)
 {
-    // инициализация дисплея
-    screen.init();                                    // инициализация дисплея
-    screen.clear();                                   // очистка кадра
-    screen.setContrast(200);                          // установка яркости
-    screen.drawBitmap(0, 0, splash_128x64, 128, 64);  // вывод логотипа
-    screen.update();                                  // обновление кадра
-
-    // инициализация таймеров
-    xBacklightTimer = xTimerCreate("BacklightTimer",
-                                   DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
-                                   pdFALSE, static_cast<void *>(this), &vUITimerCallback);
-    xActivityTimer = xTimerCreate("UIActivityTimer",
-                                  UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
-                                  pdFALSE, static_cast<void *>(this), &vUITimerCallback);
+    display.setCursorXY(x_coord < 0 ? getCenterCoordinate(text) : x_coord, y_coord);
+    display.print(text);
 }
 
-/*
- * =========== Инициализаторы активностей ===========
-*/
-
-// запуск виртуального микшерного пульта
-void LTDAUI::createMixingConsole(byte groupNo, int8_t sof)
+// вывод текста с выравниванием справа
+void LEDUI::printRightAlign(const char *text, byte y_coord)
 {
-    onScreenChannels = ch_groups[groupNo];
-    _chan_count = ch_count[groupNo];
-    if (groupNo != selectedGroup) {
-        onScreenChSelect = 0;
-        selectedGroup = groupNo;
-    }
-
-    // пересчёт координат для выравнивания каналов на дисплее
-    gap_block = (128 - (_chan_count * 18)) / (_chan_count + 1);
-
-    screenID = 1;
-    SOF_dest = sof, is_SOF_active = (sof > -1);
-    if (is_SOF_active) statusbarState = screenState = 0;
-}
-
-// вывод меню
-void LTDAUI::createMenu(MenuScreen *scr)
-{
-    // сижу я такой, переписываю код, скопипастенный из исходника DA50X.
-    // и думаю - а что если убрать аргумент с заголовком и оставить
-    // в качестве заголовка первую строку в entries?
-    menuChooseId = menuEntryRendererStartId = menuVisibleSelId = 0;
-    title_xCoord = getCenterCoordinate(scr->entries[0]);
-    currentMenuScreen = scr;
-    // _title_x_coord = getCenterCoordinate(entries[0]);
-    // _handler = handler;
-    // _handlerAutoCall = handlerAutoCall;
-    // _menuBooleans = menuBooleans;
-    // _entryCount = entryCount - 1;
-    // _entries = entries;
-
-    screenID = 2;
-}
-
-// вывод фиговины для подстройки чего бы то ни было
-void LTDAUI::createAdjustScreen(AdjustScreen *scr)
-{
-    // _title_x_coord = getCenterCoordinate(title);
-    // adj_title = title;
-    // adj_unit = unit;
-    // adj_current = param;
-    // adj_borders[0] = min, adj_borders[1] = max;
-    // adj_value = value;
-    title_xCoord = getCenterCoordinate(scr->title);
-    currentAdjScreen = scr;
-
-    screenID = 3;
-}
-
-/*
- * =========== Прочее добро ===========
-*/
-
-// выбор источника сигнала для внешнего индикатора
-void LTDAUI::setMonitorDataFeed(byte ch)
-{
-    monitorChannel = ch;
-}
-
-// обработчик взаимодействия с меню со скроллингом
-void LTDAUI::menuRotate(int8_t dir)
-{
-    if (dir > 0) {  // вправо
-        if (menuVisibleSelId < 6) {
-            if (menuVisibleSelId < currentMenuScreen->entryCount)
-                menuVisibleSelId++;
-            else return;
-        } else {
-            if (menuEntryRendererStartId + 6 < currentMenuScreen->entryCount)
-                menuEntryRendererStartId++;
-            else return;
-        }
-    } else {  // влево
-        if (menuVisibleSelId > 0)
-            menuVisibleSelId--;
-        else {
-            if (menuEntryRendererStartId > 0)
-                menuEntryRendererStartId--;
-            else return;
-        }
-    }
-
-    menuChooseId = menuEntryRendererStartId + menuVisibleSelId;
-    if (currentMenuScreen->handlerAutoCall)
-        callMenuHandler();
-}
-
-// вызов триггера при выборе пункта меню
-void LTDAUI::callMenuHandler()
-{
-    (currentMenuScreen->handler)(menuChooseId);
+    display.setCursorXY(128 - (strlen(text) * 6), y_coord);
+    display.print(text);
 }
 
 // подсветка дисплея на время
-void LTDAUI::brightDisplay()
+void LEDUI::brightDisplay()
 {
     if (xTimerIsTimerActive(xBacklightTimer) == pdFALSE)
-        screen.setContrast(200);
+        display.setContrast(BRIGHTNESS_DEFAULT);
 
     xTimerReset(xBacklightTimer, 1);
 }
 
-void LTDAUI::vUITimerCallback(TimerHandle_t pxTimer)
+// отправка данных на сдвиговики на внешнем индикаторе уровня
+void LEDUI::streamMonitorData()
 {
-    // повезло, что у таймеров FreeRTOS есть место, куда пихнуть указатель
-    // https://stackoverflow.com/questions/71199868/c-use-a-class-non-static-method-as-a-function-pointer-callback-in-freertos-xti
-    LTDAUI *instance = static_cast<LTDAUI *>(pvTimerGetTimerID(pxTimer));
+    // не кидайтесь помидорами! я знаю, что это можно реализовать через
+    // возведение двойки в степень! с технической точки зрения такое решение
+    // однозначно быстрее и удобнее, а с 520 килобайтами оперативки
+    // вообще не жалко ради оптимизации лишний раз занять около 26 байт.
+    // это не DA50X всего с двумя килобайтами.
+    const DRAM_ATTR static short ledbitmap[13] = {
+        0b000000000000, 0b100000000000, 0b110000000000, 0b111000000000,
+        0b111100000000, 0b111110000000, 0b111111000000, 0b111111100000,
+        0b111111110000, 0b111111111000, 0b111111111100, 0b111111111110,
+        0b111111111111
+    };
+    // Максим, поменяй 7 на 12 после допайки светодиодиков!
+    short dataL = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, false)];
+    short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, true)];
+    int combined = dataL << 12 | dataR;
 
-    if (pxTimer == xBacklightTimer)
-        screen.setContrast(10);
-    else if (pxTimer == xActivityTimer) {
-        instance->screenState = 0;
-        instance->statusbarState = 0;
-    }
+    // передать собранный битовый пакет на паровозик из сдвиговых регистров
+    shifters.sendToIndicators(combined);
 }
 
-LTDAUI UI;
+void LEDUI::vUITimerCallback(TimerHandle_t pxTimer)
+{
+    if (pxTimer == xBacklightTimer) // таймер снижения яркости подсветки
+        display.setContrast(BRIGHTNESS_MINIMUM);
+    else if (pxTimer == xActivityTimer) // таймер возврата на главный экран
+        screen_state = statusbar = 0;
+}

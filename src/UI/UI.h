@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Arduino.h>
 #include <GyverOLED.h>
 #include <GyverIO.h>
@@ -9,110 +8,135 @@
 #include "../Hardware/DSP.h"
 #include "freertos/timers.h"
 
-#define returnToMenu() createMenu(currentMenuScreen)
+#define GROUPS_COUNT 4
 
-class LTDAUI
+namespace LEDUI
 {
-  public:
-    void printStatus(const char *text, byte y_coord);
+    class MenuScreen;
+    class MixerScreen;
+    class AdjustScreen;
 
-    // ==== СЛУЖЕБКА ====
-    void prepare();
-    void processCtrl();
-    void refresh();
-    void reload();
-    LTDAUI();
-
-  private:
-    // ==== СТРУКТУРЫ ====
-    // меню
-    struct MenuScreen
+    class Screen
     {
-        std::function<void(byte)> handler;
-        const char *const *entries;
-        byte entryCount;
-        bool handlerAutoCall;
-        int *menuBooleans;
-    } *currentMenuScreen;
-    // меню подстройки
-    struct AdjustScreen
-    {
-        std::function<void(byte)> handler;
-        const char *title, *unit;
-        int8_t min, max, *value;
-    } *currentAdjScreen;
+    public:
+        Screen() {};
+        virtual void init(void* params) = 0;
+        virtual void render() = 0;
+        virtual void onClick() = 0;
+        virtual void onHold() = 0;
+        virtual void onTurn(int8_t dir) = 0;
+    };
 
-    // ==== ПЕРЕМЕННЫЕ ====
-    // общие переменные
-    byte screenID = 0;
-    byte screenState = 0;
-    byte statusbarState = 0;
-    bool turnStarted = false;
+    void init();
+    void reset();
+    void render();
+    void pollCtrl();
 
-    // для экрана виртуального микшера
-    int8_t selectedGroup = 0, onScreenChSelect = 0;
-    const unsigned char *onScreenChannels;
-    byte gap_border, gap_block;
-    byte _chan_count;
-    // sends on fader
-    byte SOF_dest = 0;
-    bool is_SOF_active = false;
+    void open(Screen *scr, void *params = NULL);
 
-    // для работы меню со скроллингом
-    byte menuVisibleSelId, menuEntryRendererStartId, menuChooseId;
-    byte title_xCoord;
-
-    // для внешнего индикатора
-    byte monitorChannel = 0;
-    //int *monitorDataFeed;
-
-    // ==== АКТИВНОСТИ ====
-    // вспомогательные функции
     byte getCenterCoordinate(const char *text);
-    void menuRotate(int8_t dir);
-    void callMenuHandler();
-    void brightDisplay();
-    // отрисовщики
-    void streamMonitorData();
-    void renderMixingConsole();
-    void renderMenu();
-    void renderAdjustScreen();
-    // инициализаторы
-    void setMonitorDataFeed(byte ch);
-    void createMixingConsole(byte groupNo, int8_t sof = -1);
-    void createMenu(MenuScreen *scr);
-    void createAdjustScreen(AdjustScreen *scr);
-
-    // ==== ЭКРАНЫ ====
-    // меню каналов
-    MenuScreen stdChannelMenu;
-    MenuScreen reverbChannelMenu;
-    MenuScreen masterChannelMenu;
-    MenuScreen btChannelMenu;
-
-    MenuScreen chGroupMenu;
-    MenuScreen sofSelectMenu;
-    MenuScreen sofSelectMenu_FX;
-
-    MenuScreen bassParamMenu;
-
-    // подстроечные
-    AdjustScreen bassIntensAdj;
-    AdjustScreen bassGainAdj;
-
-    AdjustScreen reverbTimeAdj;
-    AdjustScreen reverbHFDampAdj;
-    AdjustScreen reverbBGainAdj;
-
-    // ==== ОТРИСОВЩИКИ ПО МЕЛОЧИ ====
-    void printXY(const char *text, byte y_coord, int8_t x_coord = -1);
     void printValue(int8_t value, const char *label, int8_t x_coord,
                     byte y_coord, bool center = false);
+    void printYX(const char *text, byte y_coord, int8_t x_coord = -1);
     void printRightAlign(const char *text, byte y_coord);
-    void printDecibelsRight();
+    void bootStatus(const char *text, byte y_coord);
 
-    // ==== FREERTOS ====
-    static void vUITimerCallback(TimerHandle_t pxTimer);
+    void vUITimerCallback(TimerHandle_t pxTimer);
+    void brightDisplay();
+
+    extern byte monitor_ch;
+    inline void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
+    void streamMonitorData();
+    
+    extern byte title_xCoord;
+    extern byte screen_state, statusbar;
+    extern Screen *active;
+
+    extern GyverOLED<SSD1306_128x64, OLED_BUFFER> display;
 };
 
-extern LTDAUI UI;
+class LEDUI::MenuScreen : public LEDUI::Screen
+{
+public:
+    MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
+        : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
+    static MenuScreen *active;
+
+private:
+    void init(void* params = NULL) override;
+    void render() override;
+    // void onClick() const override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
+
+    const char *const *_entries;
+    const byte _e_count;
+    const bool _autoclick;
+    const int *_booleans;
+
+    static byte visibleSel, entryRendererStart;
+
+protected:
+    static byte selected;
+    //void return_to_mixer() const { open(MixerScreen::active); }
+};
+
+class LEDUI::MixerScreen : public LEDUI::Screen
+{
+public:
+    static MixerScreen& it() {
+        static MixerScreen ins;
+        return ins;
+    }
+
+    enum SoFMode {
+        NO_SOF,
+        FX_SOF,
+        ALL_SOF
+    };
+    struct ChannelGroup {
+        const char *name;
+        const byte *onScreenChannels;
+        const byte count;
+        const SoFMode sof;
+    };
+
+    static const ChannelGroup groups[GROUPS_COUNT];
+    static const char ch_labels[][7];
+    static const char* sendto_labels[];
+
+    void setGroup(int8_t num);
+    SoFMode isSoFAllowed() const { return _group->sof; }
+    byte getSelectedChannel() const { return _group->onScreenChannels[selected]; }
+
+private:
+    MixerScreen() : _group(&groups[0]) {};
+    void statusbarDecibels() const;
+
+    void init(void* params = NULL) override;
+    void render() override;
+    void onClick() override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
+
+    const ChannelGroup *_group;
+    byte gap_block = 0, selected = 0, SoFdest = 0, selectedGroup = 0;
+    bool turn_started = false, usingSoF = false;
+};
+
+class LEDUI::AdjustScreen : public LEDUI::Screen
+{
+public:
+    AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
+        : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
+
+private:
+    void init(void* params = NULL) override;
+    void render() override;
+    void onClick() override;
+    void onHold() override;
+    // void onTurn(int8_t dir) const override;
+
+    const char *_title, *_unit;
+    const int8_t __min, __max, *_value;
+};

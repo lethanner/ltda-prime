@@ -20,7 +20,7 @@ void task_uiRefresh(void *pvParameters)
         // всё, что нужно периодически запрашивать у DSP
         DSP.retrieveRTAValues();
         // обновить данные в пользовательском интерфейсе
-        UI.refresh();
+        LEDUI::render();
 
         vTaskDelayUntil(&xLastWakeTime, refreshInterval);
     }
@@ -29,7 +29,7 @@ void task_uiRefresh(void *pvParameters)
 void task_ctrlProcess(void *pvParameters)
 {
     for (;;) {
-        UI.processCtrl();
+        LEDUI::pollCtrl();
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }
@@ -40,8 +40,8 @@ void boot()
     shifters.quickInit();
     
     /* Инициализация юзер-интерфейса */
-    UI.prepare();
-    UI.printStatus(STR_DEV_INFO, 56);
+    LEDUI::init();
+    LEDUI::bootStatus(STR_DEV_INFO, 56);
     vTaskDelay(500 / portTICK_PERIOD_MS);
 
     /* Инициализация периферии микроконтроллера */
@@ -50,15 +50,15 @@ void boot()
     vTaskDelay(50 / portTICK_PERIOD_MS);
 
     /* Инициализация DSP */
-    UI.printStatus(STR_DSP_INIT, 56);
+    LEDUI::bootStatus(Localization::active()->init_dsp, 56);
     DSP.init();
 
     /* Инициализация FreeRTOS */
-    UI.printStatus(STR_RTOS_INIT, 56);
+    LEDUI::bootStatus(Localization::active()->init_rtos, 56);
     xTaskCreateUniversal(&task_ctrlProcess, "ctrl_proc", 3072, NULL, 1, NULL, 0);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     xTaskCreateUniversal(&task_uiRefresh, "ui_refresh", 3072, NULL, 2, NULL, 1);
 
     /* Выход в рабочий режим и отрисовка интерфейса на экране */
-    UI.reload();
+    LEDUI::reset();
 }
