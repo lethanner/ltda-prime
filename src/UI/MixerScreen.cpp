@@ -6,7 +6,6 @@ void LEDUI::MixerScreen::init(void* params)
 {
     //MixerScreen::active = this;
     gap_block = (128 - (_group->count * 18)) / (_group->count + 1);
-    selected = 0;
 
     if (params != NULL && _group->sof > NO_SOF) {
         byte paramSoF = *static_cast<byte*>(params);
@@ -182,5 +181,6 @@ void LEDUI::MixerScreen::statusbarDecibels() const {
 void LEDUI::MixerScreen::setGroup(int8_t num) {
     selectedGroup = constrain(num, 0, GROUPS_COUNT - 1);
     _group = &groups[selectedGroup];
+    selected = 0;
     init();
 }
