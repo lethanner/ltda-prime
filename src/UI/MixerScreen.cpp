@@ -94,6 +94,7 @@ void LEDUI::MixerScreen::render()
 
 void LEDUI::MixerScreen::onClick()
 {
+    log_i("MixerScreen clicked: %u, %u", screen_state, statusbar);
     if (screen_state == 1 && (turn_started || usingSoF)) {  // если уже начали листать каналы или если режим "sends on fader"
         screen_state = 0;                                  // сбрасываем действие
         turn_started = false;
@@ -109,6 +110,7 @@ void LEDUI::MixerScreen::onClick()
 
 void LEDUI::MixerScreen::onHold()
 {
+    log_i("MixerScreen hold: %u", screen_state);
     if (screen_state == 1)
         usingSoF  // удержание на выборе канала - MUTE
           ? DSP.toggleMute(_group->onScreenChannels[selected], SoFdest)

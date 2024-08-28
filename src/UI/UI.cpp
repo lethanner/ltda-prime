@@ -65,11 +65,16 @@ void LEDUI::pollCtrl()
 
     brightDisplay();
     xTimerReset(xActivityTimer, 1);
+    log_i("Encoder state: %u", control.action());
 
-    if (control.click())
+    if (control.click()) {
         active->onClick();
-    if (control.hold())
+        log_i("Click triggered");
+    }
+    if (control.hold()) {
         active->onHold();
+        log_i("Hold triggered");
+    }
     if (control.turn())
         active->onTurn(control.dir());
 }
