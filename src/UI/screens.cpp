@@ -15,12 +15,12 @@ void Menus::MasterChannel::onClick()
     switch (selected) {
     case 0:  // send to monitor
         LEDUI::setMonitorDataFeed(FADER_MASTER_ST);
+        open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 1:  // bassboost
         open(&Menus::Bassboost::it());
         break;
     }
-    open(&LEDUI::MixerScreen::it());  // выход
 }
 
 void Menus::BluetoothChannel::onClick()
