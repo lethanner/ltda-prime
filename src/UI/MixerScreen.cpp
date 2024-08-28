@@ -182,4 +182,5 @@ void LEDUI::MixerScreen::statusbarDecibels() const {
 void LEDUI::MixerScreen::setGroup(int8_t num) {
     selectedGroup = constrain(num, 0, GROUPS_COUNT - 1);
     _group = &groups[selectedGroup];
+    init();
 }
