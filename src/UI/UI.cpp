@@ -53,7 +53,8 @@ void LEDUI::reset()
 void LEDUI::render()
 {
     active->render();
-    display.update();
+    display.update();     // обновление изображения на дисплее
+    streamMonitorData();  // обновление индикатора уровня
 }
 
 void LEDUI::pollCtrl()
@@ -63,6 +64,8 @@ void LEDUI::pollCtrl()
         return;
 
     brightDisplay();
+    xTimerReset(xActivityTimer, 1);
+
     if (control.click())
         active->onClick();
     if (control.hold())
