@@ -120,7 +120,9 @@ void LEDUI::MixerScreen::onHold()
         if (_group->sof > NO_SOF)
             open(&Menus::ChannelGroup::it());
     } else {
-        // TODO: использовать массив соотношения каналов к их меню
+        // UPD: а если я могу в будущем менять числа которые скрываются за
+        // дефайнами, может ну его нафиг, этот массив скринов? хотя, учитывая,
+        // сколько у меня потом будет каналов, как-то стремно.
         switch (_group->onScreenChannels[selected]) {
         case FADER_MASTER_ST:  // если выбрали канал Master, открываем меню для него
             open(&Menus::MasterChannel::it());

@@ -38,18 +38,10 @@ void Menus::BluetoothChannel::onClick()
 
 void Menus::ReverbChannel::onClick()
 {
-    // TODO: переделать на использование массива adjustscreen'ов
-    switch (selected) {
-    case 0:  // time
-        open(&Adjusters::ReverbTime::it());
-        break;
-    case 1:  // hf damping
-        open(&Adjusters::ReverbHFDamp::it());
-        break;
-    case 2:  // bass gain
-        open(&Adjusters::ReverbBGain::it());
-        break;
-    }
+    static Screen *rvr_menus[] = { &Adjusters::ReverbTime::it(),
+                                   &Adjusters::ReverbHFDamp::it(),
+                                   &Adjusters::ReverbBGain::it() };
+    open(rvr_menus[selected]);
 }
 
 void Menus::ChannelGroup::onClick()
