@@ -19,10 +19,7 @@ ADAU1452::ADAU1452()
     bluetooth.set_volume_control(avrcp_volume_sync);
 }
 
-int* ADAU1452::getFlagRegisterPtr()
-{
-    return &flagRegister;
-}
+int* ADAU1452::getFlagRegisterPtr() { return &flagRegister; }
 
 // запуск и инициализация аудиопроцессора
 void ADAU1452::init()
@@ -143,10 +140,9 @@ void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
     val = constrain(val, -97, 10);
     uint32_t _val = muteFlags[id] ? 0 : db_calibration_24bit[97 + val];
-    
-    if (sync && id == FADER_BLUETOOTH_ST)
-        bluetooth.sendAVRCPVolume(val);
-    
+
+    if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
+
     gotoRegister(dsp_fader_address[id]);
     for (byte i = 0; i < 4; i++) {
         Wire.write((_val >> (24 - (i * 8))) & 0xFF);
@@ -189,8 +185,7 @@ void ADAU1452::toggleMute(byte id, byte to)
 byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 {
     for (byte i = 0; i < max; i++) {
-        if (value >= tab[i] && value < tab[i + 1])
-            return i;
+        if (value >= tab[i] && value < tab[i + 1]) return i;
     }
     return max;
 }
@@ -218,7 +213,7 @@ void ADAU1452::toggleBassBoost()
 void ADAU1452::setBBGain(byte value)
 {
     value = constrain(value, 1, 30);
-    
+
     writeAsFloat(DSP_BB_GAIN_REG, value);
     bassboostGain = value;
 }
@@ -260,7 +255,7 @@ void ADAU1452::setReverbHFDamping(byte value)
 void ADAU1452::setReverbBassGain(byte value)
 {
     value = constrain(value, 0, 2);
-    
+
     gotoRegister(DSP_REVERB_BGAIN_REG);
     for (byte i = 0; i < 4; i++) {
         Wire.write(ss_rev_bass_gain[value][i]);

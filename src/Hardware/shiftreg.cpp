@@ -2,10 +2,7 @@
 
 SemaphoreHandle_t _sspi_lock = NULL;
 
-ShiftRegisters::ShiftRegisters()
-{
-    _sspi_lock = xSemaphoreCreateMutex();
-}
+ShiftRegisters::ShiftRegisters() { _sspi_lock = xSemaphoreCreateMutex(); }
 
 void ShiftRegisters::quickInit()
 {

@@ -1,17 +1,18 @@
 #include "UI.h"
 
 LEDUI::MenuScreen *LEDUI::MenuScreen::active = nullptr;
-byte LEDUI::MenuScreen::visibleSel = 0,
-     LEDUI::MenuScreen::entryRendererStart = 0,
+byte LEDUI::MenuScreen::visibleSel = 0, LEDUI::MenuScreen::entryRendererStart = 0,
      LEDUI::MenuScreen::selected = 0;
 
-void LEDUI::MenuScreen::init(void* params) {
+void LEDUI::MenuScreen::init(void *params)
+{
     MenuScreen::active = this;
     selected = entryRendererStart = visibleSel = 0;
     title_xCoord = getCenterCoordinate(_entries[0]);
 }
 
-void LEDUI::MenuScreen::render() {
+void LEDUI::MenuScreen::render()
+{
     display.clear();
     // заголовок
     display.invertText(1);
@@ -40,10 +41,8 @@ void LEDUI::MenuScreen::render() {
         // отображение плюсиков и минусиков возле boolean-пунктов меню
         if (isBoolEntry) {
             display.setCursor(120, currentLine);
-            if ((*_booleans >> flagId) & 0x01)
-                display.write('+');
-            else
-                display.write('-');
+            if ((*_booleans >> flagId) & 0x01) display.write('+');
+            else display.write('-');
         }
         currentLine++;
     }
@@ -52,33 +51,30 @@ void LEDUI::MenuScreen::render() {
 
 /* onClick() реализуется только при наследовании от класса MenuScreen */
 
-void LEDUI::MenuScreen::onHold() {
+void LEDUI::MenuScreen::onHold()
+{
     // возврат в микшер
     open(&MixerScreen::it());
 }
 
-void LEDUI::MenuScreen::onTurn(int8_t dir) {
+void LEDUI::MenuScreen::onTurn(int8_t dir)
+{
     if (dir > 0) {  // вправо
         if (visibleSel < 6) {
-            if (visibleSel < _e_count)
-                visibleSel++;
+            if (visibleSel < _e_count) visibleSel++;
             else return;
         } else {
-            if (entryRendererStart + 6 < _e_count)
-                entryRendererStart++;
+            if (entryRendererStart + 6 < _e_count) entryRendererStart++;
             else return;
         }
     } else {  // влево
-        if (visibleSel > 0)
-            visibleSel--;
+        if (visibleSel > 0) visibleSel--;
         else {
-            if (entryRendererStart > 0)
-                entryRendererStart--;
+            if (entryRendererStart > 0) entryRendererStart--;
             else return;
         }
     }
 
     selected = entryRendererStart + visibleSel;
-    if (_autoclick)
-        onClick();
+    if (_autoclick) onClick();
 }

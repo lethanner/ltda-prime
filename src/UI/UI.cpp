@@ -27,19 +27,17 @@ void LEDUI::init()
     //Localization::set(&Localization::english);
 
     // инициализация дисплея
-    display.init();                                             // инициализация дисплея
-    display.clear();                                            // очистка кадра
-    display.setContrast(BRIGHTNESS_DEFAULT);                    // установка яркости
+    display.init();                           // инициализация дисплея
+    display.clear();                          // очистка кадра
+    display.setContrast(BRIGHTNESS_DEFAULT);  // установка яркости
     display.drawBitmap(0, 0, Bitmaps::splash_128x64, 128, 64);  // вывод логотипа
-    display.update();                                           // обновление кадра
+    display.update();  // обновление кадра
 
     // инициализация таймеров
-    xBacklightTimer = xTimerCreate("BacklightTimer",
-                                   DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS,
-                                   pdFALSE, NULL, &vUITimerCallback);
-    xActivityTimer = xTimerCreate("UIActivityTimer",
-                                  UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS,
-                                  pdFALSE, NULL, &vUITimerCallback);
+    xBacklightTimer = xTimerCreate(
+     "BacklightTimer", DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS, pdFALSE, NULL, &vUITimerCallback);
+    xActivityTimer = xTimerCreate(
+     "UIActivityTimer", UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS, pdFALSE, NULL, &vUITimerCallback);
 }
 
 void LEDUI::reset()
@@ -53,15 +51,14 @@ void LEDUI::reset()
 void LEDUI::render()
 {
     active->render();
-    display.update();     // обновление изображения на дисплее
+    display.update();  // обновление изображения на дисплее
     streamMonitorData();  // обновление индикатора уровня
 }
 
 void LEDUI::pollCtrl()
 {
     control.tick();
-    if (control.action() == 0)
-        return;
+    if (control.action() == 0) return;
 
     brightDisplay();
     xTimerReset(xActivityTimer, 1);
@@ -75,8 +72,7 @@ void LEDUI::pollCtrl()
         active->onHold();
         log_i("Hold triggered");
     }
-    if (control.turn())
-        active->onTurn(control.dir());
+    if (control.turn()) active->onTurn(control.dir());
 }
 
 void LEDUI::open(Screen *scr, void *params)
@@ -105,10 +101,8 @@ void LEDUI::printValue(int8_t value, const char *label, int8_t x_coord, byte y_c
     else if (value < -9 || value > 99) length += 2;
     else if (value < 0 || value > 9) length += 1;
 
-    if (x_coord < 0)
-        x_coord = 129 - (length * 6) + x_coord;
-    else if (center)
-        x_coord = (64 - ((length * 6) / 2));
+    if (x_coord < 0) x_coord = 129 - (length * 6) + x_coord;
+    else if (center) x_coord = (64 - ((length * 6) / 2));
 
     display.setCursorXY(x_coord, y_coord);
     display.print(value);
@@ -155,13 +149,13 @@ void LEDUI::streamMonitorData()
     // вообще не жалко ради оптимизации лишний раз занять около 26 байт.
     // это не DA50X всего с двумя килобайтами.
     const DRAM_ATTR static short ledbitmap[13] = {
-        0b000000000000, 0b100000000000, 0b110000000000, 0b111000000000,
-        0b111100000000, 0b111110000000, 0b111111000000, 0b111111100000,
-        0b111111110000, 0b111111111000, 0b111111111100, 0b111111111110,
-        0b111111111111
+        0b000000000000, 0b100000000000, 0b110000000000, 0b111000000000, 0b111100000000,
+        0b111110000000, 0b111111000000, 0b111111100000, 0b111111110000, 0b111111111000,
+        0b111111111100, 0b111111111110, 0b111111111111
     };
     // Максим, поменяй 7 на 12 после допайки светодиодиков!
-    short dataL = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, false)];
+    short dataL =
+     ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, false)];
     short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, true)];
     int combined = dataL << 12 | dataR;
 
@@ -171,8 +165,8 @@ void LEDUI::streamMonitorData()
 
 void LEDUI::vUITimerCallback(TimerHandle_t pxTimer)
 {
-    if (pxTimer == xBacklightTimer) // таймер снижения яркости подсветки
+    if (pxTimer == xBacklightTimer)  // таймер снижения яркости подсветки
         display.setContrast(BRIGHTNESS_MINIMUM);
-    else if (pxTimer == xActivityTimer) // таймер возврата на главный экран
+    else if (pxTimer == xActivityTimer)  // таймер возврата на главный экран
         screen_state = statusbar = 0;
 }

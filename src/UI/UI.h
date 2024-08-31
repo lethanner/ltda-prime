@@ -10,17 +10,16 @@
 
 #define GROUPS_COUNT 4
 
-namespace LEDUI
-{
+namespace LEDUI {
     class MenuScreen;
     class MixerScreen;
     class AdjustScreen;
 
     class Screen
     {
-    public:
+      public:
         Screen() {};
-        virtual void init(void* params) = 0;
+        virtual void init(void *params) = 0;
         virtual void render() = 0;
         virtual void onClick() = 0;
         virtual void onHold() = 0;
@@ -35,8 +34,7 @@ namespace LEDUI
     void open(Screen *scr, void *params = NULL);
 
     byte getCenterCoordinate(const char *text);
-    void printValue(int8_t value, const char *label, int8_t x_coord,
-                    byte y_coord, bool center = false);
+    void printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord, bool center = false);
     void printYX(const char *text, byte y_coord, int8_t x_coord = -1);
     void printRightAlign(const char *text, byte y_coord);
     void bootStatus(const char *text, byte y_coord);
@@ -47,23 +45,23 @@ namespace LEDUI
     extern byte monitor_ch;
     inline void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
     void streamMonitorData();
-    
+
     extern byte title_xCoord;
     extern byte screen_state, statusbar;
     extern Screen *active;
 
     extern GyverOLED<SSD1306_128x64, OLED_BUFFER> display;
-};
+};  //namespace LEDUI
 
 class LEDUI::MenuScreen : public LEDUI::Screen
 {
-public:
+  public:
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
-        : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
+      : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
     static MenuScreen *active;
 
-private:
-    void init(void* params = NULL) override;
+  private:
+    void init(void *params = NULL) override;
     void render() override;
     // void onClick() const override;
     void onHold() override;
@@ -76,24 +74,21 @@ private:
 
     static byte visibleSel, entryRendererStart;
 
-protected:
+  protected:
     static byte selected;
     //void return_to_mixer() const { open(MixerScreen::active); }
 };
 
 class LEDUI::MixerScreen : public LEDUI::Screen
 {
-public:
-    static MixerScreen& it() {
+  public:
+    static MixerScreen &it()
+    {
         static MixerScreen ins;
         return ins;
     }
 
-    enum SoFMode {
-        NO_SOF,
-        FX_SOF,
-        ALL_SOF
-    };
+    enum SoFMode { NO_SOF, FX_SOF, ALL_SOF };
     struct ChannelGroup {
         const char *name;
         const byte *onScreenChannels;
@@ -103,17 +98,17 @@ public:
 
     static const ChannelGroup groups[GROUPS_COUNT];
     static const char ch_labels[][7];
-    static const char* sendto_labels[];
+    static const char *sendto_labels[];
 
     void setGroup(int8_t num);
     SoFMode isSoFAllowed() const { return _group->sof; }
     byte getSelectedChannel() const { return _group->onScreenChannels[selected]; }
 
-private:
+  private:
     MixerScreen() : _group(&groups[0]) {};
     void statusbarDecibels() const;
 
-    void init(void* params = NULL) override;
+    void init(void *params = NULL) override;
     void render() override;
     void onClick() override;
     void onHold() override;
@@ -126,12 +121,12 @@ private:
 
 class LEDUI::AdjustScreen : public LEDUI::Screen
 {
-public:
+  public:
     AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
-        : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
+      : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
 
-private:
-    void init(void* params = NULL) override;
+  private:
+    void init(void *params = NULL) override;
     void render() override;
     void onClick() override;
     void onHold() override;
