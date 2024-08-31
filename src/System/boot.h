@@ -38,7 +38,7 @@ void boot()
 {
     /* Инициализация сдвигового регистра */
     shifters.quickInit();
-    
+
     /* Инициализация юзер-интерфейса */
     LEDUI::init();
     LEDUI::bootStatus(STR_DEV_INFO, 56);

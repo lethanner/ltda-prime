@@ -25,28 +25,28 @@ const short dsp_fader_address[] = {
 #define DSP_IN_TO_BUS 3
 const short dsp_bus_send_addr[][DSP_BUS_CHANNELS * 2] = {
     {
-      0x0087,  // SPDIF -> Master левый
-      0x008B,  // SPDIF -> Master правый
-      0x0088,  // Bluetooth -> Master левый
-      0x008C,  // Bluetooth -> Master правый
-      0x0089,  // USB -> Master левый
-      0x008D,  // USB -> Master правый
-      0x008A,  // Reverb -> Master левый
-      0x008E   // Reverb -> Master правый
+     0x0087, // SPDIF -> Master левый
+     0x008B, // SPDIF -> Master правый
+     0x0088, // Bluetooth -> Master левый
+     0x008C, // Bluetooth -> Master правый
+     0x0089, // USB -> Master левый
+     0x008D, // USB -> Master правый
+     0x008A, // Reverb -> Master левый
+     0x008E   // Reverb -> Master правый
     },
     {
-      0x002E,  // SPDIF -> Reverb левый
-      0x0031,  // SPDIF -> Reverb правый
-      0x002F,  // Bluetooth -> Reverb левый
-      0x0032,  // Bluetooth -> Reverb правый
-      0x0030,  // USB -> Reverb левый
-      0x0033,  // USB -> Reverb правый
+     0x002E, // SPDIF -> Reverb левый
+     0x0031, // SPDIF -> Reverb правый
+     0x002F, // Bluetooth -> Reverb левый
+     0x0032, // Bluetooth -> Reverb правый
+     0x0030, // USB -> Reverb левый
+     0x0033, // USB -> Reverb правый
 
-      // * включается трек pi14cyber - Костыль *
-      // лучше лишний раз поменять не тот уровень, чем положить SigmaDSP
-      // при попытке записи чего-то в неизвестно какой адрес
-      0x008A,  // Reverb -> Reverb нельзя
-      0x008E   // Reverb -> Reverb всё ещё нельзя
+     // * включается трек pi14cyber - Костыль *
+     // лучше лишний раз поменять не тот уровень, чем положить SigmaDSP
+     // при попытке записи чего-то в неизвестно какой адрес
+     0x008A, // Reverb -> Reverb нельзя
+     0x008E   // Reverb -> Reverb всё ещё нельзя
     }
 };
 

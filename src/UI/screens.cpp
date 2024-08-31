@@ -38,8 +38,7 @@ void Menus::BluetoothChannel::onClick()
 
 void Menus::ReverbChannel::onClick()
 {
-    static Screen *rvr_menus[] = { &Adjusters::ReverbTime::it(),
-                                   &Adjusters::ReverbHFDamp::it(),
+    static Screen *rvr_menus[] = { &Adjusters::ReverbTime::it(), &Adjusters::ReverbHFDamp::it(),
                                    &Adjusters::ReverbBGain::it() };
     open(rvr_menus[selected]);
 }
@@ -56,28 +55,15 @@ void Menus::ChannelGroup::onClick()
     }
 }
 
-void Menus::SendsOnFaderAll::onClick()
-{
-    open(&LEDUI::MixerScreen::it(), &selected);
-}
-
-void Menus::SendsOnFaderFX::onClick()
-{
-    open(&LEDUI::MixerScreen::it(), &selected);
-}
+void Menus::SendsOnFaderAll::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
+void Menus::SendsOnFaderFX::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
 
 void Menus::Bassboost::onClick()
 {
     switch (selected) {
-    case 0:
-        DSP.toggleBassBoost();
-        break;
-    case 1:
-        open(&Adjusters::BassboostIntens::it());
-        break;
-    case 2:
-        open(&Adjusters::BassboostGain::it());
-        break;
+    case 0: DSP.toggleBassBoost(); break;
+    case 1: open(&Adjusters::BassboostIntens::it()); break;
+    case 2: open(&Adjusters::BassboostGain::it()); break;
     }
 }
 

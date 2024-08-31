@@ -20,7 +20,7 @@ class ADAU1452
     void writeAsFloat(short reg, byte value);
     byte findValue(const unsigned int* tab, byte max, int value);
     int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
-    int flagRegister = 0x00000000;            // импровизированный регистр настроек
+    int flagRegister = 0x00000000;  // импровизированный регистр настроек
 
   public:
     ADAU1452();
@@ -34,13 +34,13 @@ class ADAU1452
 
     void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     void setDecibelSendLevel(byte id, byte to, int8_t val);
-    int8_t faderPosition_dB[DSP_FADER_COUNT];               // буфер положений фейдеров внутри DSP
+    int8_t faderPosition_dB[DSP_FADER_COUNT];  // буфер положений фейдеров внутри DSP
     int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
 
     // Mute
     void toggleMute(byte id);
     void toggleMute(byte id, byte to);
-    bool muteFlags[DSP_FADER_COUNT];                      // флаги MUTE для каналов
+    bool muteFlags[DSP_FADER_COUNT];  // флаги MUTE для каналов
     bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // флаги MUTE для посылов
     //int8_t getDecibelFaderPosition(byte id);
 
@@ -55,9 +55,7 @@ class ADAU1452
     void setReverbTime(byte value);
     void setReverbHFDamping(byte value);
     void setReverbBassGain(byte value);
-    int8_t reverbTime = 2,
-           reverbHFDamp = 1,
-           reverbBassGain = 1;
+    int8_t reverbTime = 2, reverbHFDamp = 1, reverbBassGain = 1;
 
     // буфер значений уровней сигнала
     int readbackVal[DSP_READBACK_COUNT];
@@ -82,10 +80,7 @@ class A2DPExternalVolumeControl : public A2DPVolumeControl
         _dspptr->setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 10), false);
     }
 
-    A2DPExternalVolumeControl(ADAU1452* dspptr)
-    {
-        _dspptr = dspptr;
-    }
+    A2DPExternalVolumeControl(ADAU1452* dspptr) { _dspptr = dspptr; }
 };
 
 extern ADAU1452 DSP;
