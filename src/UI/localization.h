@@ -23,30 +23,30 @@ namespace Localization {
         const char* select;
         const char* master;
         const char* bluetooth;
+        const char* language;
+        const char* preferences;
     };
 
     extern const Strings russian;
     extern const Strings english;
 
-    // TODO: переключение языка из меню
-    inline const Strings* active()
-    {
-        static const Strings* act = &Localization::english;
-        return act;
-    }
-    //inline void set(const Strings *loc) { active = loc; }
+    static const Strings* act = &Localization::english;
+    inline const Strings* active() { return act; }
+    inline void setLanguage(const Strings* n) { act = n; }
 
-    const char* const chmenu_generic[] = { active()->channel, active()->send_to_monitor };
-    const char* const chmenu_master[] = { active()->master, active()->send_to_monitor,
-                                          active()->bassboost };
-    const char* const chmenu_reverb[] = { active()->reverb, active()->reverb_time,
-                                          active()->hf_damping, active()->bassreverbgain };
-    const char* const chmenu_blue[] = { active()->bluetooth, active()->send_to_monitor,
-                                        active()->disconnect };
-
+    const char* const chmenu_generic[] = { active()->channel, active()->preferences,
+                                           active()->send_to_monitor };
+    const char* const chmenu_master[] = { active()->master, active()->preferences,
+                                          active()->send_to_monitor, active()->bassboost };
+    const char* const chmenu_reverb[] = { active()->reverb, active()->preferences,
+                                          active()->reverb_time, active()->hf_damping,
+                                          active()->bassreverbgain };
+    const char* const chmenu_blue[] = { active()->bluetooth, active()->preferences,
+                                        active()->send_to_monitor, active()->disconnect };
     const char* const groupmenu[] = { active()->group, active()->sends_on_fader };
     const char* const sofdestmenu[] = { active()->to, active()->master, active()->reverb };
-
     const char* const bassboostmenu[] = { active()->bassboost, active()->enable,
                                           active()->intensity, active()->gain };
+    const char* const languagemenu[] = { active()->language, "English", "Русский" };
+    const char* const prefsmenu[] = { active()->preferences, active()->language };
 };  //namespace Localization

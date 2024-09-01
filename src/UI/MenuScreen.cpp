@@ -8,7 +8,7 @@ void LEDUI::MenuScreen::init(void *params)
 {
     MenuScreen::active = this;
     selected = entryRendererStart = visibleSel = 0;
-    title_xCoord = getCenterCoordinate(_entries[0]);
+    calculateTitleCenter();
 }
 
 void LEDUI::MenuScreen::render()
