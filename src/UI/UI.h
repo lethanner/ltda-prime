@@ -76,6 +76,7 @@ class LEDUI::MenuScreen : public LEDUI::Screen
 
   protected:
     static byte selected;
+    void calculateTitleCenter() { title_xCoord = getCenterCoordinate(_entries[0]); }
     //void return_to_mixer() const { open(MixerScreen::active); }
 };
 

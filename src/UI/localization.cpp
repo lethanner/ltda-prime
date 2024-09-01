@@ -21,7 +21,9 @@ const Localization::Strings Localization::russian = {
     .init_rtos = "Запуск RTOS...",
     .select = "Выбор",
     .master = "Мастер",
-    .bluetooth = "Bluetooth"
+    .bluetooth = "Bluetooth",
+    .language = "Язык",
+    .preferences = "[Установки]"
 };
 
 const Localization::Strings Localization::english = {
@@ -45,5 +47,7 @@ const Localization::Strings Localization::english = {
     .init_rtos = "Configuring RTOS",
     .select = "Select",
     .master = "Master",
-    .bluetooth = "Bluetooth"
+    .bluetooth = "Bluetooth",
+    .language = "Language",
+    .preferences = "[Preferences]"
 };

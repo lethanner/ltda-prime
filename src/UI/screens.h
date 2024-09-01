@@ -30,10 +30,12 @@
 
 // clang-format on
 namespace Menus {
-    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 1, false, NULL);
-    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 2, false, NULL);
-    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 2, false, NULL);
-    DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 3, false, NULL);
+    DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, true, NULL);
+    DECLARE_MENU(Preferences, Localization::prefsmenu, 1, false, NULL);
+    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 2, false, NULL);
+    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 3, false, NULL);
+    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 3, false, NULL);
+    DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
     DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, 2, false, NULL);
     DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, 1, false, NULL);
