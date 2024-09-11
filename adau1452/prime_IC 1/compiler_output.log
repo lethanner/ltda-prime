@@ -1,19 +1,19 @@
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Thursday, September 5, 2024 11:40:19 PM #####
+##### Compile Started: Wednesday, September 11, 2024 11:07:25 AM #####
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Thursday, September 5, 2024 11:40:19 PM #####
+##### Compile Started: Wednesday, September 11, 2024 11:07:25 AM #####
 ##### Compile succeeded:  0 errors, 0 warnings #####
 
 ##### Summary #####
-DM0 RAM used:       00229    (of 20480)
-DM1 RAM used:       05189    (of 20480)
+DM0 RAM used:       00257    (of 20480)
+DM1 RAM used:       05207    (of 20480)
 PM  RAM used(Data): 00000    (of 8192)
-PM  RAM used(Inst): 01039    (of 8192) 791 instructions (32bit: 543  64bit: 248)
-Total PM used:      01039    (of 8192)
+PM  RAM used(Inst): 01147    (of 8192) 887 instructions (32bit: 627  64bit: 260)
+Total PM used:      01147    (of 8192)
 
 --------------------------------------------------------------------------------------
 STREAM                        Inst      Inst      DM0     DM1     PM
@@ -24,23 +24,35 @@ Reverb                        447       558       81      5079    0
 SuperBass1                    138       194       56      67      0
 FRAMEWORK                     54        35        8       7       0
 Reverb_sends                  19        24        13      1       0
-SPDIF_in                      16        22        6       2       0
-BT_in                         16        22        6       2       0
 USB_in                        16        22        6       2       0
 Reverb_out                    16        22        6       2       0
+Submix_out                    16        22        6       2       0
 Master_out                    16        22        6       2       0
+SPDIF_in                      16        22        6       2       0
+BT_in                         16        22        6       2       0
+Submix_sends                  14        16        8       2       0
 Master_sends                  14        16        8       2       0
-Master_mono                   8         8         1       2       0
+Master_mSW_2                  8         8         1       2       0
+Master_mSW                    8         8         1       2       0
+USB_mono                      8         8         1       2       0
+BT_mono                       8         8         1       2       0
+SPDIF_mono                    8         8         1       2       0
 AsrcIn1                       8         8         0       6       0
+SPDIF_mono_mix                6         7         2       1       0
+USB_mono_mix                  6         7         2       1       0
+Master_mono_mix_2             6         7         2       1       0
 Master_mono_mix               6         7         2       1       0
-BT_Readback                   6         6         2       2       0
-USB_Readback                  6         6         2       2       0
+BT_mono_mix                   6         7         2       1       0
 Master_Readback               6         6         2       2       0
+Submix_Readback               6         6         2       2       0
 Reverb_Readback               6         6         2       2       0
+USB_Readback                  6         6         2       2       0
+BT_Readback                   6         6         2       2       0
 SPDIF_Readback                6         6         2       2       0
+Submix                        4         4         0       0       0
 Master                        3         3         0       0       0
 --------------------------------------------------------------------------------------
-Total                         807       993       225     5185    0
+Total                         903       1101      253     5203    0
 --------------------------------------------------------------------------------------
-(% Fs=48.0kHz)                14%       13%       2%      26%     0%
+(% Fs=48.0kHz)                15%       14%       2%      26%     0%
 
