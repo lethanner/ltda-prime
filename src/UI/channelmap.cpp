@@ -11,4 +11,5 @@ const LEDUI::MixerScreen::ChannelGroup LEDUI::MixerScreen::groups[GROUPS_COUNT] 
 
 const char LEDUI::MixerScreen::ch_labels[][7] = { "SPDIF",  "BT",     "USB",  "Reverb",
                                                   "Master", "Submix", "Pitch" };
-const char* LEDUI::MixerScreen::sendto_labels[] = { "Master", "Submix", "Reverb", "Pitch" };
+const char* LEDUI::MixerScreen::sendto_labels[] = { SOF_DESTINATION_LABELS };
+// да что я, чёрт побери, такое делаю... почему содержимое SOF_DESTINATION_LABELS у меня дублируется в двух массивах...
