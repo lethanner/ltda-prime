@@ -1,4 +1,5 @@
 #pragma once
+#define SOF_DESTINATION_LABELS "Master", "Submix", "Reverb", "Pitch"
 
 namespace Localization {
     struct Strings {
@@ -44,7 +45,7 @@ namespace Localization {
     const char* const chmenu_blue[] = { active()->bluetooth, active()->preferences,
                                         active()->send_to_monitor, active()->disconnect };
     const char* const groupmenu[] = { active()->group, active()->sends_on_fader };
-    const char* const sofdestmenu[] = { active()->to, active()->master, active()->reverb };
+    const char* const sofdestmenu[] = { active()->to, SOF_DESTINATION_LABELS };
     const char* const bassboostmenu[] = { active()->bassboost, active()->enable,
                                           active()->intensity, active()->gain };
     const char* const languagemenu[] = { active()->language, "English", "Русский" };
