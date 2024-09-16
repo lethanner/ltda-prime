@@ -32,19 +32,26 @@ void LEDUI::MixerScreen::render()
 
     byte label_offset = gap_block / 2;
     for (byte ch = 0; ch < _group->count; ch++) {
-        byte block_width = 18;  // TODO: разделение каналов на моно и стерео
+        bool isMono = DSP.isMonoChannel(_group->onScreenChannels[ch]);
+        byte block_width = isMono ? 12 : 18;
         byte block_safe_zone = block_width + gap_block;
         byte x_coord = gap_block + (ch * block_safe_zone);
-        byte levelL =
-         52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], false);
-        byte levelR =
-         52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], true);
         byte fader_pos =
          map(usingSoF ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[ch]]
                       : DSP.faderPosition_dB[_group->onScreenChannels[ch]],
              -97, 10, 52, 11);
         bool is_muted = usingSoF ? DSP.sendMuteFlags[SoFdest][_group->onScreenChannels[ch]]
                                  : DSP.muteFlags[_group->onScreenChannels[ch]];
+
+        // clang-format off
+        byte levelL = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], false);
+        display.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);  // столбик уровня левого канала
+
+        if (!isMono) {  // если канал не моно
+            byte levelR = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], true);
+            display.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);  // столбик уровня правого канала
+        }
+        // clang-format on
 
         display.line(x_coord + 2, 52, x_coord + 2, 11);  // полоска фейдера
         if (is_muted) {
@@ -57,9 +64,6 @@ void LEDUI::MixerScreen::render()
             // если не MUTED, то рисуем обычную ручку фейдера
             display.rect(x_coord, fader_pos, x_coord + 4,
                          fader_pos + static_cast<byte>(selected == ch), 2);
-
-        display.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);  // столбик уровня левого канала
-        display.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);  // столбик уровня правого канала
 
         // подписи каналов с выравниванием
         if (screen_state == 0) {

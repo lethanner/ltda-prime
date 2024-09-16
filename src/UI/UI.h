@@ -8,7 +8,7 @@
 #include "../Hardware/DSP.h"
 #include "freertos/timers.h"
 
-#define GROUPS_COUNT 4
+#define GROUPS_COUNT 6
 
 namespace LEDUI {
     class MenuScreen;
