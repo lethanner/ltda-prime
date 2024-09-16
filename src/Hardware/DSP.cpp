@@ -57,9 +57,12 @@ void ADAU1452::init()
     Wire.endTransmission();
 
     // далее расставляем MUTE на то, что изначально должно быть в MUTE
+    // а именно: изначально должны быть отключены все эффекты
     toggleMute(FADER_REVERB_ST);
+    toggleMute(FADER_PITCH);
     for (byte i = 0; i < DSP_IN_TO_BUS; i++) {
         toggleMute(i, SEND_TO_REVERB);
+        toggleMute(i, SEND_TO_PITCH);
     }
 
     // контрольная задержка
@@ -139,15 +142,20 @@ void ADAU1452::retrieveRTAValues()
 void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
 {
     val = constrain(val, -97, 10);
+    // если MUTE, то значение принудительно 0
     uint32_t _val = muteFlags[id] ? 0 : db_calibration_24bit[97 + val];
 
     if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
 
-    gotoRegister(dsp_fader_address[id]);
-    for (byte i = 0; i < 4; i++) {
-        Wire.write((_val >> (24 - (i * 8))) & 0xFF);
+    // TODO: управление стереобалансом
+    // отправить новый уровень на DSP (сразу левый+правый)
+    for (byte j = 0; j < 2; j++) {
+        gotoRegister(dsp_fader_address[(id * 2) + j]);
+        for (byte i = 0; i < 4; i++) {
+            Wire.write((_val >> (24 - (i * 8))) & 0xFF);
+        }
+        Wire.endTransmission();
     }
-    Wire.endTransmission();
 
     faderPosition_dB[id] = val;
 }
@@ -158,6 +166,7 @@ void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
     val = constrain(val, -97, 10);
     uint32_t _val = sendMuteFlags[to][id] ? 0 : db_calibration_24bit[97 + val];
 
+    // TODO: быть может, прикрутить управление панорамой и сюда тоже?
     for (byte j = 0; j < 2; j++) {
         gotoRegister(dsp_bus_send_addr[to][(id * 2) + j]);
         for (byte i = 0; i < 4; i++) {
@@ -193,7 +202,8 @@ byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 // получение децибельного уровня сигнала на канале (согласно подаваемой калибровочной таблице)
 byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, byte id, bool right)
 {
-    return findValue(tab, max, readbackVal[(id * 2) + static_cast<byte>(right)]);
+    byte pos = isMonoChannel(id) ? DSP_STEREO_BEFORE - 1 + id : (id * 2) + static_cast<byte>(right);
+    return findValue(tab, max, readbackVal[pos]);
 }
 
 // переключение режима bassboost

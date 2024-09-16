@@ -32,6 +32,7 @@ class ADAU1452
     byte getRelativeSignalLevel(const unsigned int* tab, byte range, byte id, bool right);
     int8_t getDecibelSignalLevel(byte id, bool right);
 
+    bool isMonoChannel(byte id) { return id > DSP_STEREO_BEFORE - 2; }
     void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     void setDecibelSendLevel(byte id, byte to, int8_t val);
     int8_t faderPosition_dB[DSP_FADER_COUNT];  // буфер положений фейдеров внутри DSP

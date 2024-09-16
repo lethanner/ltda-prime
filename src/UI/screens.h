@@ -37,8 +37,8 @@ namespace Menus {
     DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 3, false, NULL);
     DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
-    DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, 2, false, NULL);
-    DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, 1, false, NULL);
+    DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
+    DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, DSP_OUT_BUS_BEFORE, false, NULL);
     DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegisterPtr());
 };  //namespace Menus
 
