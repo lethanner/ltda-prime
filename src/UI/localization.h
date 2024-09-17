@@ -26,6 +26,9 @@ namespace Localization {
         const char* bluetooth;
         const char* language;
         const char* preferences;
+        const char* pitch;
+        const char* pitch_change;
+        const char* semitones;
     };
 
     extern const Strings russian;
@@ -42,6 +45,7 @@ namespace Localization {
     const char* const chmenu_reverb[] = { active()->reverb, active()->preferences,
                                           active()->reverb_time, active()->hf_damping,
                                           active()->bassreverbgain };
+    const char* const chmenu_pitch[] = { active()->pitch, active()->preferences, active()->send_to_monitor, active()->pitch_change };
     const char* const chmenu_blue[] = { active()->bluetooth, active()->preferences,
                                         active()->send_to_monitor, active()->disconnect };
     const char* const groupmenu[] = { active()->group, active()->sends_on_fader };

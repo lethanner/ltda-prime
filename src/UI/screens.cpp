@@ -45,6 +45,23 @@ void Menus::BluetoothChannel::onClick()
     open(&LEDUI::MixerScreen::it());  // выход
 }
 
+void Menus::PitchChannel::onClick()
+{
+    switch (selected) {
+    case 0:  // preferences
+        open(&Menus::Preferences::it());
+        break;
+    case 1:  // send to monitor
+        LEDUI::setMonitorDataFeed(FADER_PITCH);
+        open(&LEDUI::MixerScreen::it());  // выход
+        break;
+    case 2:  // change pitch
+        open(&Adjusters::Pitch::it());
+        break;
+    }
+    
+}
+
 void Menus::ReverbChannel::onClick()
 {
     static Screen *rvr_menus[] = { &Adjusters::ReverbTime::it(), &Adjusters::ReverbHFDamp::it(),
@@ -115,4 +132,9 @@ void Adjusters::BassboostGain::onTurn(int8_t dir)
 void Adjusters::BassboostIntens::onTurn(int8_t dir)
 {
     DSP.setBBIntensity(DSP.bassboostIntensity + dir);
+}
+
+void Adjusters::Pitch::onTurn(int8_t dir)
+{
+    DSP.setPitchBusShift(DSP.pitch_shift + dir);
 }

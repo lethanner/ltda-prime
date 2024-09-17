@@ -36,6 +36,7 @@ namespace Menus {
     DECLARE_MENU(MasterChannel, Localization::chmenu_master, 3, false, NULL);
     DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 3, false, NULL);
     DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 4, false, NULL);
+    DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 3, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
     DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
     DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, DSP_OUT_BUS_BEFORE, false, NULL);
@@ -53,4 +54,6 @@ namespace Adjusters {
                    Localization::active()->parrots, 1, 30, &DSP.bassboostGain);
     DECLARE_ADJUST(BassboostIntens, Localization::active()->intensity,
                    Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
+    DECLARE_ADJUST(Pitch, Localization::active()->pitch,
+                   Localization::active()->semitones, -16, +16, &DSP.pitch_shift);
 };  //namespace Adjusters

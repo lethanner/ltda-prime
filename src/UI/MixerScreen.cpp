@@ -133,6 +133,9 @@ void LEDUI::MixerScreen::onHold()
         case FADER_BLUETOOTH_ST:  // если выбрали канал bluetooth, то для него меню
             open(&Menus::BluetoothChannel::it());
             break;
+        case FADER_PITCH:
+            open(&Menus::PitchChannel::it());
+            break;
         default:  // иначе меню для всех остальных
             open(&Menus::GenericChannel::it());
             break;

@@ -10,6 +10,8 @@
 #define DSP_REVERB_HFDAMP_REG 0x00A1
 #define DSP_REVERB_BGAIN_REG 0x00A3
 
+#define DSP_PITCH_SHIFT_REG 0x005A
+
 /* 
  * TODO: переписать это говно на структуры
 */
