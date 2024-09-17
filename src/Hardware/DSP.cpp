@@ -275,4 +275,18 @@ void ADAU1452::setReverbBassGain(byte value)
     reverbBassGain = value;
 }
 
+void ADAU1452::setPitchBusShift(int8_t value)
+{
+    value = constrain(value, -16, +16);
+    int32_t _val = SEMITONE_INCREMENT * value;
+
+    gotoRegister(DSP_PITCH_SHIFT_REG);
+    for (byte i = 0; i < 4; i++) {
+        Wire.write((_val >> (24 - (i * 8))) & 0xFF);
+    }
+    Wire.endTransmission(); 
+
+    pitch_shift = value;
+}
+
 ADAU1452 DSP;

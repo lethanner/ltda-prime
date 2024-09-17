@@ -8,6 +8,7 @@
 #include <GyverIO.h>
 #include <A2DPVolumeControl.h>
 
+#define SEMITONE_INCREMENT 0x1894
 #define DSPSETS_IS_BASSBOOSTED 0
 
 class A2DPExternalVolumeControl;
@@ -57,6 +58,10 @@ class ADAU1452
     void setReverbHFDamping(byte value);
     void setReverbBassGain(byte value);
     int8_t reverbTime = 2, reverbHFDamp = 1, reverbBassGain = 1;
+
+    // питч
+    void setPitchBusShift(int8_t value);
+    int8_t pitch_shift = 0;
 
     // буфер значений уровней сигнала
     int readbackVal[DSP_READBACK_COUNT];

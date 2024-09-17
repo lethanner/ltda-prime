@@ -23,7 +23,10 @@ const Localization::Strings Localization::russian = {
     .master = "Мастер",
     .bluetooth = "Bluetooth",
     .language = "Язык",
-    .preferences = "[Установки]"
+    .preferences = "[Установки]",
+    .pitch = "Высота тона",
+    .pitch_change = "Управление высотой",
+    .semitones = " полутонов"
 };
 
 const Localization::Strings Localization::english = {
@@ -49,5 +52,8 @@ const Localization::Strings Localization::english = {
     .master = "Master",
     .bluetooth = "Bluetooth",
     .language = "Language",
-    .preferences = "[Preferences]"
+    .preferences = "[Preferences]",
+    .pitch = "Pitch",
+    .pitch_change = "Change pitch",
+    .semitones = " semitones"
 };
