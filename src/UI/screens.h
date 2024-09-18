@@ -32,11 +32,11 @@
 namespace Menus {
     DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, true, NULL);
     DECLARE_MENU(Preferences, Localization::prefsmenu, 1, false, NULL);
-    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 2, false, NULL);
-    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 3, false, NULL);
-    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 3, false, NULL);
-    DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 4, false, NULL);
-    DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 3, false, NULL);
+    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 3, false, NULL);
+    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 4, false, NULL);
+    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 4, false, NULL);
+    DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 5, false, NULL);
+    DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
     DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
     DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, DSP_OUT_BUS_BEFORE, false, NULL);
@@ -55,5 +55,9 @@ namespace Adjusters {
     DECLARE_ADJUST(BassboostIntens, Localization::active()->intensity,
                    Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
     DECLARE_ADJUST(Pitch, Localization::active()->pitch,
-                   Localization::active()->semitones, -16, +16, &DSP.pitch_shift);
+                   Localization::active()->semitones, -16, 16, &DSP.pitch_shift);
+    //DECLARE_ADJUST(Balance, Localization::active()->stereobalance, Localization::active()->parrots,
+                   //-50, 50, &DSP.balpan[LEDUI::MixerScreen::it().getSelectedChannel()]);
+    DECLARE_ADJUST(Balance, Localization::active()->stereobalance, Localization::active()->parrots,
+                   -50, 50, &DSP.pitch_shift);
 };  //namespace Adjusters

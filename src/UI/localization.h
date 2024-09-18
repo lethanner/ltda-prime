@@ -29,6 +29,7 @@ namespace Localization {
         const char* pitch;
         const char* pitch_change;
         const char* semitones;
+        const char* stereobalance;
     };
 
     extern const Strings russian;
@@ -39,15 +40,19 @@ namespace Localization {
     inline void setLanguage(const Strings* n) { act = n; }
 
     const char* const chmenu_generic[] = { active()->channel, active()->preferences,
-                                           active()->send_to_monitor };
+                                           active()->send_to_monitor, active()->stereobalance };
     const char* const chmenu_master[] = { active()->master, active()->preferences,
-                                          active()->send_to_monitor, active()->bassboost };
-    const char* const chmenu_reverb[] = { active()->reverb, active()->preferences,
-                                          active()->reverb_time, active()->hf_damping,
-                                          active()->bassreverbgain };
-    const char* const chmenu_pitch[] = { active()->pitch, active()->preferences, active()->send_to_monitor, active()->pitch_change };
+                                          active()->send_to_monitor,
+                                          active()->stereobalance, active()->bassboost };
+    const char* const chmenu_reverb[] = {
+        active()->reverb,      active()->preferences, active()->stereobalance,
+        active()->reverb_time, active()->hf_damping,  active()->bassreverbgain
+    };
+    const char* const chmenu_pitch[] = { active()->pitch, active()->preferences, active()->send_to_monitor,
+                                         active()->stereobalance, active()->pitch_change };
     const char* const chmenu_blue[] = { active()->bluetooth, active()->preferences,
-                                        active()->send_to_monitor, active()->disconnect };
+                                        active()->send_to_monitor,
+                                        active()->stereobalance, active()->disconnect };
     const char* const groupmenu[] = { active()->group, active()->sends_on_fader };
     const char* const sofdestmenu[] = { active()->to, SOF_DESTINATION_LABELS };
     const char* const bassboostmenu[] = { active()->bassboost, active()->enable,
