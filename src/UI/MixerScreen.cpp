@@ -4,9 +4,25 @@
 
 void LEDUI::MixerScreen::init(void* params)
 {
-    //MixerScreen::active = this;
-    gap_block[0] = (128 - (_group->count * 12)) / (_group->count + 1);
-    gap_block[1] = (128 - (_group->count * 18)) / (_group->count + 1);
+    // просчёт координат и прочих числовых значений
+    // для выравнивания по центру всех каналов на дисплее
+    byte gap_m = (128 - (_group->count * 12)) / (_group->count + 1);
+    byte gap_s = (128 - (_group->count * 18)) / (_group->count + 1);
+    byte label_offset = (DSP.isMonoChannel(_group->onScreenChannels[0]) ? gap_m : gap_s) / 2;
+    for (byte ch = 0; ch < _group->count; ch++) {
+        bool isMono = DSP.isMonoChannel(_group->onScreenChannels[ch]);
+        byte block_width = isMono ? 12 : 18;
+        byte gap = isMono ? gap_m : gap_s;
+        byte block_safe_zone = block_width + gap;
+        _static[0][ch] = gap + (ch * block_safe_zone);
+        // определяем максимальную длину всех подписей, которая допустима
+        // для влезания на экран в зависимости от кол-ва каналов
+        byte label_len = strlen(ch_labels[_group->onScreenChannels[ch]]);
+        byte max_label_chars = (block_safe_zone / 6 < label_len) ? block_safe_zone / 6 : label_len;
+        _static[1][ch] = max_label_chars;
+        _static[2][ch] = label_offset + ((block_safe_zone - (6 * max_label_chars)) / 2);
+        label_offset += block_safe_zone;
+    }
 
     if (params != NULL && _group->sof > NO_SOF) {
         byte paramSoF = *static_cast<byte*>(params);
@@ -31,13 +47,7 @@ void LEDUI::MixerScreen::render()
         display.print(":");
     }
 
-    byte label_offset = gap_block[DSP.isMonoChannel(_group->onScreenChannels[0]) ? 0 : 1] / 2;
     for (byte ch = 0; ch < _group->count; ch++) {
-        bool isMono = DSP.isMonoChannel(_group->onScreenChannels[ch]);
-        byte block_width = isMono ? 12 : 18;
-        byte gap = isMono ? gap_block[0] : gap_block[1];
-        byte block_safe_zone = block_width + gap;
-        byte x_coord = gap + (ch * block_safe_zone);
         byte fader_pos =
          map(usingSoF ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[ch]]
                       : DSP.faderPosition_dB[_group->onScreenChannels[ch]],
@@ -47,36 +57,33 @@ void LEDUI::MixerScreen::render()
 
         // clang-format off
         byte levelL = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], false);
-        display.rect(x_coord + 8, 52, x_coord + 11, levelL, OLED_FILL);  // столбик уровня левого канала
+        display.rect(_static[0][ch] + 8, 52, _static[0][ch] + 11, levelL, OLED_FILL);  // столбик уровня левого канала
 
-        if (!isMono) {  // если канал не моно
+        if (!DSP.isMonoChannel(_group->onScreenChannels[ch])) {  // если канал не моно
             byte levelR = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], true);
-            display.rect(x_coord + 13, 52, x_coord + 16, levelR, OLED_FILL);  // столбик уровня правого канала
+            display.rect(_static[0][ch] + 13, 52, _static[0][ch] + 16, levelR, OLED_FILL);  // столбик уровня правого канала
         }
         // clang-format on
 
-        display.line(x_coord + 2, 52, x_coord + 2, 11);  // полоска фейдера
+        display.line(_static[0][ch] + 2, 52, _static[0][ch] + 2, 11);  // полоска фейдера
         if (is_muted) {
             // если MUTED, то рисуем (какую-то фигню) вместо ручки фейдера
-            display.fastLineH(fader_pos + 1, x_coord + 1, x_coord + 3);
-            display.fastLineH(fader_pos - 1, x_coord + 1, x_coord + 3);
+            display.fastLineH(fader_pos + 1, _static[0][ch] + 1, _static[0][ch] + 3);
+            display.fastLineH(fader_pos - 1, _static[0][ch] + 1, _static[0][ch] + 3);
             // если замьюченный канал выбран, то дорисовываем (фигню) до квадратика
-            if (selected == ch) display.fastLineH(fader_pos, x_coord + 1, x_coord + 3);
+            if (selected == ch)
+                display.fastLineH(fader_pos, _static[0][ch] + 1, _static[0][ch] + 3);
         } else
             // если не MUTED, то рисуем обычную ручку фейдера
-            display.rect(x_coord, fader_pos, x_coord + 4,
+            display.rect(_static[0][ch], fader_pos, _static[0][ch] + 4,
                          fader_pos + static_cast<byte>(selected == ch), 2);
 
         // подписи каналов с выравниванием
         if (screen_state == 0) {
-            // определяем максимальную длину подписи, которая может влезть на экран в зависимости от кол-ва каналов
-            byte label_len = strlen(ch_labels[_group->onScreenChannels[ch]]);
-            byte max_label_chars = (block_safe_zone / 6 < label_len) ? block_safe_zone / 6 : label_len;
-            display.setCursorXY(label_offset + ((block_safe_zone - (6 * max_label_chars)) / 2), 56);
-            for (byte i = 0; i < max_label_chars; i++) {
+            display.setCursorXY(_static[2][ch], 56);
+            for (byte i = 0; i < _static[1][ch]; i++) {
                 display.write(ch_labels[_group->onScreenChannels[ch]][i]);
             }
-            label_offset += block_safe_zone;
         }
     }
 
