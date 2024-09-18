@@ -126,6 +126,7 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
   public:
     AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
       : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
+    void overrideValuePtr(int8_t *newptr);
 
   private:
     void init(void *params = NULL) override;
@@ -135,5 +136,6 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
     // void onTurn(int8_t dir) const override;
 
     const char *_title, *_unit;
-    const int8_t __min, __max, *_value;
+    const int8_t __min, __max;
+    int8_t *_value;
 };
