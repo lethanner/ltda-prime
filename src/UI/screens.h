@@ -56,8 +56,6 @@ namespace Adjusters {
                    Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
     DECLARE_ADJUST(Pitch, Localization::active()->pitch,
                    Localization::active()->semitones, -16, 16, &DSP.pitch_shift);
-    //DECLARE_ADJUST(Balance, Localization::active()->stereobalance, Localization::active()->parrots,
-                   //-50, 50, &DSP.balpan[LEDUI::MixerScreen::it().getSelectedChannel()]);
-    DECLARE_ADJUST(Balance, Localization::active()->stereobalance, Localization::active()->parrots,
-                   -50, 50, &DSP.pitch_shift);
+    DECLARE_ADJUST(Balance, Localization::active()->stereobalance,
+                   Localization::active()->parrots, -50, 50, NULL);
 };  //namespace Adjusters

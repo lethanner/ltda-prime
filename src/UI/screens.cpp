@@ -12,6 +12,8 @@ void Menus::GenericChannel::onClick()
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.balpan[LEDUI::MixerScreen::it().getSelectedChannel()]);
         break;
     }
 }
@@ -28,6 +30,7 @@ void Menus::MasterChannel::onClick()
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_MASTER_ST]);
         break;
     case 3:  // bassboost
         open(&Menus::Bassboost::it());
@@ -43,15 +46,17 @@ void Menus::BluetoothChannel::onClick()
         break;
     case 1:  // send to monitor
         LEDUI::setMonitorDataFeed(FADER_BLUETOOTH_ST);
+        open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_BLUETOOTH_ST]);
         break;
     case 3:  // disconnect
         bluetooth.disconnect();
+        open(&LEDUI::MixerScreen::it());  // выход
         break;
     }
-    open(&LEDUI::MixerScreen::it());  // выход
 }
 
 void Menus::PitchChannel::onClick()
@@ -66,6 +71,7 @@ void Menus::PitchChannel::onClick()
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_PITCH]);
         break;
     case 3:  // change pitch
         open(&Adjusters::Pitch::it());
@@ -78,7 +84,10 @@ void Menus::ReverbChannel::onClick()
     static Screen *rvr_menus[] = { &Adjusters::Balance::it(), &Adjusters::ReverbTime::it(),
                                    &Adjusters::ReverbHFDamp::it(), &Adjusters::ReverbBGain::it() };
     if (selected == 0) open(&Menus::Preferences::it());
-    else open(rvr_menus[selected - 1]);
+    else {
+        open(rvr_menus[selected - 1]);
+        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_REVERB_ST]);
+    }
 }
 
 void Menus::ChannelGroup::onClick()
