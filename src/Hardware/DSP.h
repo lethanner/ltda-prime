@@ -36,8 +36,10 @@ class ADAU1452
     bool isMonoChannel(byte id) { return id > DSP_STEREO_BEFORE - 2; }
     void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     void setDecibelSendLevel(byte id, byte to, int8_t val);
+    void setStereoBalance(byte id, int8_t val);
     int8_t faderPosition_dB[DSP_FADER_COUNT];  // буфер положений фейдеров внутри DSP
     int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
+    int8_t balpan[DSP_FADER_COUNT]; // буфер положений регуляторов стереобаланса/панорамы
 
     // Mute
     void toggleMute(byte id);

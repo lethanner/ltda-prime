@@ -13,6 +13,8 @@ ADAU1452::ADAU1452()
     // инициализировать все флаги MUTE
     memset(&muteFlags, 0, DSP_FADER_COUNT);
     memset(&sendMuteFlags, 0, DSP_BUS_COUNT * DSP_BUS_CHANNELS);
+    // инициализировать регуляторы стереобаланса
+    memset(&balpan, 0, DSP_FADER_COUNT);
 
     // вкл синхронизации громкости блютуза с громкостью на DSP
     avrcp_volume_sync = new A2DPExternalVolumeControl(this);
@@ -144,20 +146,27 @@ void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
     val = constrain(val, -97, 10);
     // если MUTE, то значение принудительно 0
     uint32_t _val = muteFlags[id] ? 0 : db_calibration_24bit[97 + val];
+    uint32_t values[2];
 
-    if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
+    if (balpan[id] == 0)
+        values[0] = values[1] = _val;
+    else {
+        float coeff = 0.02 * balpan[id];
+        values[0] = _val * (1.0 - coeff);
+        values[1] = _val * (1.0 + coeff);
+    }
 
-    // TODO: управление стереобалансом
     // отправить новый уровень на DSP (сразу левый+правый)
     for (byte j = 0; j < 2; j++) {
         gotoRegister(dsp_fader_address[(id * 2) + j]);
         for (byte i = 0; i < 4; i++) {
-            Wire.write((_val >> (24 - (i * 8))) & 0xFF);
+            Wire.write((values[j] >> (24 - (i * 8))) & 0xFF);
         }
         Wire.endTransmission();
     }
 
     faderPosition_dB[id] = val;
+    if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
 }
 
 // установка уровня посыла канала на шину (в децибелах от -97 до 10, где -97 = MUTE)
@@ -287,6 +296,12 @@ void ADAU1452::setPitchBusShift(int8_t value)
     Wire.endTransmission(); 
 
     pitch_shift = value;
+}
+
+void ADAU1452::setStereoBalance(byte id, int8_t val)
+{
+    balpan[id] = constrain(val, -50, 50);
+    setDecibelFaderPosition(id, faderPosition_dB[id], false);
 }
 
 ADAU1452 DSP;

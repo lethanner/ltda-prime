@@ -10,6 +10,9 @@ void Menus::GenericChannel::onClick()
         LEDUI::setMonitorDataFeed(LEDUI::MixerScreen::it().getSelectedChannel());
         open(&LEDUI::MixerScreen::it());  // выход
         break;
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        break;
     }
 }
 
@@ -23,7 +26,10 @@ void Menus::MasterChannel::onClick()
         LEDUI::setMonitorDataFeed(FADER_MASTER_ST);
         open(&LEDUI::MixerScreen::it());  // выход
         break;
-    case 2:  // bassboost
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        break;
+    case 3:  // bassboost
         open(&Menus::Bassboost::it());
         break;
     }
@@ -38,7 +44,10 @@ void Menus::BluetoothChannel::onClick()
     case 1:  // send to monitor
         LEDUI::setMonitorDataFeed(FADER_BLUETOOTH_ST);
         break;
-    case 2:  // disconnect
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        break;
+    case 3:  // disconnect
         bluetooth.disconnect();
         break;
     }
@@ -55,17 +64,19 @@ void Menus::PitchChannel::onClick()
         LEDUI::setMonitorDataFeed(FADER_PITCH);
         open(&LEDUI::MixerScreen::it());  // выход
         break;
-    case 2:  // change pitch
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        break;
+    case 3:  // change pitch
         open(&Adjusters::Pitch::it());
         break;
     }
-    
 }
 
 void Menus::ReverbChannel::onClick()
 {
-    static Screen *rvr_menus[] = { &Adjusters::ReverbTime::it(), &Adjusters::ReverbHFDamp::it(),
-                                   &Adjusters::ReverbBGain::it() };
+    static Screen *rvr_menus[] = { &Adjusters::Balance::it(), &Adjusters::ReverbTime::it(),
+                                   &Adjusters::ReverbHFDamp::it(), &Adjusters::ReverbBGain::it() };
     if (selected == 0) open(&Menus::Preferences::it());
     else open(rvr_menus[selected - 1]);
 }
@@ -134,7 +145,10 @@ void Adjusters::BassboostIntens::onTurn(int8_t dir)
     DSP.setBBIntensity(DSP.bassboostIntensity + dir);
 }
 
-void Adjusters::Pitch::onTurn(int8_t dir)
+void Adjusters::Pitch::onTurn(int8_t dir) { DSP.setPitchBusShift(DSP.pitch_shift + dir); }
+
+void Adjusters::Balance::onTurn(int8_t dir)
 {
-    DSP.setPitchBusShift(DSP.pitch_shift + dir);
+    byte ch = LEDUI::MixerScreen::it().getSelectedChannel();
+    DSP.setStereoBalance(ch, DSP.balpan[ch] + dir);
 }

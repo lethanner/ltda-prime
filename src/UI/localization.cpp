@@ -26,7 +26,8 @@ const Localization::Strings Localization::russian = {
     .preferences = "[Установки]",
     .pitch = "Высота тона",
     .pitch_change = "Управление высотой",
-    .semitones = " полутонов"
+    .semitones = " полутонов",
+    .stereobalance = "Баланс/панорама"
 };
 
 const Localization::Strings Localization::english = {
@@ -55,5 +56,6 @@ const Localization::Strings Localization::english = {
     .preferences = "[Preferences]",
     .pitch = "Pitch",
     .pitch_change = "Change pitch",
-    .semitones = " semitones"
+    .semitones = " semitones",
+    .stereobalance = "Balance/Panning"
 };
