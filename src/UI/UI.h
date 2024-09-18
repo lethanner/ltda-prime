@@ -116,7 +116,8 @@ class LEDUI::MixerScreen : public LEDUI::Screen
     void onTurn(int8_t dir) override;
 
     const ChannelGroup *_group;
-    byte gap_block[2] = {0, 0}, selected = 0, SoFdest = 0, selectedGroup = 0;
+    byte _static[3][10];
+    byte selected = 0, SoFdest = 0, selectedGroup = 0;
     bool turn_started = false, usingSoF = false;
 };
 
