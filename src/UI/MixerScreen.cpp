@@ -5,7 +5,8 @@
 void LEDUI::MixerScreen::init(void* params)
 {
     //MixerScreen::active = this;
-    gap_block = (128 - (_group->count * 18)) / (_group->count + 1);
+    gap_block[0] = (128 - (_group->count * 12)) / (_group->count + 1);
+    gap_block[1] = (128 - (_group->count * 18)) / (_group->count + 1);
 
     if (params != NULL && _group->sof > NO_SOF) {
         byte paramSoF = *static_cast<byte*>(params);
@@ -30,12 +31,13 @@ void LEDUI::MixerScreen::render()
         display.print(":");
     }
 
-    byte label_offset = gap_block / 2;
+    byte label_offset = gap_block[DSP.isMonoChannel(_group->onScreenChannels[0]) ? 0 : 1] / 2;
     for (byte ch = 0; ch < _group->count; ch++) {
         bool isMono = DSP.isMonoChannel(_group->onScreenChannels[ch]);
         byte block_width = isMono ? 12 : 18;
-        byte block_safe_zone = block_width + gap_block;
-        byte x_coord = gap_block + (ch * block_safe_zone);
+        byte gap = isMono ? gap_block[0] : gap_block[1];
+        byte block_safe_zone = block_width + gap;
+        byte x_coord = gap + (ch * block_safe_zone);
         byte fader_pos =
          map(usingSoF ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[ch]]
                       : DSP.faderPosition_dB[_group->onScreenChannels[ch]],
@@ -67,6 +69,7 @@ void LEDUI::MixerScreen::render()
 
         // подписи каналов с выравниванием
         if (screen_state == 0) {
+            // определяем максимальную длину подписи, которая может влезть на экран в зависимости от кол-ва каналов
             byte label_len = strlen(ch_labels[_group->onScreenChannels[ch]]);
             byte max_label_chars = (block_safe_zone / 6 < label_len) ? block_safe_zone / 6 : label_len;
             display.setCursorXY(label_offset + ((block_safe_zone - (6 * max_label_chars)) / 2), 56);
@@ -133,9 +136,7 @@ void LEDUI::MixerScreen::onHold()
         case FADER_BLUETOOTH_ST:  // если выбрали канал bluetooth, то для него меню
             open(&Menus::BluetoothChannel::it());
             break;
-        case FADER_PITCH:
-            open(&Menus::PitchChannel::it());
-            break;
+        case FADER_PITCH: open(&Menus::PitchChannel::it()); break;
         default:  // иначе меню для всех остальных
             open(&Menus::GenericChannel::it());
             break;
