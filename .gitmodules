@@ -1,0 +1,12 @@
+[submodule "lib/GyverIO"]
+	path = lib/GyverIO
+	url = https://github.com/GyverLibs/GyverIO.git
+[submodule "lib/GyverOLED"]
+	path = lib/GyverOLED
+	url = https://github.com/GyverLibs/GyverOLED.git
+[submodule "lib/EncButton"]
+	path = lib/EncButton
+	url = https://github.com/GyverLibs/EncButton.git
+[submodule "lib/ESP32-A2DP"]
+	path = lib/ESP32-A2DP
+	url = https://github.com/pschatzmann/ESP32-A2DP.git

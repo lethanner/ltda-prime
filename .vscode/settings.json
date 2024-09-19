@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "string_view": "cpp",
+        "cstddef": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp"
+    }
+}
