@@ -57,7 +57,8 @@ class LEDUI::MenuScreen : public LEDUI::Screen
 {
   public:
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
-      : _entries(entries), _e_count(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
+      : _entries(entries), _e_count_static(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
+    void overrideEntryCount(byte newcount) { _e_count = newcount - 1; }
     static MenuScreen *active;
 
   private:
@@ -68,11 +69,12 @@ class LEDUI::MenuScreen : public LEDUI::Screen
     void onTurn(int8_t dir) override;
 
     const char *const *_entries;
-    const byte _e_count;
+    const byte _e_count_static;
     const bool _autoclick;
     const int *_booleans;
 
     static byte visibleSel, entryRendererStart;
+    static byte _e_count;
 
   protected:
     static byte selected;

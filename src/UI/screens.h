@@ -38,8 +38,8 @@ namespace Menus {
     DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 5, false, NULL);
     DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
-    DECLARE_MENU(SendsOnFaderAll, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
-    DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, DSP_OUT_BUS_BEFORE, false, NULL);
+    DECLARE_MENU(SendsOnFader, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
+    //DECLARE_MENU(SendsOnFaderFX, Localization::sofdestmenu, DSP_OUT_BUS_BEFORE, false,  NULL);
     DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegisterPtr());
 };  //namespace Menus
 
