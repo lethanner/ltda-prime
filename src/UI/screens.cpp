@@ -94,16 +94,14 @@ void Menus::ChannelGroup::onClick()
 {
     switch (selected) {
     case 0:  // sends on fader
+        open(&Menus::SendsOnFader::it());
+        // для посылов с эффектов на выходы нужно порезать количество вариантов в меню
         if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
-            open(&Menus::SendsOnFaderFX::it());
-        else if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::ALL_SOF)
-            open(&Menus::SendsOnFaderAll::it());
-        break;
+            overrideEntryCount(DSP_OUT_BUS_BEFORE);
     }
 }
 
-void Menus::SendsOnFaderAll::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
-void Menus::SendsOnFaderFX::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
+void Menus::SendsOnFader::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
 
 void Menus::Bassboost::onClick()
 {
