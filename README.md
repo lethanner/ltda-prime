@@ -49,7 +49,11 @@
     <li><b>Индикаторы уровня:</b> 24 светодиода, 3x 74HC595</li>
 </ul>
 
-<img alt="OLED display content" width=70% src="https://github.com/user-attachments/assets/a1ef3c86-bd66-4be4-be83-0b3e4d365d2a">
+<h2></h2>
+<p align="center">
+    <img alt="OLED display content" width=70% src="https://github.com/user-attachments/assets/a1ef3c86-bd66-4be4-be83-0b3e4d365d2a">
+    <img alt="LED indicator of an LTDA Prime" width=70% src="https://github.com/user-attachments/assets/3ef2f27e-fa10-4131-a50e-683b00dadbdb">
+</p>
 
 <h2>Благодарности</h2>
 <h4>Материальная поддержка</h4>
@@ -57,5 +61,3 @@
 <h4>Моральная поддержка</h4>
 <a href="https://vk.com/prisma_ssau">Театрально-экспериментальная студия "Призма"</a>
 
-<h2></h2>
-<img alt="LED indicator of an LTDA Prime" width=70% src="https://github.com/user-attachments/assets/3ef2f27e-fa10-4131-a50e-683b00dadbdb">
