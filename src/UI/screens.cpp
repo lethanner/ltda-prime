@@ -159,3 +159,13 @@ void Adjusters::Balance::onTurn(int8_t dir)
     byte ch = LEDUI::MixerScreen::it().getSelectedChannel();
     DSP.setStereoBalance(ch, DSP.balpan[ch] + dir);
 }
+
+void Adjusters::Balance::onClick()
+{
+    byte ch = LEDUI::MixerScreen::it().getSelectedChannel();
+    int8_t current = DSP.balpan[ch];
+
+    if (current == 0) DSP.setStereoBalance(ch, -50);
+    else if (abs(current) == 50) DSP.setStereoBalance(ch, -current);
+    else DSP.setStereoBalance(ch, 0);
+}

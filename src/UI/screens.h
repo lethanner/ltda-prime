@@ -24,6 +24,21 @@
             return ins; \
         } \
         void onTurn(int8_t dir) override; \
+        void onClick() override {}; \
+      private: \
+        _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
+    }
+
+#define DECLARE_ADJUST_CLICKABLE(_name, _title, _unit, __min, __max, _val) \
+    class _name : public LEDUI::AdjustScreen { \
+      public: \
+        static _name& it() \
+        { \
+            static _name ins; \
+            return ins; \
+        } \
+        void onTurn(int8_t dir) override; \
+        void onClick() override; \
       private: \
         _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
     }
@@ -56,6 +71,6 @@ namespace Adjusters {
                    Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
     DECLARE_ADJUST(Pitch, Localization::active()->pitch,
                    Localization::active()->semitones, -16, 16, &DSP.pitch_shift);
-    DECLARE_ADJUST(Balance, Localization::active()->stereobalance,
-                   Localization::active()->parrots, -50, 50, NULL);
+    DECLARE_ADJUST_CLICKABLE(Balance, Localization::active()->stereobalance,
+                             Localization::active()->parrots, -50, 50, NULL);
 };  //namespace Adjusters
