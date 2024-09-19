@@ -39,11 +39,6 @@ void LEDUI::AdjustScreen::onHold()
     open(MenuScreen::active);
 }
 
-void LEDUI::AdjustScreen::onClick()
-{
-    // to be continued... возможно
-}
-
-/* onTurn() реализуется только при наследовании от класса AdjustScreen */
+/* onTurn() и onClick() реализуются только при наследовании от класса AdjustScreen */
 
 void LEDUI::AdjustScreen::overrideValuePtr(int8_t *newptr) { _value = newptr; }

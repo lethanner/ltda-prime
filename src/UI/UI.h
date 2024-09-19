@@ -133,7 +133,7 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
   private:
     void init(void *params = NULL) override;
     void render() override;
-    void onClick() override;
+    // void onClick() override;
     void onHold() override;
     // void onTurn(int8_t dir) const override;
 
