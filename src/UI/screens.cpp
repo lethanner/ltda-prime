@@ -15,6 +15,9 @@ void Menus::GenericChannel::onClick()
         Adjusters::Balance::it().overrideValuePtr(
          &DSP.balpan[LEDUI::MixerScreen::it().getSelectedChannel()]);
         break;
+    case 3: // stereo mode
+        open(&Menus::MStereoMode::it());
+        break;
     }
 }
 
@@ -32,7 +35,12 @@ void Menus::MasterChannel::onClick()
         open(&Adjusters::Balance::it());
         Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_MASTER_ST]);
         break;
-    case 3:  // bassboost
+    case 3: // stereo mode
+        open(&Menus::MStereoMode::it());
+        // у канала Master нет режима вычитания - отрезаем последний пункт
+        Menus::MStereoMode::it().overrideEntryCount(2);
+        break;
+    case 4:  // bassboost
         open(&Menus::Bassboost::it());
         break;
     }
@@ -52,7 +60,10 @@ void Menus::BluetoothChannel::onClick()
         open(&Adjusters::Balance::it());
         Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_BLUETOOTH_ST]);
         break;
-    case 3:  // disconnect
+    case 3: // stereo mode
+        open(&Menus::MStereoMode::it());
+        break;
+    case 4:  // disconnect
         bluetooth.disconnect();
         open(&LEDUI::MixerScreen::it());  // выход
         break;
@@ -125,6 +136,12 @@ void Menus::LanguageSelect::onClick()
 {
     Localization::setLanguage(selected == 1 ? &Localization::russian : &Localization::english);
     calculateTitleCenter();
+}
+
+void Menus::MStereoMode::onClick()
+{
+    DSP.setStereoMode(LEDUI::MixerScreen::it().getSelectedChannel(),
+                      static_cast<ADAU1452::StereoMode>(selected));
 }
 
 void Adjusters::ReverbTime::onTurn(int8_t dir)
