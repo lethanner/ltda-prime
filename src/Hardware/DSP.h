@@ -24,6 +24,8 @@ class ADAU1452
     int flagRegister = 0x00000000;  // импровизированный регистр настроек
 
   public:
+    enum StereoMode { STEREO = 0, FORCEMONO = 1, VOICESUPPRESS = 2 };
+
     ADAU1452();
     void init();
 
@@ -37,9 +39,10 @@ class ADAU1452
     void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
     void setDecibelSendLevel(byte id, byte to, int8_t val);
     void setStereoBalance(byte id, int8_t val);
+    void setStereoMode(byte id, StereoMode mode);
     int8_t faderPosition_dB[DSP_FADER_COUNT];  // буфер положений фейдеров внутри DSP
     int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
-    int8_t balpan[DSP_FADER_COUNT]; // буфер положений регуляторов стереобаланса/панорамы
+    int8_t balpan[DSP_FADER_COUNT];  // буфер положений регуляторов стереобаланса/панорамы
 
     // Mute
     void toggleMute(byte id);

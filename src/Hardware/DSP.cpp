@@ -304,4 +304,22 @@ void ADAU1452::setStereoBalance(byte id, int8_t val)
     setDecibelFaderPosition(id, faderPosition_dB[id], false);
 }
 
+// установка стереорежима для стереоканала
+// либо "нормальный", либо принудительное моно, либо вычитание стереоканалов
+// (вычитание стереоканалов иногда используется для подавления вокала) 
+void ADAU1452::setStereoMode(byte id, StereoMode mode)
+{
+    // для канала REVERB и моноканалов стереорежима нет
+    if (id == FADER_REVERB_ST || isMonoChannel(id)) return;
+
+    gotoRegister(dsp_stereomode_address[id]);
+    for (byte i = 0; i < 3; i++) {
+        Wire.write(0x00);
+    }
+    Wire.write(mode * 2);
+    Wire.endTransmission();
+
+    // TODO: возможно, сделать запоминание текущего стереорежима
+}
+
 ADAU1452 DSP;

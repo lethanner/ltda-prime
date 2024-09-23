@@ -3,7 +3,6 @@
 const Localization::Strings Localization::russian = {
     .channel = "Канал",
     .send_to_monitor = "Отпр. на индикатор",
-    .vocal_filter = "?AПодавление голоса",
     .bassboost = "Усиление баса",
     .disconnect = "Разорвать соединение",
     .group = "Группа",
@@ -27,13 +26,16 @@ const Localization::Strings Localization::russian = {
     .pitch = "Высота тона",
     .pitch_change = "Управление высотой",
     .semitones = " полутонов",
-    .stereobalance = "Баланс/панорама"
+    .stereobalance = "Баланс/панорама",
+    .stereomode = "Стереорежим",
+    .stereo = "Стерео",
+    .forcemono = "Принуд. моно",
+    .vocalfilter = "Подавл. голоса"
 };
 
 const Localization::Strings Localization::english = {
     .channel = "Channel",
     .send_to_monitor = "Send to monitor",
-    .vocal_filter = "?AVocal filter",
     .bassboost = "Bassboost",
     .disconnect = "Disconnect",
     .group = "Group",
@@ -57,5 +59,9 @@ const Localization::Strings Localization::english = {
     .pitch = "Pitch",
     .pitch_change = "Change pitch",
     .semitones = " semitones",
-    .stereobalance = "Balance/Panning"
+    .stereobalance = "Balance/Panning",
+    .stereomode = "Stereo mode",
+    .stereo = "Stereo",
+    .forcemono = "Force mono",
+    .vocalfilter = "Voice suppression"
 };
