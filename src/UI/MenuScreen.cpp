@@ -20,13 +20,13 @@ void LEDUI::MenuScreen::render()
     display.invertText(1);
     display.rect(0, 0, 127, 7, OLED_FILL);
     display.setCursor(title_xCoord, 0);
-    display.print(_entries[0]);
+    display.print(*_entries[0]);
 
     // сами пункты
     uint8_t currentLine = 1;
     byte endLine = ((_e_count < 7) ? _e_count + 1 : 7) + entryRendererStart;
     for (byte line = entryRendererStart; line < endLine; line++) {
-        const char *ptr = _entries[line + 1];
+        const char *ptr = *_entries[line + 1];
 
         byte flagId = 0;
         bool isBoolEntry = false;

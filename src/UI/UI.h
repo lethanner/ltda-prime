@@ -56,7 +56,7 @@ namespace LEDUI {
 class LEDUI::MenuScreen : public LEDUI::Screen
 {
   public:
-    MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
+    MenuScreen(const char *const **entries, byte e_count, bool autoclick, int *booleans)
       : _entries(entries), _e_count_static(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
     void overrideEntryCount(byte newcount) { _e_count = newcount - 1; }
     static MenuScreen *active;
@@ -68,7 +68,7 @@ class LEDUI::MenuScreen : public LEDUI::Screen
     void onHold() override;
     void onTurn(int8_t dir) override;
 
-    const char *const *_entries;
+    const char *const **_entries;
     const byte _e_count_static;
     const bool _autoclick;
     const int *_booleans;
@@ -78,7 +78,7 @@ class LEDUI::MenuScreen : public LEDUI::Screen
 
   protected:
     static byte selected;
-    void calculateTitleCenter() { title_xCoord = getCenterCoordinate(_entries[0]); }
+    void calculateTitleCenter() { title_xCoord = getCenterCoordinate(*_entries[0]); }
     //void return_to_mixer() const { open(MixerScreen::active); }
 };
 

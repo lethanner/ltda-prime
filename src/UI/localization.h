@@ -37,35 +37,19 @@ namespace Localization {
 
     extern const Strings russian;
     extern const Strings english;
+    extern const Strings* active;
+    void setLanguage(const Strings* n);
 
-    static const Strings* act = &Localization::english;
-    inline const Strings* active() { return act; }
-    inline void setLanguage(const Strings* n) { act = n; }
-
-    const char* const chmenu_generic[] = { active()->channel, active()->preferences,
-                                           active()->send_to_monitor,
-                                           active()->stereobalance, active()->stereomode };
-    const char* const chmenu_master[] = {
-        active()->master,        active()->preferences, active()->send_to_monitor,
-        active()->stereobalance, active()->stereomode,  active()->bassboost
-    };
-    const char* const chmenu_reverb[] = {
-        active()->reverb,      active()->preferences, active()->stereobalance,
-        active()->reverb_time, active()->hf_damping,  active()->bassreverbgain
-    };
-    const char* const chmenu_pitch[] = { active()->pitch, active()->preferences, active()->send_to_monitor,
-                                         active()->stereobalance, active()->pitch_change };
-    const char* const chmenu_blue[] = {
-        active()->bluetooth,     active()->preferences, active()->send_to_monitor,
-        active()->stereobalance, active()->stereomode,  active()->disconnect
-    };
-
-    const char* const groupmenu[] = { active()->group, active()->sends_on_fader };
-    const char* const sofdestmenu[] = { active()->to, SOF_DESTINATION_LABELS };
-    const char* const bassboostmenu[] = { active()->bassboost, active()->enable,
-                                          active()->intensity, active()->gain };
-    const char* const languagemenu[] = { active()->language, "English", "Русский" };
-    const char* const prefsmenu[] = { active()->preferences, active()->language };
-    const char* const stereomodemenu[] = { active()->stereomode, active()->stereo,
-                                           active()->forcemono, active()->vocalfilter };
+    // АААААААААААААААААААААААААААААААААААААААААААААААААА
+    inline const char *const *chmenu_generic;
+    inline const char *const *chmenu_master;
+    inline const char *const *chmenu_reverb;
+    inline const char *const *chmenu_pitch;
+    inline const char *const *chmenu_blue;
+    inline const char *const *groupmenu;
+    inline const char *const *sofdestmenu;
+    inline const char *const *bassboostmenu;
+    inline const char *const *languagemenu;
+    inline const char *const *prefsmenu;
+    inline const char *const *stereomodemenu;
 };  //namespace Localization
