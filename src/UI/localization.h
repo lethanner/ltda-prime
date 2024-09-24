@@ -43,7 +43,8 @@ namespace Localization {
     inline void setLanguage(const Strings* n) { act = n; }
 
     const char* const chmenu_generic[] = { active()->channel, active()->preferences,
-                                           active()->send_to_monitor, active()->stereobalance };
+                                           active()->send_to_monitor,
+                                           active()->stereobalance, active()->stereomode };
     const char* const chmenu_master[] = {
         active()->master,        active()->preferences, active()->send_to_monitor,
         active()->stereobalance, active()->stereomode,  active()->bassboost
