@@ -47,9 +47,9 @@
 namespace Menus {
     DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, true, NULL);
     DECLARE_MENU(Preferences, Localization::prefsmenu, 1, false, NULL);
-    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 3, false, NULL);
-    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 4, false, NULL);
-    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 4, false, NULL);
+    DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 4, false, NULL);
+    DECLARE_MENU(MasterChannel, Localization::chmenu_master, 5, false, NULL);
+    DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 5, false, NULL);
     DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 5, false, NULL);
     DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
