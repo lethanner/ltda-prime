@@ -1,27 +1,13 @@
 #include "DSP.h"
-#include "tables.h"
+#include "lut.h"
 #include "shiftreg.h"
-
-const byte _dsp_addr = DSP_I2C_ADDRESS;
-const float _smooth_mlt = RTA_SMOOTH_MULTIPLIER;
 
 ADAU1452::ADAU1452()
 {
-    // инициализировать значения всех фейдеров
-    memset(&faderPosition_dB, 0, DSP_FADER_COUNT);
-    memset(&sendFaders_dB, 0, DSP_BUS_COUNT * DSP_BUS_CHANNELS);
-    // инициализировать все флаги MUTE
-    memset(&muteFlags, 0, DSP_FADER_COUNT);
-    memset(&sendMuteFlags, 0, DSP_BUS_COUNT * DSP_BUS_CHANNELS);
-    // инициализировать регуляторы стереобаланса
-    memset(&balpan, 0, DSP_FADER_COUNT);
-
     // вкл синхронизации громкости блютуза с громкостью на DSP
     avrcp_volume_sync = new A2DPExternalVolumeControl(this);
     bluetooth.set_volume_control(avrcp_volume_sync);
 }
-
-int* ADAU1452::getFlagRegisterPtr() { return &flagRegister; }
 
 // запуск и инициализация аудиопроцессора
 void ADAU1452::init()
@@ -58,48 +44,26 @@ void ADAU1452::init()
     Wire.write(0x83);
     Wire.endTransmission();
 
-    // далее расставляем MUTE на то, что изначально должно быть в MUTE
-    // а именно: изначально должны быть отключены все эффекты
-    toggleMute(FADER_REVERB_ST);
-    toggleMute(FADER_PITCH);
-    for (byte i = 0; i < DSP_IN_TO_BUS; i++) {
-        toggleMute(i, SEND_TO_REVERB);
-        toggleMute(i, SEND_TO_PITCH);
-    }
-
     // контрольная задержка
     vTaskDelay(100 / portTICK_PERIOD_MS);
     // и только после всего включаем звук на Master
-    setDecibelFaderPosition(FADER_MASTER_ST, 0);
-
-    // кэширование всех значений громкости из DSP
-    // для их восстановления в случае перезагрузки контроллера
-    // ПС: оно пока что нихрена нормально не работает.
-    // int32_t val = 0;
-    // for (byte i = 0; i < DSP_FADER_COUNT; i++) {
-    //     gotoRegister(dsp_fader_address[i], 4);
-    //     for (byte j = 0; j < 4; j++) {
-    //         val += Wire.read() << (24 - (j * 8));
-    //     }
-    //     faderPosition[i] = val;
-    //     faderPosition_dB[i] = findValue(db_calibration_24bit, 107, val) - 97;
-    // }
+    //setDecibelFaderPosition(FADER_MASTER_ST, 0);
 }
 
 // функция выполнения запроса к 16-бит регистру аудиопроцессора
-void ADAU1452::gotoRegister(short reg, byte requestSize)
+void ADAU1452::gotoRegister(__register reg, byte requestSize)
 {
-    Wire.beginTransmission(_dsp_addr);
+    Wire.beginTransmission(DSP_I2C_ADDRESS);
     Wire.write(highByte(reg));
     Wire.write(lowByte(reg));
 
     if (requestSize > 0) {
         Wire.endTransmission(false);
-        Wire.requestFrom(_dsp_addr, requestSize);
+        Wire.requestFrom(DSP_I2C_ADDRESS, requestSize);
     }
 }
 
-void ADAU1452::writeAsFloat(short reg, byte value)
+void ADAU1452::writeAsFloat(__register reg, byte value)
 {
     int ig = value / 10;
     int fr = value % 10;
@@ -107,7 +71,7 @@ void ADAU1452::writeAsFloat(short reg, byte value)
     gotoRegister(reg);
     Wire.write(ig & 0xFF);
     for (byte i = 0; i < 3; i++) {
-        Wire.write(sigmastudio_fractions[fr][i]);
+        Wire.write(LUT::fractions[fr][i]);
     }
     Wire.endTransmission();
 }
@@ -123,80 +87,96 @@ byte ADAU1452::getCoreState()
 // обновление значений уровня сигнала всех каналов
 void ADAU1452::retrieveRTAValues()
 {
-    for (byte i = 0; i < DSP_READBACK_COUNT; i++) {
-        int32_t value = 0;
-        // из-за того, что SigmaDSP не всегда делает адреса блоков порядковыми,
-        // пришлось убрать burst-чтение за одну передачу адреса регистра и
-        // на каждую итерацию сделать передачу нового адреса. :angry:
-        gotoRegister(dsp_readback_addr[i], 4);
-        for (byte j = 0; j < 4; j++) {
-            value += Wire.read() << (24 - (j * 8));
-        }
+    for (byte i = 0; i < DSP_CHANNEL_COUNT; i++) {
+        for (byte k = 0; k < 2; k++) {
+            DSPChannels::Channel *ch = DSPChannels::list[i];
+            if (ch->readback[k] == 0) continue;
 
-        readbackVal[i] = (value < 0 ? -value : value);
-        // запаздывающий фильтр (код нагло украден из проекта спектроанализатора от AlexGyver)
-        readbackVal[i] = readbackVal_old[i] * _smooth_mlt + readbackVal[i] * (1 - _smooth_mlt);
-        readbackVal_old[i] = readbackVal[i];
+            int32_t value = 0;
+            // из-за того, что SigmaDSP не всегда делает адреса блоков порядковыми,
+            // пришлось убрать burst-чтение за одну передачу адреса регистра и
+            // на каждую итерацию сделать передачу нового адреса. :angry:
+            gotoRegister(ch->readback[k], 4);
+            for (byte j = 0; j < 4; j++) {
+                value += Wire.read() << (24 - (j * 8));
+            }
+
+            ch->readbackVal[k] = (value < 0 ? -value : value);
+            // запаздывающий фильтр (код нагло украден из проекта спектроанализатора от AlexGyver)
+            ch->readbackVal[k] = ch->readbackVal_old[k] * RTA_SMOOTH_MULTIPLIER + ch->readbackVal[k] * (1 - RTA_SMOOTH_MULTIPLIER);
+            ch->readbackVal_old[k] = ch->readbackVal[k];
+        }
     }
 }
 
 // установка уровня громкости канала (в децибелах от -97 до 10, где -97 = MUTE)
-void ADAU1452::setDecibelFaderPosition(byte id, int8_t val, bool sync)
+void ADAU1452::setDecibelFaderPosition(channel id, decibel val, bool sync)
 {
+    DSPChannels::Channel *const ch = DSPChannels::list[id];
+
     val = constrain(val, -97, 10);
     // если MUTE, то значение принудительно 0
-    uint32_t _val = muteFlags[id] ? 0 : db_calibration_24bit[97 + val];
+    uint32_t _val = ch->mute ? 0 : LUT::db_24bit[97 + val];
     uint32_t values[2];
 
-    if (balpan[id] == 0)
+    // пересчитываем значения фейдеров L-R в соответствии со значением стереобаланса
+    // если balpan == -50, значение уровня левого канала в разах увеличится в 2 раза (+6 дБ),
+    // а значение уровня правого канала станет равно 0. для balpan == 50 всё ровно наоборот
+    if (ch->balpan == 0)
         values[0] = values[1] = _val;
     else {
-        float coeff = 0.02 * balpan[id];
+        float coeff = 0.02 * ch->balpan;
         values[0] = _val * (1.0 - coeff);
         values[1] = _val * (1.0 + coeff);
     }
 
     // отправить новый уровень на DSP (сразу левый+правый)
     for (byte j = 0; j < 2; j++) {
-        gotoRegister(dsp_fader_address[(id * 2) + j]);
+        gotoRegister(ch->fader[j]);
         for (byte i = 0; i < 4; i++) {
             Wire.write((values[j] >> (24 - (i * 8))) & 0xFF);
         }
         Wire.endTransmission();
     }
 
-    faderPosition_dB[id] = val;
-    if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
+    ch->faderPosition = val;
+    //if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
 }
 
 // установка уровня посыла канала на шину (в децибелах от -97 до 10, где -97 = MUTE)
-void ADAU1452::setDecibelSendLevel(byte id, byte to, int8_t val)
+void ADAU1452::setDecibelSendLevel(channel id, bus to, decibel val)
 {
+    DSPChannels::SendTo *const send = &DSPChannels::list[id]->sends[to];
+
     val = constrain(val, -97, 10);
-    uint32_t _val = sendMuteFlags[to][id] ? 0 : db_calibration_24bit[97 + val];
+    uint32_t _val = send->mute ? 0 : LUT::db_24bit[97 + val];
 
     // TODO: быть может, прикрутить управление панорамой и сюда тоже?
     for (byte j = 0; j < 2; j++) {
-        gotoRegister(dsp_bus_send_addr[to][(id * 2) + j]);
+        gotoRegister(send->fader[j]);
         for (byte i = 0; i < 4; i++) {
             Wire.write((_val >> (24 - (i * 8))) & 0xFF);
         }
         Wire.endTransmission();
     }
 
-    sendFaders_dB[to][id] = val;
+    send->faderPosition = val;
 }
 
-void ADAU1452::toggleMute(byte id)
+void ADAU1452::toggleMute(channel id)
 {
-    muteFlags[id] = !muteFlags[id];
-    setDecibelFaderPosition(id, faderPosition_dB[id], false);
+    DSPChannels::Channel *const ch = DSPChannels::list[id];
+
+    ch->mute = !ch->mute;
+    setDecibelFaderPosition(id, ch->faderPosition, false);
 }
 
-void ADAU1452::toggleMute(byte id, byte to)
+void ADAU1452::toggleMute(channel id, bus to)
 {
-    sendMuteFlags[to][id] = !sendMuteFlags[to][id];
-    setDecibelSendLevel(id, to, sendFaders_dB[to][id]);
+    DSPChannels::SendTo *const send = &DSPChannels::list[id]->sends[to];
+
+    send->mute = !send->mute;
+    setDecibelSendLevel(id, to, send->faderPosition);
 }
 
 // поиск ID ближайшего значения в массиве (для конвертации значения уровня в децибелы)
@@ -209,10 +189,10 @@ byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 }
 
 // получение децибельного уровня сигнала на канале (согласно подаваемой калибровочной таблице)
-byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, byte id, bool right)
+byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, channel id, bool right)
 {
-    byte pos = isMonoChannel(id) ? DSP_STEREO_BEFORE - 1 + id : (id * 2) + static_cast<byte>(right);
-    return findValue(tab, max, readbackVal[pos]);
+    byte lr = isMonoChannel(id) ? 0 : static_cast<byte>(right);
+    return findValue(tab, max, DSPChannels::list[id]->readbackVal[lr]);
 }
 
 // переключение режима bassboost
@@ -251,7 +231,7 @@ void ADAU1452::setReverbTime(byte value)
 
     gotoRegister(DSP_REVERB_TIME_REG);
     for (byte i = 0; i < 8; i++) {
-        Wire.write(ss_reverbtime[value][i]);
+        Wire.write(LUT::reverbtime[value][i]);
     }
     Wire.endTransmission();
 
@@ -264,7 +244,7 @@ void ADAU1452::setReverbHFDamping(byte value)
 
     gotoRegister(DSP_REVERB_HFDAMP_REG);
     for (byte i = 0; i < 4; i++) {
-        Wire.write(ss_rev_hf_damping[value][i]);
+        Wire.write(LUT::rev_hf_damping[value][i]);
     }
     Wire.endTransmission();
 
@@ -277,7 +257,7 @@ void ADAU1452::setReverbBassGain(byte value)
 
     gotoRegister(DSP_REVERB_BGAIN_REG);
     for (byte i = 0; i < 4; i++) {
-        Wire.write(ss_rev_bass_gain[value][i]);
+        Wire.write(LUT::rev_bass_gain[value][i]);
     }
     Wire.endTransmission();
 
@@ -298,21 +278,23 @@ void ADAU1452::setPitchBusShift(int8_t value)
     pitch_shift = value;
 }
 
-void ADAU1452::setStereoBalance(byte id, int8_t val)
+void ADAU1452::setStereoBalance(channel id, int8_t val)
 {
-    balpan[id] = constrain(val, -50, 50);
-    setDecibelFaderPosition(id, faderPosition_dB[id], false);
+    DSPChannels::Channel *const ch = DSPChannels::list[id];
+
+    ch->balpan = constrain(val, -50, 50);
+    setDecibelFaderPosition(id, ch->faderPosition, false);
 }
 
 // установка стереорежима для стереоканала
 // либо "нормальный", либо принудительное моно, либо вычитание стереоканалов
 // (вычитание стереоканалов иногда используется для подавления вокала) 
-void ADAU1452::setStereoMode(byte id, StereoMode mode)
+void ADAU1452::setStereoMode(channel id, DSPChannels::StereoMode mode)
 {
     // для канала REVERB и моноканалов стереорежима нет
-    if (id == FADER_REVERB_ST || isMonoChannel(id)) return;
+    if (isMonoChannel(id)) return;
 
-    gotoRegister(dsp_stereomode_address[id]);
+    gotoRegister(DSPChannels::list[id]->stereoMode);
     for (byte i = 0; i < 3; i++) {
         Wire.write(0x00);
     }

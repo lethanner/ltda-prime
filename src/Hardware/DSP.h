@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include "registers.h"
+#include "channels.h"
 #include "../config.h"
 #include "bluetooth.h"
 #include <GyverIO.h>
@@ -11,45 +12,44 @@
 #define SEMITONE_INCREMENT 0x1894
 #define DSPSETS_IS_BASSBOOSTED 0
 
+typedef DSPChannels::channel channel;
+typedef DSPChannels::bus bus;
 class A2DPExternalVolumeControl;
 
 class ADAU1452
 {
   private:
     A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
-    void gotoRegister(short reg, byte requestSize = 0);
-    void writeAsFloat(short reg, byte value);
+    void gotoRegister(__register reg, byte requestSize = 0);
+    void writeAsFloat(__register reg, byte value);
     byte findValue(const unsigned int* tab, byte max, int value);
-    int readbackVal_old[DSP_READBACK_COUNT];  // буфер предыдущих значений (для сглаживания)
     int flagRegister = 0x00000000;  // импровизированный регистр настроек
 
   public:
-    enum StereoMode { STEREO = 0, FORCEMONO = 1, VOICESUPPRESS = 2 };
-
     ADAU1452();
     void init();
 
     byte getCoreState();
     void retrieveRTAValues();
 
-    byte getRelativeSignalLevel(const unsigned int* tab, byte range, byte id, bool right);
-    int8_t getDecibelSignalLevel(byte id, bool right);
+    bool isMonoChannel(channel id) { return DSPChannels::list[id]->stereoMode == 0; }
+    bool getMute(channel id) { return DSPChannels::list[id]->mute; }
+    bool getMute(channel id, bus to) { return DSPChannels::list[id]->sends[to].mute; }
+    decibel getFaderPosition(channel id) { return DSPChannels::list[id]->faderPosition; }
+    decibel getFaderPosition(channel id, bus to) { return DSPChannels::list[id]->sends[to].faderPosition; }
+    byte getRelativeSignalLevel(const unsigned int* tab, byte range, channel id, bool right);
+    int8_t getStereoBalance(channel id) { return DSPChannels::list[id]->balpan; }
+    DSPChannels::Channel *const getChannelPointer(channel id) { return DSPChannels::list[id]; }
+    //int8_t getDecibelSignalLevel(channel id, bool right);
 
-    bool isMonoChannel(byte id) { return id > DSP_STEREO_BEFORE - 2; }
-    void setDecibelFaderPosition(byte id, int8_t val, bool sync = true);
-    void setDecibelSendLevel(byte id, byte to, int8_t val);
-    void setStereoBalance(byte id, int8_t val);
-    void setStereoMode(byte id, StereoMode mode);
-    int8_t faderPosition_dB[DSP_FADER_COUNT];  // буфер положений фейдеров внутри DSP
-    int8_t sendFaders_dB[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // буфер уровней посылов внутри DSP
-    int8_t balpan[DSP_FADER_COUNT];  // буфер положений регуляторов стереобаланса/панорамы
+    void setDecibelFaderPosition(channel id, decibel val, bool sync = true);
+    void setDecibelSendLevel(channel id, bus to, decibel val);
+    void setStereoBalance(channel id, int8_t val);
+    void setStereoMode(channel id, DSPChannels::StereoMode mode);
 
     // Mute
-    void toggleMute(byte id);
-    void toggleMute(byte id, byte to);
-    bool muteFlags[DSP_FADER_COUNT];  // флаги MUTE для каналов
-    bool sendMuteFlags[DSP_BUS_COUNT][DSP_BUS_CHANNELS];  // флаги MUTE для посылов
-    //int8_t getDecibelFaderPosition(byte id);
+    void toggleMute(channel id);
+    void toggleMute(channel id, bus to);
 
     // бассбуст
     void toggleBassBoost();
@@ -68,11 +68,8 @@ class ADAU1452
     void setPitchBusShift(int8_t value);
     int8_t pitch_shift = 0;
 
-    // буфер значений уровней сигнала
-    int readbackVal[DSP_READBACK_COUNT];
-
     // прочие костыли
-    int* getFlagRegisterPtr();
+    int* getFlagRegisterPtr() { return &flagRegister; };
 };
 
 class A2DPExternalVolumeControl : public A2DPVolumeControl
@@ -88,7 +85,7 @@ class A2DPExternalVolumeControl : public A2DPVolumeControl
     }
     virtual void set_volume(uint8_t volume) override
     {
-        _dspptr->setDecibelFaderPosition(FADER_BLUETOOTH_ST, map(volume, 0, 127, -97, 10), false);
+        _dspptr->setDecibelFaderPosition(DSPChannels::BLUETOOTH, map(volume, 0, 127, -97, 10), false);
     }
 
     A2DPExternalVolumeControl(ADAU1452* dspptr) { _dspptr = dspptr; }

@@ -1,12 +1,13 @@
 #include "UI.h"
 
+using namespace DSPChannels;
 const LEDUI::MixerScreen::ChannelGroup LEDUI::MixerScreen::groups[GROUPS_COUNT] = {
-    { "Inputs",   (byte[]){ 0, 1, 2 },       3, MixerScreen::ALL_SOF },
-    { "FX",       (byte[]){ 3, 6 },          2, MixerScreen::FX_SOF  },
-    { "Outputs",  (byte[]){ 4, 5 },          2, MixerScreen::NO_SOF  },
-    { "In + Out", (byte[]){ 0, 1, 2, 4, 5 }, 5, MixerScreen::NO_SOF  },
-    { "In + FX",  (byte[]){ 0, 1, 2, 3, 6 }, 5, MixerScreen::NO_SOF  },
-    { "Out + FX", (byte[]){ 3, 6, 4, 5 },    4, MixerScreen::NO_SOF  }
+    { "Inputs",   (channel[]){ SPDIF, BLUETOOTH, USB },                 3, MixerScreen::ALL_SOF },
+    { "FX",       (channel[]){ REVERB, PITCH },                         2, MixerScreen::FX_SOF  },
+    { "Outputs",  (channel[]){ MASTER, SUBMIX },                        2, MixerScreen::NO_SOF  },
+    { "In + Out", (channel[]){ SPDIF, BLUETOOTH, USB, MASTER, SUBMIX }, 5, MixerScreen::NO_SOF  },
+    { "In + FX",  (channel[]){ SPDIF, BLUETOOTH, USB, REVERB, PITCH },  5, MixerScreen::NO_SOF  },
+    { "Out + FX", (channel[]){ REVERB, PITCH, MASTER, SUBMIX },         4, MixerScreen::NO_SOF  }
 };
 
 const char LEDUI::MixerScreen::ch_labels[][7] = { "SPDIF",  "BT",     "USB",  "Reverb",

@@ -42,8 +42,8 @@ namespace LEDUI {
     void vUITimerCallback(TimerHandle_t pxTimer);
     void brightDisplay();
 
-    extern byte monitor_ch;
-    inline void setMonitorDataFeed(byte ch) { monitor_ch = ch; }
+    extern channel monitor_ch;
+    inline void setMonitorDataFeed(channel ch) { monitor_ch = ch; }
     void streamMonitorData();
 
     extern byte title_xCoord;
@@ -94,7 +94,7 @@ class LEDUI::MixerScreen : public LEDUI::Screen
     enum SoFMode { NO_SOF, FX_SOF, ALL_SOF };
     struct ChannelGroup {
         const char *name;
-        const byte *onScreenChannels;
+        const channel *onScreenChannels;
         const byte count;
         const SoFMode sof;
     };
@@ -105,7 +105,7 @@ class LEDUI::MixerScreen : public LEDUI::Screen
 
     void setGroup(int8_t num);
     SoFMode isSoFAllowed() const { return _group->sof; }
-    byte getSelectedChannel() const { return _group->onScreenChannels[selected]; }
+    channel getSelectedChannel() const { return _group->onScreenChannels[selected]; }
 
   private:
     MixerScreen() : _group(&groups[0]) {};
@@ -119,7 +119,8 @@ class LEDUI::MixerScreen : public LEDUI::Screen
 
     const ChannelGroup *_group;
     byte _static[3][10];
-    byte selected = 0, SoFdest = 0, selectedGroup = 0;
+    byte selected = 0, selectedGroup = 0;
+    bus SoFdest;
     bool turn_started = false, usingSoF = false;
 };
 
