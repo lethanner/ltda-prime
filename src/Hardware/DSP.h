@@ -32,7 +32,7 @@ class ADAU1452
     byte getCoreState();
     void retrieveRTAValues();
 
-    bool isMonoChannel(channel id) { return DSPChannels::list[id]->stereoMode == 0; }
+    bool isMonoChannel(channel id) { return DSPChannels::list[id]->readback[1] == 0; }
     bool getMute(channel id) { return DSPChannels::list[id]->mute; }
     bool getMute(channel id, bus to) { return DSPChannels::list[id]->sends[to].mute; }
     decibel getFaderPosition(channel id) { return DSPChannels::list[id]->faderPosition; }
@@ -50,6 +50,11 @@ class ADAU1452
     // Mute
     void toggleMute(channel id);
     void toggleMute(channel id, bus to);
+
+    // TODO: возможно, поместить все переменные ниже под inline-функции get()
+    // в то же время затруднительно из-за того, что к ним надо обращаться через указатель
+    
+    // TODO2: взять эти переменные и вместе с flagRegister поместить в одну структуру
 
     // бассбуст
     void toggleBassBoost();

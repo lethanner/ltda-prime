@@ -47,12 +47,21 @@ void ADAU1452::init()
     // контрольная задержка
     vTaskDelay(100 / portTICK_PERIOD_MS);
     // и только после всего включаем звук на Master
-    //setDecibelFaderPosition(FADER_MASTER_ST, 0);
+    setDecibelFaderPosition(DSPChannels::MASTER, 0);
+
+    // TODO: во избежание неожиданно громкого звука при включении
+    // следовало бы, конечно, держать Master в MUTE
+    // но в то же время необходимость ещё и ручками включать звук
+    // после запуска - дело тоже не царское
 }
 
 // функция выполнения запроса к 16-бит регистру аудиопроцессора
 void ADAU1452::gotoRegister(__register reg, byte requestSize)
 {
+    // TODO: решить вопрос с возможными ложными вызовами
+    // Wire.write() после этой функции
+    if (reg == 0) return;
+
     Wire.beginTransmission(DSP_I2C_ADDRESS);
     Wire.write(highByte(reg));
     Wire.write(lowByte(reg));
@@ -90,6 +99,7 @@ void ADAU1452::retrieveRTAValues()
     for (byte i = 0; i < DSP_CHANNEL_COUNT; i++) {
         for (byte k = 0; k < 2; k++) {
             DSPChannels::Channel *ch = DSPChannels::list[i];
+            // если канала не существует (правого для моно) - пропускаем
             if (ch->readback[k] == 0) continue;
 
             int32_t value = 0;
@@ -113,15 +123,15 @@ void ADAU1452::retrieveRTAValues()
 void ADAU1452::setDecibelFaderPosition(channel id, decibel val, bool sync)
 {
     DSPChannels::Channel *const ch = DSPChannels::list[id];
-
     val = constrain(val, -97, 10);
+
     // если MUTE, то значение принудительно 0
     uint32_t _val = ch->mute ? 0 : LUT::db_24bit[97 + val];
-    uint32_t values[2];
-
+    
     // пересчитываем значения фейдеров L-R в соответствии со значением стереобаланса
     // если balpan == -50, значение уровня левого канала в разах увеличится в 2 раза (+6 дБ),
     // а значение уровня правого канала станет равно 0. для balpan == 50 всё ровно наоборот
+    uint32_t values[2];
     if (ch->balpan == 0)
         values[0] = values[1] = _val;
     else {
@@ -140,15 +150,18 @@ void ADAU1452::setDecibelFaderPosition(channel id, decibel val, bool sync)
     }
 
     ch->faderPosition = val;
-    //if (sync && id == FADER_BLUETOOTH_ST) bluetooth.sendAVRCPVolume(val);
+
+    // синхронизация с блютуз устройством, если регулировали его
+    if (sync && id == DSPChannels::BLUETOOTH) bluetooth.sendAVRCPVolume(val);
 }
 
 // установка уровня посыла канала на шину (в децибелах от -97 до 10, где -97 = MUTE)
 void ADAU1452::setDecibelSendLevel(channel id, bus to, decibel val)
 {
     DSPChannels::SendTo *const send = &DSPChannels::list[id]->sends[to];
-
     val = constrain(val, -97, 10);
+
+    // если MUTE, то значение принудительно 0
     uint32_t _val = send->mute ? 0 : LUT::db_24bit[97 + val];
 
     // TODO: быть может, прикрутить управление панорамой и сюда тоже?
@@ -291,17 +304,19 @@ void ADAU1452::setStereoBalance(channel id, int8_t val)
 // (вычитание стереоканалов иногда используется для подавления вокала) 
 void ADAU1452::setStereoMode(channel id, DSPChannels::StereoMode mode)
 {
-    // для канала REVERB и моноканалов стереорежима нет
-    if (isMonoChannel(id)) return;
+    __register reg = DSPChannels::list[id]->stereoMode;
 
-    gotoRegister(DSPChannels::list[id]->stereoMode);
+    // не для всех каналов поддерживается переключение режима
+    if (reg == 0) return;
+
+    gotoRegister(reg);
     for (byte i = 0; i < 3; i++) {
         Wire.write(0x00);
     }
     Wire.write(mode * 2);
     Wire.endTransmission();
 
-    // TODO: возможно, сделать запоминание текущего стереорежима
+    DSPChannels::list[id]->curStereoMode = mode;
 }
 
 ADAU1452 DSP;

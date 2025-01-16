@@ -111,8 +111,8 @@ void Menus::ChannelGroup::onClick()
     case 0:  // sends on fader
         open(&Menus::SendsOnFader::it());
         // для посылов с эффектов на выходы нужно порезать количество вариантов в меню
-        //if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
-        //    overrideEntryCount(DSP_OUT_BUS_BEFORE);
+        if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
+           overrideEntryCount(SOF_FX_MAXIMUM_SENDS);
     }
 }
 

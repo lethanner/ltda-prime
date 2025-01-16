@@ -50,11 +50,3 @@ namespace DSPChannels {
         &spdif, &bluetooth, &usb, &reverb, &pitch, &master, &submix
     };
 };  //namespace DSPChannels
-
-// #define CHANNEL_SPDIF 0
-// #define CHANNEL_BLUETOOTH 1
-// #define CHANNEL_USB 2
-// #define CHANNEL_REVERB 3
-// #define CHANNEL_PITCH 4
-// #define CHANNEL_MASTER 5
-// #define CHANNEL_SUBMIX 6

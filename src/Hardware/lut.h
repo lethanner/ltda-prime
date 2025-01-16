@@ -8,8 +8,6 @@
 #pragma once
 #include <stdint.h>
 
-#define MUTE -97
-
 namespace LUT {
     /*
     * Таблица для перевода 24 бит аудиоданных
