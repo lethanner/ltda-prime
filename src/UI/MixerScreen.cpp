@@ -25,8 +25,8 @@ void LEDUI::MixerScreen::init(void* params)
     }
 
     if (params != NULL && _group->sof > NO_SOF) {
-        bus paramSoF = *static_cast<bus*>(params);
-        usingSoF = true, SoFdest = paramSoF;
+        byte paramSoF = *static_cast<byte*>(params);
+        usingSoF = true, SoFdest = static_cast<bus>(paramSoF);
         screen_state = 0;
     } else usingSoF = false;
 }
