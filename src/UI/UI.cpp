@@ -5,7 +5,7 @@
 // её использование вряд ли будет где-то дальше этого файла, поэтому оставлю её здесь
 // и не буду пихать инстанс её класса в общий namespace.
 #include "screens.h"
-#include "decibels.h"
+#include "lut.h"
 #include "../Hardware/shiftreg.h"
 
 /* Объявление энкодера и дисплея */
@@ -16,7 +16,7 @@ EncButton control(CTRL_S1, CTRL_S2, CTRL_KEY);
 TimerHandle_t xBacklightTimer = NULL;
 TimerHandle_t xActivityTimer = NULL;
 
-byte LEDUI::monitor_ch = FADER_MASTER_ST;
+channel LEDUI::monitor_ch = DSPChannels::MASTER;
 byte LEDUI::title_xCoord = 0;
 byte LEDUI::screen_state = 0, LEDUI::statusbar = 0;
 LEDUI::Screen *LEDUI::active = nullptr;
@@ -44,7 +44,7 @@ void LEDUI::reset()
 {
     MixerScreen::it().setGroup(0);
     open(&MixerScreen::it());
-    setMonitorDataFeed(FADER_MASTER_ST);
+    setMonitorDataFeed(DSPChannels::MASTER);
     brightDisplay();
 }
 
@@ -154,10 +154,11 @@ void LEDUI::streamMonitorData()
         0b111111111100, 0b111111111110, 0b111111111111
     };
     // Максим, поменяй 7 на 12 после допайки светодиодиков!
-    short dataL =
-     ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, false)];
-    short dataR = ledbitmap[DSP.getRelativeSignalLevel(db_calibr_ledmonitor, 12, monitor_ch, true)];
+    // clang-format off
+    short dataL = ledbitmap[DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, false)];
+    short dataR = ledbitmap[DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, true)];
     int combined = dataL << 12 | dataR;
+    // clang-format on
 
     // передать собранный битовый пакет на паровозик из сдвиговых регистров
     shifters.sendToIndicators(combined);

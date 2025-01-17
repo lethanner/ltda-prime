@@ -1,6 +1,6 @@
 #include "UI.h"
 #include "screens.h"
-#include "decibels.h"
+#include "lut.h"
 
 void LEDUI::MixerScreen::init(void* params)
 {
@@ -26,7 +26,7 @@ void LEDUI::MixerScreen::init(void* params)
 
     if (params != NULL && _group->sof > NO_SOF) {
         byte paramSoF = *static_cast<byte*>(params);
-        usingSoF = true, SoFdest = paramSoF;
+        usingSoF = true, SoFdest = static_cast<bus>(paramSoF);
         screen_state = 0;
     } else usingSoF = false;
 }
@@ -50,18 +50,18 @@ void LEDUI::MixerScreen::render()
 
     for (byte ch = 0; ch < _group->count; ch++) {
         byte fader_pos =
-         map(usingSoF ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[ch]]
-                      : DSP.faderPosition_dB[_group->onScreenChannels[ch]],
+         map(usingSoF ? DSP.getFaderPosition(_group->onScreenChannels[ch], SoFdest)
+                      : DSP.getFaderPosition(_group->onScreenChannels[ch]),
              -97, 10, 52, 11);
-        bool is_muted = usingSoF ? DSP.sendMuteFlags[SoFdest][_group->onScreenChannels[ch]]
-                                 : DSP.muteFlags[_group->onScreenChannels[ch]];
+        bool is_muted = usingSoF ? DSP.getMute(_group->onScreenChannels[ch], SoFdest)
+                                 : DSP.getMute(_group->onScreenChannels[ch]);
 
         // clang-format off
-        byte levelL = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], false);
+        byte levelL = 52 - DSP.getRelativeSignalLevel(LUT::onscreen, 42, _group->onScreenChannels[ch], false);
         display.rect(_static[0][ch] + 8, 52, _static[0][ch] + 11, levelL, OLED_FILL);  // столбик уровня левого канала
 
         if (!DSP.isMonoChannel(_group->onScreenChannels[ch])) {  // если канал не моно
-            byte levelR = 52 - DSP.getRelativeSignalLevel(db_calibr_onscreen, 42, _group->onScreenChannels[ch], true);
+            byte levelR = 52 - DSP.getRelativeSignalLevel(LUT::onscreen, 42, _group->onScreenChannels[ch], true);
             display.rect(_static[0][ch] + 13, 52, _static[0][ch] + 16, levelR, OLED_FILL);  // столбик уровня правого канала
         }
         // clang-format on
@@ -135,16 +135,16 @@ void LEDUI::MixerScreen::onHold()
         // дефайнами, может ну его нафиг, этот массив скринов? хотя, учитывая,
         // сколько у меня потом будет каналов, как-то стремно.
         switch (_group->onScreenChannels[selected]) {
-        case FADER_MASTER_ST:  // если выбрали канал Master, открываем меню для него
+        case DSPChannels::MASTER:  // если выбрали канал Master, открываем меню для него
             open(&Menus::MasterChannel::it());
             break;
-        case FADER_REVERB_ST:  // если выбрали канал reverb, то для него меню
+        case DSPChannels::REVERB:  // если выбрали канал reverb, то для него меню
             open(&Menus::ReverbChannel::it());
             break;
-        case FADER_BLUETOOTH_ST:  // если выбрали канал bluetooth, то для него меню
+        case DSPChannels::BLUETOOTH:  // если выбрали канал bluetooth, то для него меню
             open(&Menus::BluetoothChannel::it());
             break;
-        case FADER_PITCH: open(&Menus::PitchChannel::it()); break;
+        case DSPChannels::PITCH: open(&Menus::PitchChannel::it()); break;
         default:  // иначе меню для всех остальных
             open(&Menus::GenericChannel::it());
             break;
@@ -159,11 +159,11 @@ void LEDUI::MixerScreen::onTurn(int8_t dir)
         if (usingSoF) {
             DSP.setDecibelSendLevel(
              _group->onScreenChannels[selected], SoFdest,
-             DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[selected]] + dir);
+             DSP.getFaderPosition(_group->onScreenChannels[selected], SoFdest) + dir);
         } else {
             DSP.setDecibelFaderPosition(
              _group->onScreenChannels[selected],
-             DSP.faderPosition_dB[_group->onScreenChannels[selected]] + dir);
+             DSP.getFaderPosition(_group->onScreenChannels[selected]) + dir);
             statusbar = 1;
         }
         break;
@@ -181,10 +181,10 @@ void LEDUI::MixerScreen::onTurn(int8_t dir)
 
 void LEDUI::MixerScreen::statusbarDecibels() const
 {
-    int8_t value = usingSoF ? DSP.sendFaders_dB[SoFdest][_group->onScreenChannels[selected]]
-                            : DSP.faderPosition_dB[_group->onScreenChannels[selected]];
-    bool is_muted = usingSoF ? DSP.sendMuteFlags[SoFdest][_group->onScreenChannels[selected]]
-                             : DSP.muteFlags[_group->onScreenChannels[selected]];
+    int8_t value = usingSoF ? DSP.getFaderPosition(_group->onScreenChannels[selected], SoFdest)
+                            : DSP.getFaderPosition(_group->onScreenChannels[selected]);
+    bool is_muted = usingSoF ? DSP.getMute(_group->onScreenChannels[selected], SoFdest)
+                             : DSP.getMute(_group->onScreenChannels[selected]);
     if (value == -97 || is_muted) printRightAlign("muted", 0);
     else printValue(value, "dB", -1, 0);
 }

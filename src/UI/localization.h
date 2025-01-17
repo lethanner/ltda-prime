@@ -1,4 +1,5 @@
 #pragma once
+#define SOF_FX_MAXIMUM_SENDS 2
 #define SOF_DESTINATION_LABELS "Master", "Submix", "Reverb", "Pitch"
 
 namespace Localization {

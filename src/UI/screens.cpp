@@ -13,9 +13,9 @@ void Menus::GenericChannel::onClick()
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
         Adjusters::Balance::it().overrideValuePtr(
-         &DSP.balpan[LEDUI::MixerScreen::it().getSelectedChannel()]);
+         &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
         break;
-    case 3: // stereo mode
+    case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
         break;
     }
@@ -28,14 +28,15 @@ void Menus::MasterChannel::onClick()
         open(&Menus::Preferences::it());
         break;
     case 1:  // send to monitor
-        LEDUI::setMonitorDataFeed(FADER_MASTER_ST);
+        LEDUI::setMonitorDataFeed(DSPChannels::MASTER);
         open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
-        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_MASTER_ST]);
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(DSPChannels::MASTER)->balpan);
         break;
-    case 3: // stereo mode
+    case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
         // у канала Master нет режима вычитания - отрезаем последний пункт
         Menus::MStereoMode::it().overrideEntryCount(2);
@@ -53,14 +54,15 @@ void Menus::BluetoothChannel::onClick()
         open(&Menus::Preferences::it());
         break;
     case 1:  // send to monitor
-        LEDUI::setMonitorDataFeed(FADER_BLUETOOTH_ST);
+        LEDUI::setMonitorDataFeed(DSPChannels::BLUETOOTH);
         open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
-        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_BLUETOOTH_ST]);
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
         break;
-    case 3: // stereo mode
+    case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
         break;
     case 4:  // disconnect
@@ -77,12 +79,13 @@ void Menus::PitchChannel::onClick()
         open(&Menus::Preferences::it());
         break;
     case 1:  // send to monitor
-        LEDUI::setMonitorDataFeed(FADER_PITCH);
+        LEDUI::setMonitorDataFeed(DSPChannels::PITCH);
         open(&LEDUI::MixerScreen::it());  // выход
         break;
     case 2:  // stereo balance
         open(&Adjusters::Balance::it());
-        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_PITCH]);
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
         break;
     case 3:  // change pitch
         open(&Adjusters::Pitch::it());
@@ -97,7 +100,8 @@ void Menus::ReverbChannel::onClick()
     if (selected == 0) open(&Menus::Preferences::it());
     else {
         open(rvr_menus[selected - 1]);
-        Adjusters::Balance::it().overrideValuePtr(&DSP.balpan[FADER_REVERB_ST]);
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
     }
 }
 
@@ -108,7 +112,7 @@ void Menus::ChannelGroup::onClick()
         open(&Menus::SendsOnFader::it());
         // для посылов с эффектов на выходы нужно порезать количество вариантов в меню
         if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
-            overrideEntryCount(DSP_OUT_BUS_BEFORE);
+           overrideEntryCount(SOF_FX_MAXIMUM_SENDS);
     }
 }
 
@@ -141,7 +145,7 @@ void Menus::LanguageSelect::onClick()
 void Menus::MStereoMode::onClick()
 {
     DSP.setStereoMode(LEDUI::MixerScreen::it().getSelectedChannel(),
-                      static_cast<ADAU1452::StereoMode>(selected));
+                      static_cast<DSPChannels::StereoMode>(selected));
 }
 
 void Adjusters::ReverbTime::onTurn(int8_t dir)
@@ -173,14 +177,14 @@ void Adjusters::Pitch::onTurn(int8_t dir) { DSP.setPitchBusShift(DSP.pitch_shift
 
 void Adjusters::Balance::onTurn(int8_t dir)
 {
-    byte ch = LEDUI::MixerScreen::it().getSelectedChannel();
-    DSP.setStereoBalance(ch, DSP.balpan[ch] + dir);
+    channel ch = LEDUI::MixerScreen::it().getSelectedChannel();
+    DSP.setStereoBalance(ch, DSP.getStereoBalance(ch) + dir);
 }
 
 void Adjusters::Balance::onClick()
 {
-    byte ch = LEDUI::MixerScreen::it().getSelectedChannel();
-    int8_t current = DSP.balpan[ch];
+    channel ch = LEDUI::MixerScreen::it().getSelectedChannel();
+    int8_t current = DSP.getStereoBalance(ch);
 
     if (current == 0) DSP.setStereoBalance(ch, -50);
     else if (abs(current) == 50) DSP.setStereoBalance(ch, -current);
