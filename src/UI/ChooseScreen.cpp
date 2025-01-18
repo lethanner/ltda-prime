@@ -1,9 +1,13 @@
 #include "UI.h"
 
+bool LEDUI::ChooseScreen::confirmation = false;
+void *LEDUI::ChooseScreen::_params = NULL;
+
 void LEDUI::ChooseScreen::init(void *params)
 {
     title_xCoord = getCenterCoordinate(_title);
-    selection = (_neg == NULL);
+    confirmation = (_neg == NULL);
+    _params = params;
 }
 
 void LEDUI::ChooseScreen::onHold() {}
@@ -27,18 +31,17 @@ void LEDUI::ChooseScreen::render()
     // варианты
     if (_neg != NULL) {
         display.setCursor(0, 6);
-        display.invertText(!selection);
+        display.invertText(!confirmation);
         display.print("> ");
         display.print(_neg);
     }
 
     display.setCursor(0, 7);
-    display.invertText(selection);
+    display.invertText(confirmation);
     display.print("> ");
     display.print(_pos);
 }
 
-void LEDUI::ChooseScreen::onTurn(int8_t dir)
-{
-    selection = (dir > 0);
+void LEDUI::ChooseScreen::onTurn(int8_t dir) {
+    confirmation = (dir > 0) || (_neg == NULL);
 }

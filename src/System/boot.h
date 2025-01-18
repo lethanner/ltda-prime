@@ -8,6 +8,7 @@
 #include "../Hardware/shiftreg.h"
 #include "../UI/UI.h"
 #include "../UI/localization.h"
+#include "memory.h"
 
 void task_uiRefresh(void *pvParameters)
 {
@@ -38,6 +39,12 @@ void boot()
 {
     /* Инициализация сдвигового регистра */
     shifters.quickInit();
+
+    /* Инициализация памяти настроек */
+    memory.begin("ltda", false);
+
+    /* Загрузка языкового пакета */
+    Localization::setLanguage(memory.getUInt("lang", 0));
 
     /* Инициализация юзер-интерфейса */
     LEDUI::init();

@@ -165,5 +165,6 @@ class LEDUI::ChooseScreen : public LEDUI::Screen
     const char *_title, *_text, *_neg, *_pos;
 
   protected:
-    static bool selection;
+    static bool confirmation;
+    static void *_params;
 };

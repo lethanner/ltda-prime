@@ -1,4 +1,5 @@
 #include "screens.h"
+#include "../System/memory.h"
 
 void Menus::GenericChannel::onClick()
 {
@@ -144,8 +145,7 @@ void Menus::Preferences::onClick()
 
 void Menus::LanguageSelect::onClick()
 {
-    Localization::setLanguage(selected == 1 ? &Localization::russian : &Localization::english);
-    calculateTitleCenter();
+    open(&Choosers::LangSelectReboot::it(), &selected);
 }
 
 void Menus::MStereoMode::onClick()
@@ -195,4 +195,15 @@ void Adjusters::Balance::onClick()
     if (current == 0) DSP.setStereoBalance(ch, -50);
     else if (abs(current) == 50) DSP.setStereoBalance(ch, -current);
     else DSP.setStereoBalance(ch, 0);
+}
+
+void Choosers::LangSelectReboot::onClick()
+{
+    if (confirmation) {
+        byte langParam = *static_cast<byte*>(_params);
+        memory.putUInt("lang", langParam);
+        ESP.restart();
+    } else {
+        open(&Menus::Preferences::it());
+    }
 }

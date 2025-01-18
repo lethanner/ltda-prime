@@ -30,7 +30,11 @@ const Localization::Strings Localization::russian = {
     .stereomode = "Стереорежим",
     .stereo = "Стерео",
     .forcemono = "Принуд. моно",
-    .vocalfilter = "Подавл. голоса"
+    .vocalfilter = "Подавл. голоса",
+    .warning = "Внимание",
+    .reboot_warning = "Устройство будет\r\nперезагружено.",
+    .ok = "ОК",
+    .cancel = "Отмена"
 };
 
 const Localization::Strings Localization::english = {
@@ -63,5 +67,9 @@ const Localization::Strings Localization::english = {
     .stereomode = "Stereo mode",
     .stereo = "Stereo",
     .forcemono = "Force mono",
-    .vocalfilter = "Voice suppression"
+    .vocalfilter = "Voice suppression",
+    .warning = "Warning",
+    .reboot_warning = "Your device will\r\nreboot. Proceed?",
+    .ok = "OK",
+    .cancel = "Cancel"
 };

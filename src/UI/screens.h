@@ -43,9 +43,22 @@
         _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
     }
 
+#define DECLARE_CHOOSE(_name, _title, _text, _pos, _neg) \
+    class _name : public LEDUI::ChooseScreen { \
+      public: \
+        static _name& it() \
+        { \
+            static _name ins; \
+            return ins; \
+        } \
+        void onClick() override; \
+      private: \
+        _name() : ChooseScreen(_title, _text, _pos, _neg) {}; \
+    }
+
 // clang-format on
 namespace Menus {
-    DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, true, NULL);
+    DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, false, NULL);
     DECLARE_MENU(Preferences, Localization::prefsmenu, 1, false, NULL);
     DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 4, false, NULL);
     DECLARE_MENU(MasterChannel, Localization::chmenu_master, 5, false, NULL);
@@ -75,3 +88,9 @@ namespace Adjusters {
     DECLARE_ADJUST_CLICKABLE(Balance, Localization::act->stereobalance,
                              Localization::act->parrots, -50, 50, NULL);
 };  //namespace Adjusters
+
+// clang-format on
+namespace Choosers {
+    DECLARE_CHOOSE(LangSelectReboot, Localization::act->warning, Localization::act->reboot_warning,
+                   Localization::act->ok, Localization::act->cancel);
+};  //namespace Choosers

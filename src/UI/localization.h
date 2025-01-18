@@ -34,13 +34,19 @@ namespace Localization {
         const char* stereo;
         const char* forcemono;
         const char* vocalfilter;
+        const char* warning;
+        const char* reboot_warning;
+        const char* ok;
+        const char* cancel;
     };
 
     extern const Strings russian;
     extern const Strings english;
+    const Strings *const locales[] = { &english, &russian };
 
+    // оставить это как NULLPTR нельзя - получаем SIOF
     static const Strings* act = &Localization::english;
-    inline void setLanguage(const Strings* n) { act = n; }
+    inline void setLanguage(unsigned char id) { act = locales[id]; }
 
     const char* const chmenu_generic[] = { act->channel, act->preferences, act->send_to_monitor,
                                            act->stereobalance, act->stereomode };

@@ -4,6 +4,10 @@
         "cstddef": "cpp",
         "fstream": "cpp",
         "sstream": "cpp",
-        "streambuf": "cpp"
+        "streambuf": "cpp",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp"
     }
 }
