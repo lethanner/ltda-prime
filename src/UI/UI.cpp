@@ -75,10 +75,12 @@ void LEDUI::pollCtrl()
     if (control.turn()) active->onTurn(control.dir());
 }
 
-void LEDUI::open(Screen *scr, void *params)
+bool LEDUI::open(Screen *scr, void *params)
 {
-    scr->init(params);
-    active = scr;
+    bool result = scr->init(params);
+    if (result) active = scr;
+    
+    return result;
 }
 
 byte LEDUI::getCenterCoordinate(const char *text)

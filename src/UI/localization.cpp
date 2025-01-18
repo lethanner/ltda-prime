@@ -34,7 +34,8 @@ const Localization::Strings Localization::russian = {
     .warning = "Внимание",
     .reboot_warning = "Устройство будет\r\nперезагружено.",
     .ok = "ОК",
-    .cancel = "Отмена"
+    .cancel = "Отмена",
+    .sof_fail = "Из этой группы\r\nнет посылов."
 };
 
 const Localization::Strings Localization::english = {
@@ -71,5 +72,6 @@ const Localization::Strings Localization::english = {
     .warning = "Warning",
     .reboot_warning = "Your device will\r\nreboot. Proceed?",
     .ok = "OK",
-    .cancel = "Cancel"
+    .cancel = "Cancel",
+    .sof_fail = "Nothing can be routed\r\nfrom this group."
 };

@@ -1,8 +1,9 @@
 #include "UI.h"
 
-void LEDUI::AdjustScreen::init(void *params)
+bool LEDUI::AdjustScreen::init(void *params)
 {
     title_xCoord = getCenterCoordinate(_title);
+    return true;
 }
 
 void LEDUI::AdjustScreen::render()

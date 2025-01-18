@@ -41,8 +41,7 @@ void Menus::MasterChannel::onClick()
         break;
     case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
-        Menus::MStereoMode::it().overrideSelection(
-         DSP.getStereoMode(DSPChannels::MASTER));
+        Menus::MStereoMode::it().overrideSelection(DSP.getStereoMode(DSPChannels::MASTER));
         // у канала Master нет режима вычитания - отрезаем последний пункт
         Menus::MStereoMode::it().overrideEntryCount(2);
         break;
@@ -69,8 +68,7 @@ void Menus::BluetoothChannel::onClick()
         break;
     case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
-        Menus::MStereoMode::it().overrideSelection(
-         DSP.getStereoMode(DSPChannels::BLUETOOTH));
+        Menus::MStereoMode::it().overrideSelection(DSP.getStereoMode(DSPChannels::BLUETOOTH));
         break;
     case 4:  // disconnect
         bluetooth.disconnect();
@@ -117,13 +115,15 @@ void Menus::ChannelGroup::onClick()
     switch (selected) {
     case 0:  // sends on fader
         open(&Menus::SendsOnFader::it());
-        // для посылов с эффектов на выходы нужно порезать количество вариантов в меню
-        if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
-            overrideEntryCount(SOF_FX_MAXIMUM_SENDS);
+        break;
     }
 }
 
-void Menus::SendsOnFader::onClick() { open(&LEDUI::MixerScreen::it(), &selected); }
+void Menus::SendsOnFader::onClick()
+{
+    if (!open(&LEDUI::MixerScreen::it(), &selected))
+        open(&Choosers::NoRoutableChannels::it());
+}
 
 void Menus::Bassboost::onClick()
 {
@@ -200,10 +200,16 @@ void Adjusters::Balance::onClick()
 void Choosers::LangSelectReboot::onClick()
 {
     if (confirmation) {
-        byte langParam = *static_cast<byte*>(_params);
+        byte langParam = *static_cast<byte *>(_params);
         memory.putUInt("lang", langParam);
         ESP.restart();
     } else {
         open(&Menus::Preferences::it());
     }
+}
+
+void Choosers::NoRoutableChannels::onClick()
+{
+    // возврат назад
+    open(&Menus::SendsOnFader::it());
 }

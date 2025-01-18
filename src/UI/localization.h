@@ -38,6 +38,7 @@ namespace Localization {
         const char* reboot_warning;
         const char* ok;
         const char* cancel;
+        const char* sof_fail;
     };
 
     extern const Strings russian;

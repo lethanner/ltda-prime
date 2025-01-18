@@ -93,4 +93,6 @@ namespace Adjusters {
 namespace Choosers {
     DECLARE_CHOOSE(LangSelectReboot, Localization::act->warning, Localization::act->reboot_warning,
                    Localization::act->ok, Localization::act->cancel);
+    DECLARE_CHOOSE(NoRoutableChannels, Localization::act->warning,
+                   Localization::act->sof_fail, Localization::act->ok, NULL);
 };  //namespace Choosers

@@ -5,12 +5,14 @@ byte LEDUI::MenuScreen::visibleSel = 0, LEDUI::MenuScreen::entryRendererStart = 
      LEDUI::MenuScreen::selected = 0;
 byte LEDUI::MenuScreen::_e_count = 0;
 
-void LEDUI::MenuScreen::init(void *params)
+bool LEDUI::MenuScreen::init(void *params)
 {
     MenuScreen::active = this;
     selected = entryRendererStart = visibleSel = 0;
     _e_count = _e_count_static;
     calculateTitleCenter();
+
+    return true;
 }
 
 void LEDUI::MenuScreen::render()

@@ -2,14 +2,28 @@
 #include "screens.h"
 #include "lut.h"
 
-void LEDUI::MixerScreen::init(void* params)
+bool LEDUI::MixerScreen::init(void* params)
 {
+    count = 0;
+    if (params != NULL) {
+        byte paramSoF = *static_cast<byte*>(params);
+        usingSoF = true, SoFdest = static_cast<bus>(paramSoF);
+        for (byte ch = 0; ch < _group->count; ch++) {
+            if (DSP.canBeRoutedTo(_group->onScreenChannels[ch], SoFdest)) count++;
+        }
+        if (count == 0) return false;
+        screen_state = 0;
+    } else {
+        usingSoF = false;
+        count = _group->count;
+    }
+
     // просчёт координат и прочих числовых значений
     // для выравнивания по центру всех каналов на дисплее
-    byte gap_m = (128 - (_group->count * 12)) / (_group->count + 1);
-    byte gap_s = (128 - (_group->count * 18)) / (_group->count + 1);
+    byte gap_m = (128 - (count * 12)) / (count + 1);
+    byte gap_s = (128 - (count * 18)) / (count + 1);
     byte label_offset = (DSP.isMonoChannel(_group->onScreenChannels[0]) ? gap_m : gap_s) / 2;
-    for (byte ch = 0; ch < _group->count; ch++) {
+    for (byte ch = 0; ch < count; ch++) {
         bool isMono = DSP.isMonoChannel(_group->onScreenChannels[ch]);
         byte block_width = isMono ? 12 : 18;
         byte gap = isMono ? gap_m : gap_s;
@@ -24,11 +38,7 @@ void LEDUI::MixerScreen::init(void* params)
         label_offset += block_safe_zone;
     }
 
-    if (params != NULL && _group->sof > NO_SOF) {
-        byte paramSoF = *static_cast<byte*>(params);
-        usingSoF = true, SoFdest = static_cast<bus>(paramSoF);
-        screen_state = 0;
-    } else usingSoF = false;
+    return true;
 }
 
 void LEDUI::MixerScreen::render()
@@ -48,7 +58,10 @@ void LEDUI::MixerScreen::render()
         display.print(":");
     }
 
-    for (byte ch = 0; ch < _group->count; ch++) {
+    for (byte ch = 0; ch < count; ch++) {
+        if (usingSoF && !DSP.canBeRoutedTo(_group->onScreenChannels[ch], SoFdest))
+            continue;
+
         byte fader_pos =
          map(usingSoF ? DSP.getFaderPosition(_group->onScreenChannels[ch], SoFdest)
                       : DSP.getFaderPosition(_group->onScreenChannels[ch]),
@@ -92,7 +105,7 @@ void LEDUI::MixerScreen::render()
     switch (screen_state) {
     case 1:  // выбор канала на дисплее
         if (selected > 0) printYX("<", 56, 0);
-        if (selected < _group->count - 1) printYX(">", 56, 122);
+        if (selected < count - 1) printYX(">", 56, 122);
         printYX(Localization::act->select, 56);
         break;
     case 2:  // выбор группы каналов
@@ -111,7 +124,7 @@ void LEDUI::MixerScreen::onClick()
         turn_started = false;
     }
     // если на экране только один канал, переход сразу к переключению страниц
-    else if (screen_state == 0 && _group->count == 1)
+    else if (screen_state == 0 && count == 1)
         screen_state = 2;
     else if (++screen_state > 2)  // а так просто по кругу переключаем действия
         screen_state = 0;
@@ -129,7 +142,7 @@ void LEDUI::MixerScreen::onHold()
     else if (usingSoF)             // удержание на экране sends on fader
         open(&MixerScreen::it());  // - возврат
     else if (screen_state == 2) {  // удержание на выборе группы каналов - меню группы
-        if (_group->sof > NO_SOF) open(&Menus::ChannelGroup::it());
+        open(&Menus::ChannelGroup::it());
     } else {
         // UPD: а если я могу в будущем менять числа которые скрываются за
         // дефайнами, может ну его нафиг, этот массив скринов? хотя, учитывая,
@@ -170,7 +183,7 @@ void LEDUI::MixerScreen::onTurn(int8_t dir)
     }
     case 1: {  // переход между каналами на странице
         turn_started = true;
-        selected = constrain(selected + dir, 0, _group->count - 1);
+        selected = constrain(selected + dir, 0, count - 1);
         break;
     }
     case 2:  // переход между страницами каналов

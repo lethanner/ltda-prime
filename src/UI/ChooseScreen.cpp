@@ -3,11 +3,13 @@
 bool LEDUI::ChooseScreen::confirmation = false;
 void *LEDUI::ChooseScreen::_params = NULL;
 
-void LEDUI::ChooseScreen::init(void *params)
+bool LEDUI::ChooseScreen::init(void *params)
 {
     title_xCoord = getCenterCoordinate(_title);
     confirmation = (_neg == NULL);
     _params = params;
+
+    return true;
 }
 
 void LEDUI::ChooseScreen::onHold() {}

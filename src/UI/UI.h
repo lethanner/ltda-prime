@@ -20,7 +20,7 @@ namespace LEDUI {
     {
       public:
         Screen() {};
-        virtual void init(void *params) = 0;
+        virtual bool init(void *params) = 0;
         virtual void render() = 0;
         virtual void onClick() = 0;
         virtual void onHold() = 0;
@@ -32,7 +32,7 @@ namespace LEDUI {
     void render();
     void pollCtrl();
 
-    void open(Screen *scr, void *params = NULL);
+    bool open(Screen *scr, void *params = NULL);
 
     byte getCenterCoordinate(const char *text);
     void printValue(int8_t value, const char *label, int8_t x_coord, byte y_coord, bool center = false);
@@ -68,7 +68,7 @@ class LEDUI::MenuScreen : public LEDUI::Screen
     static MenuScreen *active;
 
   private:
-    void init(void *params = NULL) override;
+    bool init(void *params = NULL) override;
     void render() override;
     // void onClick() const override;
     void onHold() override;
@@ -96,13 +96,11 @@ class LEDUI::MixerScreen : public LEDUI::Screen
         static MixerScreen ins;
         return ins;
     }
-
-    enum SoFMode { NO_SOF, FX_SOF, ALL_SOF };
+  
     struct ChannelGroup {
         const char *name;
         const channel *onScreenChannels;
         const byte count;
-        const SoFMode sof;
     };
 
     static const ChannelGroup groups[GROUPS_COUNT];
@@ -110,14 +108,13 @@ class LEDUI::MixerScreen : public LEDUI::Screen
     static const char *sendto_labels[];
 
     void setGroup(int8_t num);
-    SoFMode isSoFAllowed() const { return _group->sof; }
     channel getSelectedChannel() const { return _group->onScreenChannels[selected]; }
 
   private:
     MixerScreen() : _group(&groups[0]) {};
     void statusbarDecibels() const;
 
-    void init(void *params = NULL) override;
+    bool init(void *params = NULL) override;
     void render() override;
     void onClick() override;
     void onHold() override;
@@ -126,6 +123,7 @@ class LEDUI::MixerScreen : public LEDUI::Screen
     const ChannelGroup *_group;
     byte _static[3][10];
     byte selected = 0, selectedGroup = 0;
+    byte count;
     bus SoFdest;
     bool turn_started = false, usingSoF = false;
 };
@@ -138,7 +136,7 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
     void overrideValuePtr(int8_t *newptr);
 
   private:
-    void init(void *params = NULL) override;
+    bool init(void *params = NULL) override;
     void render() override;
     // void onClick() override;
     void onHold() override;
@@ -156,7 +154,7 @@ class LEDUI::ChooseScreen : public LEDUI::Screen
       : _title(title), _text(text), _neg(negative), _pos(positive) {};
 
   private:
-    void init(void *params = NULL) override;
+    bool init(void *params = NULL) override;
     void render() override;
     //void onClick() override;
     void onHold() override;
