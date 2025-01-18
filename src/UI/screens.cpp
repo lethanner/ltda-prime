@@ -17,6 +17,8 @@ void Menus::GenericChannel::onClick()
         break;
     case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
+        Menus::MStereoMode::it().overrideSelection(
+         DSP.getStereoMode(LEDUI::MixerScreen::it().getSelectedChannel()));
         break;
     }
 }
@@ -38,6 +40,8 @@ void Menus::MasterChannel::onClick()
         break;
     case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
+        Menus::MStereoMode::it().overrideSelection(
+         DSP.getStereoMode(DSPChannels::MASTER));
         // у канала Master нет режима вычитания - отрезаем последний пункт
         Menus::MStereoMode::it().overrideEntryCount(2);
         break;
@@ -64,6 +68,8 @@ void Menus::BluetoothChannel::onClick()
         break;
     case 3:  // stereo mode
         open(&Menus::MStereoMode::it());
+        Menus::MStereoMode::it().overrideSelection(
+         DSP.getStereoMode(DSPChannels::BLUETOOTH));
         break;
     case 4:  // disconnect
         bluetooth.disconnect();
@@ -112,7 +118,7 @@ void Menus::ChannelGroup::onClick()
         open(&Menus::SendsOnFader::it());
         // для посылов с эффектов на выходы нужно порезать количество вариантов в меню
         if (LEDUI::MixerScreen::it().isSoFAllowed() == LEDUI::MixerScreen::FX_SOF)
-           overrideEntryCount(SOF_FX_MAXIMUM_SENDS);
+            overrideEntryCount(SOF_FX_MAXIMUM_SENDS);
     }
 }
 

@@ -59,6 +59,8 @@ class LEDUI::MenuScreen : public LEDUI::Screen
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
       : _entries(entries), _e_count_static(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
     void overrideEntryCount(byte newcount) { _e_count = newcount - 1; }
+    void overrideSelection(byte newselect) { selected = newselect, visibleSel = newselect; }
+    // TODO: пока что overrideSelection() не рассчитан на многостраничные меню, переделать
     static MenuScreen *active;
 
   private:

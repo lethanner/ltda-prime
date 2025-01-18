@@ -39,6 +39,7 @@ class ADAU1452
     decibel getFaderPosition(channel id, bus to) { return DSPChannels::list[id]->sends[to].faderPosition; }
     byte getRelativeSignalLevel(const unsigned int* tab, byte range, channel id, bool right);
     int8_t getStereoBalance(channel id) { return DSPChannels::list[id]->balpan; }
+    DSPChannels::StereoMode getStereoMode(channel id) { return DSPChannels::list[id]->curStereoMode; }
     DSPChannels::Channel *const getChannelPointer(channel id) { return DSPChannels::list[id]; }
     //int8_t getDecibelSignalLevel(channel id, bool right);
 
