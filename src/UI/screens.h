@@ -58,19 +58,20 @@ namespace Menus {
     DECLARE_MENU(MStereoMode, Localization::stereomodemenu, 3, true, NULL);
 };  //namespace Menus
 
+// clang-format off
 namespace Adjusters {
-    DECLARE_ADJUST(ReverbTime, Localization::active()->reverb_time,
-                   Localization::active()->parrots, 0, 3, &DSP.reverbTime);
-    DECLARE_ADJUST(ReverbBGain, Localization::active()->bassreverbgain,
-                   Localization::active()->parrots, 0, 2, &DSP.reverbBassGain);
-    DECLARE_ADJUST(ReverbHFDamp, Localization::active()->hf_damping,
-                   Localization::active()->parrots, 0, 2, &DSP.reverbHFDamp);
-    DECLARE_ADJUST(BassboostGain, Localization::active()->gain,
-                   Localization::active()->parrots, 1, 30, &DSP.bassboostGain);
-    DECLARE_ADJUST(BassboostIntens, Localization::active()->intensity,
-                   Localization::active()->parrots, 1, 30, &DSP.bassboostIntensity);
-    DECLARE_ADJUST(Pitch, Localization::active()->pitch,
-                   Localization::active()->semitones, -16, 16, &DSP.pitch_shift);
-    DECLARE_ADJUST_CLICKABLE(Balance, Localization::active()->stereobalance,
-                             Localization::active()->parrots, -50, 50, NULL);
+    DECLARE_ADJUST(ReverbTime, Localization::act->reverb_time,
+                   Localization::act->parrots, 0, 3, &DSP.reverbTime);
+    DECLARE_ADJUST(ReverbBGain, Localization::act->bassreverbgain,
+                   Localization::act->parrots, 0, 2, &DSP.reverbBassGain);
+    DECLARE_ADJUST(ReverbHFDamp, Localization::act->hf_damping,
+                   Localization::act->parrots, 0, 2, &DSP.reverbHFDamp);
+    DECLARE_ADJUST(BassboostGain, Localization::act->gain,
+                   Localization::act->parrots, 1, 30, &DSP.bassboostGain);
+    DECLARE_ADJUST(BassboostIntens, Localization::act->intensity,
+                   Localization::act->parrots, 1, 30, &DSP.bassboostIntensity);
+    DECLARE_ADJUST(Pitch, Localization::act->pitch,
+                   Localization::act->semitones, -16, 16, &DSP.pitch_shift);
+    DECLARE_ADJUST_CLICKABLE(Balance, Localization::act->stereobalance,
+                             Localization::act->parrots, -50, 50, NULL);
 };  //namespace Adjusters

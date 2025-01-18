@@ -40,33 +40,27 @@ namespace Localization {
     extern const Strings english;
 
     static const Strings* act = &Localization::english;
-    inline const Strings* active() { return act; }
     inline void setLanguage(const Strings* n) { act = n; }
 
-    const char* const chmenu_generic[] = { active()->channel, active()->preferences,
-                                           active()->send_to_monitor,
-                                           active()->stereobalance, active()->stereomode };
-    const char* const chmenu_master[] = {
-        active()->master,        active()->preferences, active()->send_to_monitor,
-        active()->stereobalance, active()->stereomode,  active()->bassboost
-    };
-    const char* const chmenu_reverb[] = {
-        active()->reverb,      active()->preferences, active()->stereobalance,
-        active()->reverb_time, active()->hf_damping,  active()->bassreverbgain
-    };
-    const char* const chmenu_pitch[] = { active()->pitch, active()->preferences, active()->send_to_monitor,
-                                         active()->stereobalance, active()->pitch_change };
-    const char* const chmenu_blue[] = {
-        active()->bluetooth,     active()->preferences, active()->send_to_monitor,
-        active()->stereobalance, active()->stereomode,  active()->disconnect
-    };
+    const char* const chmenu_generic[] = { act->channel, act->preferences, act->send_to_monitor,
+                                           act->stereobalance, act->stereomode };
+    const char* const chmenu_master[] = { act->master,          act->preferences,
+                                          act->send_to_monitor, act->stereobalance,
+                                          act->stereomode,      act->bassboost };
+    const char* const chmenu_reverb[] = { act->reverb,        act->preferences,
+                                          act->stereobalance, act->reverb_time,
+                                          act->hf_damping,    act->bassreverbgain };
+    const char* const chmenu_pitch[] = { act->pitch, act->preferences, act->send_to_monitor,
+                                         act->stereobalance, act->pitch_change };
+    const char* const chmenu_blue[] = { act->bluetooth,       act->preferences,
+                                        act->send_to_monitor, act->stereobalance,
+                                        act->stereomode,      act->disconnect };
 
-    const char* const groupmenu[] = { active()->group, active()->sends_on_fader };
-    const char* const sofdestmenu[] = { active()->to, SOF_DESTINATION_LABELS };
-    const char* const bassboostmenu[] = { active()->bassboost, active()->enable,
-                                          active()->intensity, active()->gain };
-    const char* const languagemenu[] = { active()->language, "English", "Русский" };
-    const char* const prefsmenu[] = { active()->preferences, active()->language };
-    const char* const stereomodemenu[] = { active()->stereomode, active()->stereo,
-                                           active()->forcemono, active()->vocalfilter };
+    const char* const groupmenu[] = { act->group, act->sends_on_fader };
+    const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };
+    const char* const bassboostmenu[] = { act->bassboost, act->enable, act->intensity, act->gain };
+    const char* const languagemenu[] = { act->language, "English", "Русский" };
+    const char* const prefsmenu[] = { act->preferences, act->language };
+    const char* const stereomodemenu[] = { act->stereomode, act->stereo, act->forcemono,
+                                           act->vocalfilter };
 };  //namespace Localization
