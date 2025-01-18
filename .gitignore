@@ -3,3 +3,4 @@ build
 .VSCodeCounter
 notepad.txt
 ltda-prime.code-workspace
+.vscode/arduino.json
