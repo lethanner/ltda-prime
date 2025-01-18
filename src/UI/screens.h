@@ -59,7 +59,7 @@
 // clang-format on
 namespace Menus {
     DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, false, NULL);
-    DECLARE_MENU(Preferences, Localization::prefsmenu, 1, false, NULL);
+    DECLARE_MENU(Preferences, Localization::prefsmenu, 2, false, NULL);
     DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 4, false, NULL);
     DECLARE_MENU(MasterChannel, Localization::chmenu_master, 5, false, NULL);
     DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 5, false, NULL);
@@ -85,6 +85,8 @@ namespace Adjusters {
                    Localization::act->parrots, 1, 30, &DSP.bassboostIntensity);
     DECLARE_ADJUST(Pitch, Localization::act->pitch,
                    Localization::act->semitones, -16, 16, &DSP.pitch_shift);
+    DECLARE_ADJUST(RTASmooth, Localization::act->rtasmooth, Localization::act->parrots,
+                   1, 9, &DSP.rta_smoothing);
     DECLARE_ADJUST_CLICKABLE(Balance, Localization::act->stereobalance,
                              Localization::act->parrots, -50, 50, NULL);
 };  //namespace Adjusters

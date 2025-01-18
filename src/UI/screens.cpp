@@ -140,6 +140,9 @@ void Menus::Preferences::onClick()
     case 0:  // language
         open(&Menus::LanguageSelect::it());
         break;
+    case 1: // rta smooth
+        open(&Adjusters::RTASmooth::it());
+        break;
     }
 }
 
@@ -195,6 +198,11 @@ void Adjusters::Balance::onClick()
     if (current == 0) DSP.setStereoBalance(ch, -50);
     else if (abs(current) == 50) DSP.setStereoBalance(ch, -current);
     else DSP.setStereoBalance(ch, 0);
+}
+
+void Adjusters::RTASmooth::onTurn(int8_t dir)
+{
+    DSP.setRTASmoothing(DSP.rta_smoothing + dir);
 }
 
 void Choosers::LangSelectReboot::onClick()

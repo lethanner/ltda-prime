@@ -113,7 +113,7 @@ void ADAU1452::retrieveRTAValues()
 
             ch->readbackVal[k] = (value < 0 ? -value : value);
             // запаздывающий фильтр (код нагло украден из проекта спектроанализатора от AlexGyver)
-            ch->readbackVal[k] = ch->readbackVal_old[k] * RTA_SMOOTH_MULTIPLIER + ch->readbackVal[k] * (1 - RTA_SMOOTH_MULTIPLIER);
+            ch->readbackVal[k] = ch->readbackVal_old[k] * rta_multiplier + ch->readbackVal[k] * (1 - rta_multiplier);
             ch->readbackVal_old[k] = ch->readbackVal[k];
         }
     }
@@ -317,6 +317,14 @@ void ADAU1452::setStereoMode(channel id, DSPChannels::StereoMode mode)
     Wire.endTransmission();
 
     DSPChannels::list[id]->curStereoMode = mode;
+}
+
+void ADAU1452::setRTASmoothing(byte value)
+{
+    value = constrain(value, 1, 9);
+
+    rta_smoothing = value;
+    rta_multiplier = value / 10.0;
 }
 
 ADAU1452 DSP;

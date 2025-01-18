@@ -24,6 +24,7 @@ class ADAU1452
     void writeAsFloat(__register reg, byte value);
     byte findValue(const unsigned int* tab, byte max, int value);
     int flagRegister = 0x00000000;  // импровизированный регистр настроек
+    float rta_multiplier = RTA_SMOOTH_MULTIPLIER;
 
   public:
     ADAU1452();
@@ -48,6 +49,9 @@ class ADAU1452
     void setDecibelSendLevel(channel id, bus to, decibel val);
     void setStereoBalance(channel id, int8_t val);
     void setStereoMode(channel id, DSPChannels::StereoMode mode);
+    
+    void setRTASmoothing(byte value);
+    int8_t rta_smoothing = RTA_SMOOTH_MULTIPLIER * 10;
 
     // Mute
     void toggleMute(channel id);

@@ -39,6 +39,7 @@ namespace Localization {
         const char* ok;
         const char* cancel;
         const char* sof_fail;
+        const char* rtasmooth;
     };
 
     extern const Strings russian;
@@ -67,7 +68,7 @@ namespace Localization {
     const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };
     const char* const bassboostmenu[] = { act->bassboost, act->enable, act->intensity, act->gain };
     const char* const languagemenu[] = { act->language, "English", "Русский" };
-    const char* const prefsmenu[] = { act->preferences, act->language };
+    const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth };
     const char* const stereomodemenu[] = { act->stereomode, act->stereo, act->forcemono,
                                            act->vocalfilter };
 };  //namespace Localization
