@@ -14,6 +14,7 @@ namespace LEDUI {
     class MenuScreen;
     class MixerScreen;
     class AdjustScreen;
+    class ChooseScreen;
 
     class Screen
     {
@@ -59,7 +60,10 @@ class LEDUI::MenuScreen : public LEDUI::Screen
     MenuScreen(const char *const *entries, byte e_count, bool autoclick, int *booleans)
       : _entries(entries), _e_count_static(e_count - 1), _autoclick(autoclick), _booleans(booleans) {};
     void overrideEntryCount(byte newcount) { _e_count = newcount - 1; }
-    void overrideSelection(byte newselect) { selected = newselect, visibleSel = newselect; }
+    void overrideSelection(byte newselect)
+    {
+        selected = newselect, visibleSel = newselect;
+    }
     // TODO: пока что overrideSelection() не рассчитан на многостраничные меню, переделать
     static MenuScreen *active;
 
@@ -143,4 +147,23 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
     const char *_title, *_unit;
     const int8_t __min, __max;
     int8_t *_value;
+};
+
+class LEDUI::ChooseScreen : public LEDUI::Screen
+{
+  public:
+    ChooseScreen(const char *title, const char *text, const char *positive, const char *negative = NULL)
+      : _title(title), _text(text), _neg(negative), _pos(positive) {};
+
+  private:
+    void init(void *params = NULL) override;
+    void render() override;
+    //void onClick() override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
+
+    const char *_title, *_text, *_neg, *_pos;
+
+  protected:
+    static bool selection;
 };
