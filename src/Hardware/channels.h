@@ -34,8 +34,9 @@ namespace DSPChannels {
         decibel faderPosition;
         int8_t balpan;
         bool mute;
+        bool usingInternalADC;
     };
-    
+
     extern Channel spdif;
     extern Channel bluetooth;
     extern Channel usb;
@@ -43,10 +44,37 @@ namespace DSPChannels {
     extern Channel pitch;
     extern Channel master;
     extern Channel submix;
+    extern Channel spdifo;
+    extern Channel aux1;
+    extern Channel aux2;
+    extern Channel aux3;
+    extern Channel aux4;
+    extern Channel aux5;
+    extern Channel aux6;
 
-    enum channel { SPDIF = 0, BLUETOOTH = 1, USB = 2, REVERB = 3, PITCH = 4, MASTER = 5, SUBMIX = 6 };
-    enum bus { BUS_MASTER = 0, BUS_SUBMIX = 1, BUS_REVERB = 2, BUS_PITCH = 3 };
-    Channel *const list[DSP_CHANNEL_COUNT] = {
-        &spdif, &bluetooth, &usb, &reverb, &pitch, &master, &submix
+    enum channel {
+        SPDIF = 0,
+        BLUETOOTH = 1,
+        USB = 2,
+        REVERB = 3,
+        PITCH = 4,
+        MASTER = 5,
+        SUBMIX = 6,
+        SPDIFO = 7,
+        AUX1 = 8,
+        AUX2 = 9,
+        AUX3 = 10,
+        AUX4 = 11,
+        AUX5 = 12,
+        AUX6 = 13
     };
+    enum bus {
+        BUS_MASTER = 0,
+        BUS_SUBMIX = 1,
+        BUS_REVERB = 2,
+        BUS_PITCH = 3,
+        BUS_SPDIF = 4
+    };
+    Channel *const list[DSP_CHANNEL_COUNT] = { &spdif, &bluetooth, &usb,   &reverb,
+                                               &pitch, &master,    &submix };
 };  //namespace DSPChannels

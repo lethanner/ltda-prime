@@ -1,14 +1,14 @@
 #pragma once
-typedef short __register;
+typedef unsigned short __register;
 
 #define DSP_CORE_STATUS_REG 0xF405
 
-#define DSP_BASSBOOST_REG 0x6016
-#define DSP_BB_INTENSITY_REG 0x600B
-#define DSP_BB_GAIN_REG 0x6014
+#define DSP_BASSBOOST_REG 0x6043
+#define DSP_BB_INTENSITY_REG 0x6038
+#define DSP_BB_GAIN_REG 0x6041
 
-#define DSP_REVERB_TIME_REG 0x6008
-#define DSP_REVERB_HFDAMP_REG 0x00A1
-#define DSP_REVERB_BGAIN_REG 0x00A3
+#define DSP_REVERB_TIME_REG 0x6035
+#define DSP_REVERB_HFDAMP_REG 0x020D
+#define DSP_REVERB_BGAIN_REG 0x020F
 
-#define DSP_PITCH_SHIFT_REG 0x005A
+#define DSP_PITCH_SHIFT_REG 0x01C6
