@@ -36,7 +36,8 @@ const Localization::Strings Localization::russian = {
     .ok = "ОК",
     .cancel = "Отмена",
     .sof_fail = "Из этой группы\r\nнет посылов.",
-    .rtasmooth = "Сглаживание RTA"
+    .rtasmooth = "Сглаживание RTA",
+    .aux = "AUX"
 };
 
 const Localization::Strings Localization::english = {
@@ -75,5 +76,6 @@ const Localization::Strings Localization::english = {
     .ok = "OK",
     .cancel = "Cancel",
     .sof_fail = "Nothing can be routed\r\nfrom this group.",
-    .rtasmooth = "RTA smoothing"
+    .rtasmooth = "RTA smoothing",
+    .aux = "AUX"
 };

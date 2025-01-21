@@ -106,12 +106,19 @@ void ADAU1452::retrieveRTAValues()
             // из-за того, что SigmaDSP не всегда делает адреса блоков порядковыми,
             // пришлось убрать burst-чтение за одну передачу адреса регистра и
             // на каждую итерацию сделать передачу нового адреса. :angry:
-            gotoRegister(ch->readback[k], 4);
-            for (byte j = 0; j < 4; j++) {
-                value += Wire.read() << (24 - (j * 8));
+            if (ch->usingInternalADC) {
+                gotoRegister(ch->readback[k], 2);
+                value += Wire.read() << 8;
+                value += Wire.read();
+                ch->readbackVal[k] = value << 14;
+            } else {
+                gotoRegister(ch->readback[k], 4);
+                for (byte j = 0; j < 25; j += 8) {
+                    value += Wire.read() << (24 - j);
+                }
+                ch->readbackVal[k] = (value < 0 ? -value : value);
             }
-
-            ch->readbackVal[k] = (value < 0 ? -value : value);
+            
             // запаздывающий фильтр (код нагло украден из проекта спектроанализатора от AlexGyver)
             ch->readbackVal[k] = ch->readbackVal_old[k] * rta_multiplier + ch->readbackVal[k] * (1 - rta_multiplier);
             ch->readbackVal_old[k] = ch->readbackVal[k];
@@ -127,13 +134,12 @@ void ADAU1452::setDecibelFaderPosition(channel id, decibel val, bool sync)
 
     // если MUTE, то значение принудительно 0
     uint32_t _val = ch->mute ? 0 : LUT::db_24bit[97 + val];
-    
+
     // пересчитываем значения фейдеров L-R в соответствии со значением стереобаланса
     // если balpan == -50, значение уровня левого канала в разах увеличится в 2 раза (+6 дБ),
     // а значение уровня правого канала станет равно 0. для balpan == 50 всё ровно наоборот
     uint32_t values[2];
-    if (ch->balpan == 0)
-        values[0] = values[1] = _val;
+    if (ch->balpan == 0) values[0] = values[1] = _val;
     else {
         float coeff = 0.02 * ch->balpan;
         values[0] = _val * (1.0 - coeff);
@@ -193,7 +199,7 @@ void ADAU1452::toggleMute(channel id, bus to)
 }
 
 // поиск ID ближайшего значения в массиве (для конвертации значения уровня в децибелы)
-byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
+byte ADAU1452::findValue(const unsigned int *tab, byte max, int value)
 {
     for (byte i = 0; i < max; i++) {
         if (value >= tab[i] && value < tab[i + 1]) return i;
@@ -202,7 +208,7 @@ byte ADAU1452::findValue(const unsigned int* tab, byte max, int value)
 }
 
 // получение децибельного уровня сигнала на канале (согласно подаваемой калибровочной таблице)
-byte ADAU1452::getRelativeSignalLevel(const unsigned int* tab, byte max, channel id, bool right)
+byte ADAU1452::getRelativeSignalLevel(const unsigned int *tab, byte max, channel id, bool right)
 {
     byte lr = isMonoChannel(id) ? 0 : static_cast<byte>(right);
     return findValue(tab, max, DSPChannels::list[id]->readbackVal[lr]);
@@ -286,7 +292,7 @@ void ADAU1452::setPitchBusShift(int8_t value)
     for (byte i = 0; i < 4; i++) {
         Wire.write((_val >> (24 - (i * 8))) & 0xFF);
     }
-    Wire.endTransmission(); 
+    Wire.endTransmission();
 
     pitch_shift = value;
 }
@@ -301,7 +307,7 @@ void ADAU1452::setStereoBalance(channel id, int8_t val)
 
 // установка стереорежима для стереоканала
 // либо "нормальный", либо принудительное моно, либо вычитание стереоканалов
-// (вычитание стереоканалов иногда используется для подавления вокала) 
+// (вычитание стереоканалов иногда используется для подавления вокала)
 void ADAU1452::setStereoMode(channel id, DSPChannels::StereoMode mode)
 {
     __register reg = DSPChannels::list[id]->stereoMode;

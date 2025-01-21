@@ -4,8 +4,8 @@
 typedef signed char decibel;
 //typedef unsigned char channel;
 
-#define DSP_CHANNEL_COUNT 7
-#define DSP_BUS_COUNT 4
+#define DSP_CHANNEL_COUNT 14
+#define DSP_BUS_COUNT 5
 namespace DSPChannels {
     enum StereoMode { STEREO = 0, FORCEMONO = 1, VOICESUPPRESS = 2 };
 
@@ -75,6 +75,8 @@ namespace DSPChannels {
         BUS_PITCH = 3,
         BUS_SPDIF = 4
     };
-    Channel *const list[DSP_CHANNEL_COUNT] = { &spdif, &bluetooth, &usb,   &reverb,
-                                               &pitch, &master,    &submix };
+    Channel *const list[DSP_CHANNEL_COUNT] = {
+        &spdif,  &bluetooth, &usb,  &reverb, &pitch, &master, &submix,
+        &spdifo, &aux1,      &aux2, &aux3,   &aux4,  &aux5,   &aux6
+    };
 };  //namespace DSPChannels

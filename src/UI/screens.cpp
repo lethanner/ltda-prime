@@ -110,6 +110,24 @@ void Menus::ReverbChannel::onClick()
     }
 }
 
+void Menus::AUXChannel::onClick()
+{
+    switch (selected) {
+    case 0:  // preferences
+        open(&Menus::Preferences::it());
+        break;
+    case 1:  // send to monitor
+        LEDUI::setMonitorDataFeed(LEDUI::MixerScreen::it().getSelectedChannel());
+        open(&LEDUI::MixerScreen::it());  // выход
+        break;
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
+        break;
+    }
+}
+
 void Menus::ChannelGroup::onClick()
 {
     switch (selected) {
@@ -140,7 +158,7 @@ void Menus::Preferences::onClick()
     case 0:  // language
         open(&Menus::LanguageSelect::it());
         break;
-    case 1: // rta smooth
+    case 1:  // rta smooth
         open(&Adjusters::RTASmooth::it());
         break;
     }

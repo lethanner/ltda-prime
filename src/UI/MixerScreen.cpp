@@ -148,18 +148,15 @@ void LEDUI::MixerScreen::onHold()
         // дефайнами, может ну его нафиг, этот массив скринов? хотя, учитывая,
         // сколько у меня потом будет каналов, как-то стремно.
         switch (_group->onScreenChannels[selected]) {
-        case DSPChannels::MASTER:  // если выбрали канал Master, открываем меню для него
-            open(&Menus::MasterChannel::it());
-            break;
-        case DSPChannels::REVERB:  // если выбрали канал reverb, то для него меню
-            open(&Menus::ReverbChannel::it());
-            break;
-        case DSPChannels::BLUETOOTH:  // если выбрали канал bluetooth, то для него меню
-            open(&Menus::BluetoothChannel::it());
-            break;
+        case DSPChannels::MASTER: open(&Menus::MasterChannel::it()); break;
+        case DSPChannels::REVERB: open(&Menus::ReverbChannel::it()); break;
+        case DSPChannels::BLUETOOTH: open(&Menus::BluetoothChannel::it()); break;
         case DSPChannels::PITCH: open(&Menus::PitchChannel::it()); break;
-        default:  // иначе меню для всех остальных
-            open(&Menus::GenericChannel::it());
+        default:
+            if (_group->onScreenChannels[selected] >= DSPChannels::AUX1
+                && _group->onScreenChannels[selected] <= DSPChannels::AUX6)
+                open(&Menus::AUXChannel::it());
+            else open(&Menus::GenericChannel::it());
             break;
         }
     }

@@ -1,6 +1,6 @@
 #pragma once
 #define SOF_FX_MAXIMUM_SENDS 2
-#define SOF_DESTINATION_LABELS "Master", "Submix", "Reverb", "Pitch"
+#define SOF_DESTINATION_LABELS "Master", "Submix", "Reverb", "Pitch", "SP-Out"
 
 namespace Localization {
     struct Strings {
@@ -40,11 +40,12 @@ namespace Localization {
         const char* cancel;
         const char* sof_fail;
         const char* rtasmooth;
+        const char* aux;
     };
 
     extern const Strings russian;
     extern const Strings english;
-    const Strings *const locales[] = { &english, &russian };
+    const Strings* const locales[] = { &english, &russian };
 
     // оставить это как NULLPTR нельзя - получаем SIOF
     static const Strings* act = &Localization::english;
@@ -63,6 +64,8 @@ namespace Localization {
     const char* const chmenu_blue[] = { act->bluetooth,       act->preferences,
                                         act->send_to_monitor, act->stereobalance,
                                         act->stereomode,      act->disconnect };
+    const char* const chmenu_aux[] = { act->aux, act->preferences, act->send_to_monitor,
+                                       act->stereobalance };
 
     const char* const groupmenu[] = { act->group, act->sends_on_fader };
     const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };

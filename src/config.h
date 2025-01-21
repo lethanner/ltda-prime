@@ -6,7 +6,7 @@
 #define EB_HOLD_TIME 400
 
 #define BLUETOOTH_NAME "LTDA Prime"
-#define STR_DEV_INFO "Prime pre-v0.5"
+#define STR_DEV_INFO "Prime v0.5-alpha"
 
 /* Аппаратные настройки */
 #define DSP_I2C_ADDRESS 0x38
