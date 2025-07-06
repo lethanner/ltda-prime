@@ -1,6 +1,7 @@
 #include "UI.h"
 #include "screens.h"
 #include "lut.h"
+#include "../Hardware/ds18b20.h"
 
 bool LEDUI::MixerScreen::init(void* params)
 {
@@ -50,8 +51,8 @@ void LEDUI::MixerScreen::render()
         display.print(" to ");
         display.print(sendto_labels[SoFdest]);
     } else if (statusbar == 0) {  // непосредственно статусбар
-        printYX("Mixer", 0, 0);   // заглушка заголовка
-        printValue(0, "'C", -1, 0);  // заглушка датчика температуры
+        printYX("Mixer", 0, 0);
+        printValue(heatsink.getTempInt(), "'C", -1, 0); // инфа о температуре радиатора
     } else if (statusbar == 1) {  // в момент изменения громкости канала
         statusbarDecibels();
         printYX(ch_labels[_group->onScreenChannels[selected]], 0, 0);

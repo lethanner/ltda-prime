@@ -10,3 +10,6 @@
 [submodule "lib/ESP32-A2DP"]
 	path = lib/ESP32-A2DP
 	url = https://github.com/pschatzmann/ESP32-A2DP.git
+[submodule "lib/GyverDS18"]
+	path = lib/GyverDS18
+	url = https://github.com/GyverLibs/GyverDS18
