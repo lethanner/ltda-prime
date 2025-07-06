@@ -18,7 +18,7 @@
 #define SHIFT_DAT 15
 #define SHIFT_CLK 4
 #define SHIFT_LAT 16
-#define CTRL_KEY 0
+#define CTRL_KEY 33
 #define CTRL_S1 39
 #define CTRL_S2 36
 #define T_SENSOR 14
