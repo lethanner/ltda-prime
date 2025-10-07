@@ -6,7 +6,6 @@
 // и не буду пихать инстанс её класса в общий namespace.
 #include "screens.h"
 #include "lut.h"
-#include "../Hardware/shiftreg.h"
 
 /* Объявление энкодера и дисплея */
 GyverOLED<SSD1306_128x64, OLED_BUFFER> LEDUI::display(OLED_I2C_ADDRESS);
@@ -145,20 +144,10 @@ void LEDUI::brightDisplay()
 // отправка данных на сдвиговики на внешнем индикаторе уровня
 void LEDUI::streamMonitorData()
 {
-    // не кидайтесь помидорами! я знаю, что это можно реализовать через
-    // возведение двойки в степень! с технической точки зрения такое решение
-    // однозначно быстрее и удобнее, а с 520 килобайтами оперативки
-    // вообще не жалко ради оптимизации лишний раз занять около 26 байт.
-    // это не DA50X всего с двумя килобайтами.
-    const DRAM_ATTR static short ledbitmap[13] = {
-        0b000000000000, 0b100000000000, 0b110000000000, 0b111000000000, 0b111100000000,
-        0b111110000000, 0b111111000000, 0b111111100000, 0b111111110000, 0b111111111000,
-        0b111111111100, 0b111111111110, 0b111111111111
-    };
     // Максим, поменяй 7 на 12 после допайки светодиодиков!
     // clang-format off
-    short dataL = ledbitmap[DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, false)];
-    short dataR = ledbitmap[DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, true)];
+    short dataL = (0xFFF << (12 - DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, false))) & 0xFFF;
+    short dataR = (0xFFF << (12 - DSP.getRelativeSignalLevel(LUT::ledmonitor, 12, monitor_ch, true))) & 0xFFF;
     int combined = dataL << 12 | dataR;
     // clang-format on
 

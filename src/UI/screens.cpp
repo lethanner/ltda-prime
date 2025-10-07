@@ -125,6 +125,11 @@ void Menus::AUXChannel::onClick()
         Adjusters::Balance::it().overrideValuePtr(
          &DSP.getChannelPointer(LEDUI::MixerScreen::it().getSelectedChannel())->balpan);
         break;
+    case 3: // aux gain
+        open(&Adjusters::AUXGain::it());
+        Adjusters::AUXGain::it().overrideValuePtr(
+         shifters.getAuxGainPtr(LEDUI::MixerScreen::it().getSelectedChannel()));
+        break;
     }
 }
 
@@ -221,6 +226,14 @@ void Adjusters::Balance::onClick()
 void Adjusters::RTASmooth::onTurn(int8_t dir)
 {
     DSP.setRTASmoothing(DSP.rta_smoothing + dir);
+}
+
+void Adjusters::AUXGain::onTurn(int8_t dir)
+{
+    channel ch = LEDUI::MixerScreen::it().getSelectedChannel();
+    int8_t current = *shifters.getAuxGainPtr(ch);
+
+    shifters.setAuxGain(ch, current + dir);
 }
 
 void Choosers::LangSelectReboot::onClick()

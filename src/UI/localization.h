@@ -41,6 +41,7 @@ namespace Localization {
         const char* sof_fail;
         const char* rtasmooth;
         const char* aux;
+        const char* auxgain;
     };
 
     extern const Strings russian;
@@ -65,7 +66,7 @@ namespace Localization {
                                         act->send_to_monitor, act->stereobalance,
                                         act->stereomode,      act->disconnect };
     const char* const chmenu_aux[] = { act->aux, act->preferences, act->send_to_monitor,
-                                       act->stereobalance };
+                                       act->stereobalance, act->auxgain };
 
     const char* const groupmenu[] = { act->group, act->sends_on_fader };
     const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };

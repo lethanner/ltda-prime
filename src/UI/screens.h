@@ -15,7 +15,7 @@
         _name() : MenuScreen(_entr, _count, _aclick, _bools) {}; \
     }
 
-#define DECLARE_ADJUST(_name, _title, _unit, __min, __max, _val) \
+#define DECLARE_ADJUST(_name, _title, _unit, __min, __max, _val, _als) \
     class _name : public LEDUI::AdjustScreen { \
       public: \
         static _name& it() \
@@ -26,10 +26,10 @@
         void onTurn(int8_t dir) override; \
         void onClick() override {}; \
       private: \
-        _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
+        _name() : AdjustScreen(_title, _unit, __min, __max, _val, _als) {}; \
     }
 
-#define DECLARE_ADJUST_CLICKABLE(_name, _title, _unit, __min, __max, _val) \
+#define DECLARE_ADJUST_CLICKABLE(_name, _title, _unit, __min, __max, _val, _als) \
     class _name : public LEDUI::AdjustScreen { \
       public: \
         static _name& it() \
@@ -40,7 +40,7 @@
         void onTurn(int8_t dir) override; \
         void onClick() override; \
       private: \
-        _name() : AdjustScreen(_title, _unit, __min, __max, _val) {}; \
+        _name() : AdjustScreen(_title, _unit, __min, __max, _val, _als) {}; \
     }
 
 #define DECLARE_CHOOSE(_name, _title, _text, _pos, _neg) \
@@ -65,7 +65,7 @@ namespace Menus {
     DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 5, false, NULL);
     DECLARE_MENU(ReverbChannel, Localization::chmenu_reverb, 5, false, NULL);
     DECLARE_MENU(PitchChannel, Localization::chmenu_pitch, 4, false, NULL);
-    DECLARE_MENU(AUXChannel, Localization::chmenu_aux, 3, false, NULL);
+    DECLARE_MENU(AUXChannel, Localization::chmenu_aux, 4, false, NULL);
     DECLARE_MENU(ChannelGroup, Localization::groupmenu, 1, false, NULL);
     DECLARE_MENU(SendsOnFader, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
     DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegisterPtr());
@@ -75,21 +75,23 @@ namespace Menus {
 // clang-format off
 namespace Adjusters {
     DECLARE_ADJUST(ReverbTime, Localization::act->reverb_time,
-                   Localization::act->parrots, 0, 3, &DSP.reverbTime);
+                   Localization::act->parrots, 0, 3, &DSP.reverbTime, NULL);
     DECLARE_ADJUST(ReverbBGain, Localization::act->bassreverbgain,
-                   Localization::act->parrots, 0, 2, &DSP.reverbBassGain);
+                   Localization::act->parrots, 0, 2, &DSP.reverbBassGain, NULL);
     DECLARE_ADJUST(ReverbHFDamp, Localization::act->hf_damping,
-                   Localization::act->parrots, 0, 2, &DSP.reverbHFDamp);
+                   Localization::act->parrots, 0, 2, &DSP.reverbHFDamp, NULL);
     DECLARE_ADJUST(BassboostGain, Localization::act->gain,
-                   Localization::act->parrots, 1, 30, &DSP.bassboostGain);
+                   Localization::act->parrots, 1, 30, &DSP.bassboostGain, NULL);
     DECLARE_ADJUST(BassboostIntens, Localization::act->intensity,
-                   Localization::act->parrots, 1, 30, &DSP.bassboostIntensity);
+                   Localization::act->parrots, 1, 30, &DSP.bassboostIntensity, NULL);
     DECLARE_ADJUST(Pitch, Localization::act->pitch,
-                   Localization::act->semitones, -16, 16, &DSP.pitch_shift);
+                   Localization::act->semitones, -16, 16, &DSP.pitch_shift, NULL);
     DECLARE_ADJUST(RTASmooth, Localization::act->rtasmooth, Localization::act->parrots,
-                   1, 9, &DSP.rta_smoothing);
+                   1, 9, &DSP.rta_smoothing, NULL);
     DECLARE_ADJUST_CLICKABLE(Balance, Localization::act->stereobalance,
-                             Localization::act->parrots, -50, 50, NULL);
+                             Localization::act->parrots, -50, 50, NULL, NULL);
+    DECLARE_ADJUST(AUXGain, Localization::act->auxgain,
+                   Localization::act->parrots, 0, 7, NULL, ShiftRegisters::gainValuesAliases);
 };  //namespace Adjusters
 
 // clang-format on

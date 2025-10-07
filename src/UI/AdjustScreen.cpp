@@ -18,7 +18,16 @@ void LEDUI::AdjustScreen::render()
     display.print(_title);
     // единица измерения и значение
     display.invertText(0);
-    printValue(*_value, _unit, 0, 24, true);
+    if (_aliases != NULL) {
+        // если значение может быть отрицательным, сдвинуть диапазон в область положительных чисел
+        uint16_t position = (__min < 0) ? *_value - __min : *_value;
+        byte x = getCenterCoordinate(_aliases[position]);
+
+        display.setCursorXY(x, 24);
+        display.print(_aliases[position]);
+    } else
+        printValue(*_value, _unit, 0, 24, true);
+        
     // полосочка
     if (__min < 0) {  // для значений, которые могут быть отрицательными
         if (*_value > 0) {  // если текущее значение больше нуля, рисуем полоску вправо

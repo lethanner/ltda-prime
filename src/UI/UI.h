@@ -6,6 +6,7 @@
 #include "bitmaps.h"
 #include "localization.h"
 #include "../Hardware/DSP.h"
+#include "../Hardware/shiftreg.h"
 #include "freertos/timers.h"
 
 #define GROUPS_COUNT 7
@@ -131,8 +132,8 @@ class LEDUI::MixerScreen : public LEDUI::Screen
 class LEDUI::AdjustScreen : public LEDUI::Screen
 {
   public:
-    AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value)
-      : _title(title), _unit(unit), __min(min), __max(max), _value(value) {};
+    AdjustScreen(const char *title, const char *unit, int8_t min, int8_t max, int8_t *value, const char *const *aliases)
+      : _title(title), _unit(unit), __min(min), __max(max), _value(value), _aliases(aliases) {};
     void overrideValuePtr(int8_t *newptr);
 
   private:
@@ -142,6 +143,7 @@ class LEDUI::AdjustScreen : public LEDUI::Screen
     void onHold() override;
     // void onTurn(int8_t dir) const override;
 
+    const char *const *_aliases;
     const char *_title, *_unit;
     const int8_t __min, __max;
     int8_t *_value;
