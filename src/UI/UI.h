@@ -16,6 +16,7 @@ namespace LEDUI {
     class MixerScreen;
     class AdjustScreen;
     class ChooseScreen;
+    class NotificationScreen;
 
     class Screen
     {
@@ -46,10 +47,12 @@ namespace LEDUI {
 
     extern channel monitor_ch;
     inline void setMonitorDataFeed(channel ch) { monitor_ch = ch; }
+    void statusbarMessage(const char* message);
     void streamMonitorData();
 
     extern byte title_xCoord;
     extern byte screen_state, statusbar;
+    extern const char* sbMessage;
     extern Screen *active;
 
     extern GyverOLED<SSD1306_128x64, OLED_BUFFER> display;
@@ -168,3 +171,16 @@ class LEDUI::ChooseScreen : public LEDUI::Screen
     static bool confirmation;
     static void *_params;
 };
+
+/*class LEDUI::NotificationScreen : public LEDUI::Screen
+{
+  public:
+    NotificationScreen(const char* ) {};
+
+  private:
+    bool init(void *params = NULL) override;
+    void render() override;
+    void onClick() override;
+    void onHold() override;
+    void onTurn(int8_t dir) override;
+};*/

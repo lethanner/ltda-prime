@@ -42,6 +42,12 @@ namespace Localization {
         const char* rtasmooth;
         const char* aux;
         const char* auxgain;
+        const char* radio;
+        const char* off;
+        const char* wifiOK;
+        const char* btOK;
+        const char* radioOff;
+        const char* error;
     };
 
     extern const Strings russian;
@@ -72,7 +78,8 @@ namespace Localization {
     const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };
     const char* const bassboostmenu[] = { act->bassboost, act->enable, act->intensity, act->gain };
     const char* const languagemenu[] = { act->language, "English", "Русский" };
-    const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth };
+    const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth, act->radio };
     const char* const stereomodemenu[] = { act->stereomode, act->stereo, act->forcemono,
                                            act->vocalfilter };
+    const char* const radioselectmenu[] = { act->radio, act->off, "Wi-Fi", "Bluetooth" };
 };  //namespace Localization

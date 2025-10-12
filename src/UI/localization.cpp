@@ -38,7 +38,13 @@ const Localization::Strings Localization::russian = {
     .sof_fail = "Из этой группы\r\nнет посылов.",
     .rtasmooth = "Сглаживание RTA",
     .aux = "AUX",
-    .auxgain = "Предусиление"
+    .auxgain = "Предусиление",
+    .radio = "Беспр. режим",
+    .off = "Выключено",
+    .wifiOK = "Перекл. на Wi-Fi.",
+    .btOK = "Перекл. на Bluetooth.",
+    .radioOff = "Радио ВЫКЛ.",
+    .error = "Ошибка."
 };
 
 const Localization::Strings Localization::english = {
@@ -79,5 +85,11 @@ const Localization::Strings Localization::english = {
     .sof_fail = "Nothing can be routed\r\nfrom this group.",
     .rtasmooth = "RTA smoothing",
     .aux = "AUX",
-    .auxgain = "Gain"
+    .auxgain = "Gain",
+    .radio = "Wireless",
+    .off = "Off",
+    .wifiOK = "Wi-Fi mode ON.",
+    .btOK = "Bluetooth mode ON.",
+    .radioOff = "Radio OFF.",
+    .error = "Error."
 };

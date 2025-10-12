@@ -57,6 +57,9 @@ void LEDUI::MixerScreen::render()
         statusbarDecibels();
         printYX(ch_labels[_group->onScreenChannels[selected]], 0, 0);
         display.print(":");
+    } else if (statusbar == 2) { // кастомное сообщение
+        display.home();
+        display.print(sbMessage);
     }
 
     for (byte ch = 0; ch < count; ch++) {

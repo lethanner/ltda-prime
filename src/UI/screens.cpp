@@ -1,5 +1,6 @@
 #include "screens.h"
 #include "../System/memory.h"
+#include "../Hardware/communications.h"
 
 void Menus::GenericChannel::onClick()
 {
@@ -166,6 +167,9 @@ void Menus::Preferences::onClick()
     case 1:  // rta smooth
         open(&Adjusters::RTASmooth::it());
         break;
+    case 2: // wireless
+        open(&Menus::MRadio::it());
+        break;
     }
 }
 
@@ -178,6 +182,23 @@ void Menus::MStereoMode::onClick()
 {
     DSP.setStereoMode(LEDUI::MixerScreen::it().getSelectedChannel(),
                       static_cast<DSPChannels::StereoMode>(selected));
+}
+
+void Menus::MRadio::onClick()
+{
+    bool status = comm.setRadio(static_cast<Communications::RadioMode>(selected));
+    const char* message;
+    if (status) {
+        if (selected == Communications::RadioMode::OFF)
+            message = Localization::act->radioOff;
+        else if (selected == Communications::RadioMode::WIFI)
+            message = Localization::act->wifiOK;
+        else if (selected == Communications::RadioMode::BT)
+            message = Localization::act->btOK;
+    } else message == Localization::act->error;
+
+    open(&LEDUI::MixerScreen::it());
+    LEDUI::statusbarMessage(message);
 }
 
 void Adjusters::ReverbTime::onTurn(int8_t dir)

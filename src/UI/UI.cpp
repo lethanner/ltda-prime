@@ -18,6 +18,7 @@ TimerHandle_t xActivityTimer = NULL;
 channel LEDUI::monitor_ch = DSPChannels::MASTER;
 byte LEDUI::title_xCoord = 0;
 byte LEDUI::screen_state = 0, LEDUI::statusbar = 0;
+const char* LEDUI::sbMessage;
 LEDUI::Screen *LEDUI::active = nullptr;
 
 void LEDUI::init()
@@ -161,4 +162,12 @@ void LEDUI::vUITimerCallback(TimerHandle_t pxTimer)
         display.setContrast(BRIGHTNESS_MINIMUM);
     else if (pxTimer == xActivityTimer)  // таймер возврата на главный экран
         screen_state = statusbar = 0;
+}
+
+void LEDUI::statusbarMessage(const char* message)
+{
+    brightDisplay();
+    xTimerReset(xActivityTimer, 1);
+    sbMessage = message;
+    statusbar = 2;
 }

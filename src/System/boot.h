@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "../Hardware/DSP.h"
-#include "../Hardware/bluetooth.h"
+#include "../Hardware/communications.h"
 #include "../Hardware/shiftreg.h"
 #include "../Hardware/ds18b20.h"
 #include "../UI/UI.h"
@@ -64,7 +64,7 @@ void boot()
     ledcSetup(FAN_PWM_CHANNEL, FAN_PWM_FREQ, 8);
     ledcAttachPin(FAN_PWM, FAN_PWM_CHANNEL);
     // ненадолго взвоем кулером при запуске
-    ledcWrite(FAN_PWM_CHANNEL, 128);
+    ledcWrite(FAN_PWM_CHANNEL, 255);
 
     /* Инициализация памяти настроек */
     memory.begin("ltda", false);
@@ -88,7 +88,7 @@ void boot()
 
     /* Инициализация периферии микроконтроллера */
     Wire.setClock(400000L);
-    bluetooth.init();
+    comm.setRadio(Communications::BT);
     vTaskDelay(50 / portTICK_PERIOD_MS);
 
     /* Инициализация DSP */

@@ -59,7 +59,7 @@
 // clang-format on
 namespace Menus {
     DECLARE_MENU(LanguageSelect, Localization::languagemenu, 2, false, NULL);
-    DECLARE_MENU(Preferences, Localization::prefsmenu, 2, false, NULL);
+    DECLARE_MENU(Preferences, Localization::prefsmenu, 3, false, NULL);
     DECLARE_MENU(GenericChannel, Localization::chmenu_generic, 4, false, NULL);
     DECLARE_MENU(MasterChannel, Localization::chmenu_master, 5, false, NULL);
     DECLARE_MENU(BluetoothChannel, Localization::chmenu_blue, 5, false, NULL);
@@ -70,6 +70,7 @@ namespace Menus {
     DECLARE_MENU(SendsOnFader, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
     DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegisterPtr());
     DECLARE_MENU(MStereoMode, Localization::stereomodemenu, 3, true, NULL);
+    DECLARE_MENU(MRadio, Localization::radioselectmenu, 3, false, NULL);
 };  //namespace Menus
 
 // clang-format off
