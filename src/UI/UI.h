@@ -7,6 +7,7 @@
 #include "localization.h"
 #include "../Hardware/DSP.h"
 #include "../Hardware/shiftreg.h"
+#include "../Hardware/communications.h"
 #include "freertos/timers.h"
 
 #define GROUPS_COUNT 7
@@ -47,8 +48,14 @@ namespace LEDUI {
 
     extern channel monitor_ch;
     inline void setMonitorDataFeed(channel ch) { monitor_ch = ch; }
-    void statusbarMessage(const char* message);
     void streamMonitorData();
+
+    void statusbarMessage(const char* message);
+    void wifiStatusUpdated(wl_status_t status);
+
+    void transferLiveData();
+    const char* processRemoteCommand(char* command);
+    void remoteUpdated(byte count);
 
     extern byte title_xCoord;
     extern byte screen_state, statusbar;

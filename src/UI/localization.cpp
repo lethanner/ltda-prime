@@ -41,10 +41,14 @@ const Localization::Strings Localization::russian = {
     .auxgain = "Предусиление",
     .radio = "Беспр. режим",
     .off = "Выключено",
-    .wifiOK = "Перекл. на Wi-Fi.",
+    .wifiApOK = "Точка доступа ВКЛ.",
+    .wifiStaOK = "Wi-Fi клиент ВКЛ.",
     .btOK = "Перекл. на Bluetooth.",
     .radioOff = "Радио ВЫКЛ.",
-    .error = "Ошибка."
+    .error = "Ошибка.",
+    .wifiStaEstab = "Соединен с WiFi.",
+    .wifiStaLost = "Сеть WiFi потеряна.",
+    .wifiStaNotFound = "Сеть не найдена."
 };
 
 const Localization::Strings Localization::english = {
@@ -88,8 +92,12 @@ const Localization::Strings Localization::english = {
     .auxgain = "Gain",
     .radio = "Wireless",
     .off = "Off",
-    .wifiOK = "Wi-Fi mode ON.",
+    .wifiApOK = "Access Point ON.",
+    .wifiStaOK = "Wi-Fi client ON.",
     .btOK = "Bluetooth mode ON.",
     .radioOff = "Radio OFF.",
-    .error = "Error."
+    .error = "Error.",
+    .wifiStaEstab = "Connected to AP.",
+    .wifiStaLost = "Connection lost.",
+    .wifiStaNotFound = "AP not in range."
 };

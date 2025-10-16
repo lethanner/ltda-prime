@@ -8,7 +8,11 @@
 #define BLUETOOTH_NAME "LTDA Prime"
 #define WIFI_DEFAULT_NAME "LTDA-AP"
 #define WIFI_DEFAULT_PASS "LETHTECH"
-#define STR_DEV_INFO "Prime v0.7.1-alpha"
+#define STR_DEV_INFO "Prime v0.7.2-alpha"
+
+#define MULTICAST_IP 224, 135, 0, 1
+#define MULTICAST_PORT 12345
+#define TCP_PORT 12344
 
 /* Аппаратные настройки */
 #define DSP_I2C_ADDRESS 0x38

@@ -12,6 +12,7 @@ Channel DSPChannels::spdif = {
                { { 0x0190, 0x01A3 }, 0, true },
                { { 0x01B4, 0x01B5 }, 0, true },
                { { 0x027D, 0x0294 }, 0, false } },
+    .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -28,6 +29,7 @@ Channel DSPChannels::bluetooth = {
                { { 0x0192, 0x01A5 }, 0, true },
                { { 0x01B6, 0x01B7 }, 0, true },
                { { 0x027F, 0x0296 }, 0, false } },
+    .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -44,6 +46,7 @@ Channel DSPChannels::usb = {
                { { 0x0194, 0x01A7 }, 0, true },
                { { 0x01B8, 0x01B9 }, 0, true },
                { { 0x0281, 0x0298 }, 0, false } },
+    .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -59,6 +62,7 @@ Channel DSPChannels::reverb = {
                { { 0x0257, 0x026E }, 0, false },
                NO_SEND, NO_SEND,
                { { 0x0283, 0x029A }, 0, false } },
+    .type = CH_FX,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -73,6 +77,7 @@ Channel DSPChannels::pitch = {
                { { 0x0259, 0x0270 }, 0, false },
                NO_SEND, NO_SEND,
                { { 0x0285, 0x029C }, 0, false } },
+    .type = CH_FX,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -85,6 +90,7 @@ Channel DSPChannels::master = {
     .stereoMode = 0x03FE,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
 
+    .type = CH_OUTPUT,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -98,6 +104,7 @@ Channel DSPChannels::submix = {
     .stereoMode = 0x03FC,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
 
+    .type = CH_OUTPUT,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -111,6 +118,7 @@ Channel DSPChannels::spdifo = {
     .stereoMode = 0x03FD,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
     
+    .type = CH_OUTPUT,
     .curStereoMode = STEREO,
     .faderPosition = 0,
     .balpan = 0,
@@ -127,6 +135,8 @@ Channel DSPChannels::aux1 = {
                { { 0x0196, 0x01A9 }, 0, true },
                { { 0x01BA, 0x01BB }, 0, true },
                { { 0x0287, 0x029E }, 0, false } },
+    
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -142,6 +152,8 @@ Channel DSPChannels::aux2 = {
                { { 0x0198, 0x01AB }, 0, true },
                { { 0x01BC, 0x01BD }, 0, true },
                { { 0x0289, 0x02A0 }, 0, false } },
+
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -157,6 +169,8 @@ Channel DSPChannels::aux3 = {
                { { 0x019A, 0x01AD }, 0, true },
                { { 0x01BE, 0x01BF }, 0, true },
                { { 0x028B, 0x02A2 }, 0, false } },
+
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -172,6 +186,8 @@ Channel DSPChannels::aux4 = {
                { { 0x019C, 0x01AF }, 0, true },
                { { 0x01C0, 0x01C1 }, 0, true },
                { { 0x028D, 0x02A4 }, 0, false } },
+
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -187,6 +203,8 @@ Channel DSPChannels::aux5 = {
                { { 0x019E, 0x01B1 }, 0, true },
                { { 0x01C2, 0x01C3 }, 0, true },
                { { 0x028F, 0x02A6 }, 0, false } },
+
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,
@@ -202,6 +220,8 @@ Channel DSPChannels::aux6 = {
                { { 0x01A0, 0x01B3 }, 0, true },
                { { 0x01C4, 0x01C5 }, 0, true },
                { { 0x0291, 0x02A8 }, 0, false } },
+
+    .type = CH_ANALOG,
     .faderPosition = 0,
     .balpan = 0,
     .mute = true,

@@ -38,6 +38,10 @@ void LEDUI::init()
      "BacklightTimer", DISPLAY_AUTO_DIMM_TIMEOUT / portTICK_PERIOD_MS, pdFALSE, NULL, &vUITimerCallback);
     xActivityTimer = xTimerCreate(
      "UIActivityTimer", UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS, pdFALSE, NULL, &vUITimerCallback);
+
+     comm.setConnectionCallback(LEDUI::remoteUpdated);
+     comm.setDataCallback(LEDUI::processRemoteCommand);
+     comm.setWiFiStatusCallback(LEDUI::wifiStatusUpdated);
 }
 
 void LEDUI::reset()
@@ -170,4 +174,15 @@ void LEDUI::statusbarMessage(const char* message)
     xTimerReset(xActivityTimer, 1);
     sbMessage = message;
     statusbar = 2;
+}
+
+void LEDUI::wifiStatusUpdated(wl_status_t status)
+{
+    // switch-case занимает больше строк кода, чем это...
+    if (status == WL_CONNECTED)
+        statusbarMessage(Localization::act->wifiStaEstab);
+    else if (status == WL_CONNECTION_LOST)
+        statusbarMessage(Localization::act->wifiStaLost);
+    else if (status == WL_NO_SSID_AVAIL)
+        statusbarMessage(Localization::act->wifiStaNotFound);
 }

@@ -42,6 +42,7 @@ void task_dataRefresh(void *pvParameters)
 
         // обновить данные в пользовательском интерфейсе
         LEDUI::render();
+        LEDUI::transferLiveData();
 
         vTaskDelayUntil(&xLastWakeTime, refreshInterval);
     }

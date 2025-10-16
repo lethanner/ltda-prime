@@ -44,10 +44,14 @@ namespace Localization {
         const char* auxgain;
         const char* radio;
         const char* off;
-        const char* wifiOK;
+        const char* wifiApOK;
+        const char* wifiStaOK;
         const char* btOK;
         const char* radioOff;
         const char* error;
+        const char* wifiStaEstab;
+        const char* wifiStaLost;
+        const char* wifiStaNotFound;
     };
 
     extern const Strings russian;
@@ -81,5 +85,5 @@ namespace Localization {
     const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth, act->radio };
     const char* const stereomodemenu[] = { act->stereomode, act->stereo, act->forcemono,
                                            act->vocalfilter };
-    const char* const radioselectmenu[] = { act->radio, act->off, "Wi-Fi", "Bluetooth" };
+    const char* const radioselectmenu[] = { act->radio, act->off, "Wi-Fi AP", "Wi-Fi client", "Bluetooth" };
 };  //namespace Localization

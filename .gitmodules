@@ -13,3 +13,6 @@
 [submodule "lib/GyverDS18"]
 	path = lib/GyverDS18
 	url = https://github.com/GyverLibs/GyverDS18
+[submodule "lib/AsyncTCP"]
+	path = lib/AsyncTCP
+	url = https://github.com/ESP32Async/AsyncTCP

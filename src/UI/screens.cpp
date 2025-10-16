@@ -191,8 +191,10 @@ void Menus::MRadio::onClick()
     if (status) {
         if (selected == Communications::RadioMode::OFF)
             message = Localization::act->radioOff;
-        else if (selected == Communications::RadioMode::WIFI)
-            message = Localization::act->wifiOK;
+        else if (selected == Communications::RadioMode::_WIFI_AP)
+            message = Localization::act->wifiApOK;
+        else if (selected == Communications::RadioMode::_WIFI_STA)
+            message = Localization::act->wifiStaOK;
         else if (selected == Communications::RadioMode::BT)
             message = Localization::act->btOK;
     } else message == Localization::act->error;

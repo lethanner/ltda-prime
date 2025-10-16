@@ -8,6 +8,7 @@ typedef signed char decibel;
 #define DSP_BUS_COUNT 5
 namespace DSPChannels {
     enum StereoMode { STEREO = 0, FORCEMONO = 1, VOICESUPPRESS = 2 };
+    enum ChannelType { CH_DIGITAL = 0, CH_ANALOG = 1, CH_FX = 2, CH_OUTPUT = 3 };
 
     struct SendTo {
         const __register fader[2];
@@ -26,6 +27,9 @@ namespace DSPChannels {
         const __register stereoMode;
         // регистры с посылами
         SendTo sends[DSP_BUS_COUNT];
+
+        // ---- константы ----
+        const ChannelType type;
 
         // ---- переменные ----
         StereoMode curStereoMode;

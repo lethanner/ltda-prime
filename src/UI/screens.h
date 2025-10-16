@@ -70,7 +70,7 @@ namespace Menus {
     DECLARE_MENU(SendsOnFader, Localization::sofdestmenu, DSP_BUS_COUNT, false, NULL);
     DECLARE_MENU(Bassboost, Localization::bassboostmenu, 3, false, DSP.getFlagRegisterPtr());
     DECLARE_MENU(MStereoMode, Localization::stereomodemenu, 3, true, NULL);
-    DECLARE_MENU(MRadio, Localization::radioselectmenu, 3, false, NULL);
+    DECLARE_MENU(MRadio, Localization::radioselectmenu, 4, false, NULL);
 };  //namespace Menus
 
 // clang-format off
