@@ -3,25 +3,25 @@
 #include "../Hardware/communications.h"
 #include "../Hardware/lut.h"
 
+const size_t LEDUI::liveSize = 6 + (DSP_CHANNEL_COUNT * 7);
+char LEDUI::liveBuf[liveSize] = { 'L', 'T', 'D', 'A', 0x01, 0x00 };
+
 void LEDUI::transferLiveData()
 {
-    static const size_t packetSize = 6 + (DSP_CHANNEL_COUNT * 7);
-
-    char buffer[packetSize] = { 'L', 'T', 'D', 'A', 0x01, 0x00 };
     byte inBuffer = 6;
     for (byte i = 0; i < DSP_CHANNEL_COUNT; i++) {
         channel ch = static_cast<channel>(i);
 
-        buffer[inBuffer++] = 0x43;
-        buffer[inBuffer++] = 0x48;
-        buffer[inBuffer++] = DSP.getFaderPosition(ch);
-        buffer[inBuffer++] = DSP.getRelativeSignalLevel(LUT::db_24bit, 97, ch, false);
-        buffer[inBuffer++] = DSP.getRelativeSignalLevel(LUT::db_24bit, 97, ch, true);
-        buffer[inBuffer++] = DSP.getStereoBalance(ch);
-        buffer[inBuffer++] = static_cast<char>(DSP.getMute(ch));
+        liveBuf[inBuffer++] = 0x43;
+        liveBuf[inBuffer++] = 0x48;
+        liveBuf[inBuffer++] = DSP.getFaderPosition(ch);
+        liveBuf[inBuffer++] = DSP.getRelativeSignalLevel(LUT::db_24bit, 97, ch, false);
+        liveBuf[inBuffer++] = DSP.getRelativeSignalLevel(LUT::db_24bit, 97, ch, true);
+        liveBuf[inBuffer++] = DSP.getStereoBalance(ch);
+        liveBuf[inBuffer++] = static_cast<char>(DSP.getMute(ch));
     }
 
-    comm.transferLiveData((uint8_t*)&buffer, packetSize);
+    comm.transferLiveData();
 }
 
 const char* LEDUI::processRemoteCommand(char* command)
@@ -88,6 +88,7 @@ const char* LEDUI::processRemoteCommand(char* command)
             multicastIp[0] << 24 | multicastIp[1] << 16 | multicastIp[2] << 8 | multicastIp[3]
         );
         jResponse["mcp"] = MULTICAST_PORT;
+        jResponse["lsize"] = liveSize;
 
         serializeJson(jResponse, response);
     }

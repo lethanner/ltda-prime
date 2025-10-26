@@ -39,9 +39,10 @@ void LEDUI::init()
     xActivityTimer = xTimerCreate(
      "UIActivityTimer", UI_ACTIVITY_TIMEOUT / portTICK_PERIOD_MS, pdFALSE, NULL, &vUITimerCallback);
 
-     comm.setConnectionCallback(LEDUI::remoteUpdated);
-     comm.setDataCallback(LEDUI::processRemoteCommand);
-     comm.setWiFiStatusCallback(LEDUI::wifiStatusUpdated);
+    comm.setConnectionCallback(LEDUI::remoteUpdated);
+    comm.setDataCallback(LEDUI::processRemoteCommand);
+    comm.setWiFiStatusCallback(LEDUI::wifiStatusUpdated);
+    comm.setLiveDataSource((uint8_t*)liveBuf, liveSize);
 }
 
 void LEDUI::reset()

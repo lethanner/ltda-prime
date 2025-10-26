@@ -52,6 +52,7 @@ void task_ctrlProcess(void *pvParameters)
 {
     for (;;) {
         LEDUI::pollCtrl();
+        comm.tick();
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }
@@ -76,6 +77,9 @@ void boot()
     // сразу запросить температуру, чтобы к окончании
     // инициализации данные лежали на столе
     heatsink.requestTemp();
+
+    /* Инициализация UART */
+    Serial.begin(115200);
 
     /* Загрузка языкового пакета */
     Localization::setLanguage(memory.getUInt("lang", 0));

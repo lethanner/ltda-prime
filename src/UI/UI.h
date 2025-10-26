@@ -56,6 +56,8 @@ namespace LEDUI {
     void transferLiveData();
     const char* processRemoteCommand(char* command);
     void remoteUpdated(byte count);
+    extern const size_t liveSize;
+    extern char liveBuf[];
 
     extern byte title_xCoord;
     extern byte screen_state, statusbar;

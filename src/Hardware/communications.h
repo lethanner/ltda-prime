@@ -10,15 +10,17 @@
 class Communications {
 public:
     Communications();
+    void tick();
 
     enum RadioMode { OFF = 0, _WIFI_AP, _WIFI_STA, BT };
     bool setRadio(RadioMode mode);
 
-    void transferLiveData(uint8_t* data, size_t size);
+    void transferLiveData();
 
-    void setConnectionCallback(void (*callback)(byte)) { connectionCallback = callback; };
+    void setConnectionCallback(void (*callback)(byte)) { connectionCallback = callback; }
     void setDataCallback(const char* (*callback)(char*)) { dataCallback = callback; }
     void setWiFiStatusCallback(void (*callback)(wl_status_t)) { wifiStatusCallback = callback; }
+    void setLiveDataSource(uint8_t* source, size_t size) { liveData = source, liveDataSize = size; }
 
     void setWiFiCretendials(const char* ssid, const char* pass);
 
@@ -39,6 +41,11 @@ private:
     static void (*connectionCallback)(byte);
     static const char* (*dataCallback)(char*);
     static void (*wifiStatusCallback)(wl_status_t);
+
+    char uartBuffer[128];
+
+    uint8_t* liveData = NULL;
+    size_t liveDataSize;
 };
 
 extern Communications comm;
