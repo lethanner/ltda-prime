@@ -20,7 +20,6 @@ It can operate both as an audio amplifier and a mixing console, do basic audio p
 <h2>Development</h2>
 <p>
     Release 1.0.0 is still under construction.<br>
-    Whole list of changes is reflected in the <a href="https://github.com/lethanner/ltda-prime/tree/fw-dev">fw-dev</a> branch.
 </p>
 
 <h2>Specifications</h2>
@@ -64,7 +63,7 @@ It can operate both as an audio amplifier and a mixing console, do basic audio p
     <img alt="LED indicator of an LTDA Prime" width=70% src="https://github.com/user-attachments/assets/3ef2f27e-fa10-4131-a50e-683b00dadbdb">
 </p>
 
-<h2>Thanks to</h2>
+<h2>Credits</h2>
 <p>Without them the project would not exist.</p>
 <h4>Physical support</h4>
 <ul>
