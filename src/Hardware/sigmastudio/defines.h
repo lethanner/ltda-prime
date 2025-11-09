@@ -1,7 +1,7 @@
 /*
  * File:           defines.h
  *
- * Created:        Sunday, November 9, 2025 1:57:39 PM
+ * Created:        Sunday, November 9, 2025 10:08:33 PM
  * Description:    prime IC default download data definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -19,7 +19,7 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
 
-#define BufferSize_IC_1     	37218
+#define BufferSize_IC_1     	38094
 #define NumTransactions_IC_1	76
 
 

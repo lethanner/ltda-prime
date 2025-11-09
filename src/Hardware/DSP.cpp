@@ -157,6 +157,12 @@ void ADAU1452::setDecibelFaderPosition(channel id, decibel val, bool sync)
         Wire.endTransmission();
     }
 
+    if (id == DSPChannels::MASTER && bitRead(flagRegister, DSPSETS_MASTER_SUB_SYNC)) {
+        decibel submixLevel = getFaderPosition(DSPChannels::SUBMIX);
+        decibel delta = val - ch->faderPosition;
+        setDecibelFaderPosition(DSPChannels::SUBMIX, submixLevel + delta, false);
+    }
+
     ch->faderPosition = val;
 
     // синхронизация с блютуз устройством, если регулировали его
@@ -179,6 +185,12 @@ void ADAU1452::setDecibelSendLevel(channel id, bus to, decibel val)
             Wire.write((_val >> (24 - (i * 8))) & 0xFF);
         }
         Wire.endTransmission();
+    }
+
+    if (to == DSPChannels::BUS_MASTER && bitRead(flagRegister, DSPSETS_MASTER_SUB_SYNC)) {
+        decibel submixLevel = getFaderPosition(id, DSPChannels::BUS_SUBMIX);
+        decibel delta = val - send->faderPosition;
+        setDecibelSendLevel(id, DSPChannels::BUS_SUBMIX, submixLevel + delta);
     }
 
     send->faderPosition = val;
@@ -317,6 +329,9 @@ void ADAU1452::setStereoMode(channel id, DSPChannels::StereoMode mode)
     // не для всех каналов поддерживается переключение режима
     if (reg == 0) return;
 
+    if (id == DSPChannels::MASTER && biAmpMode == LF_LEFT_HF_RIGHT)
+        mode = DSPChannels::FORCEMONO;
+
     gotoRegister(reg);
     for (byte i = 0; i < 3; i++) {
         Wire.write(0x00);
@@ -333,6 +348,35 @@ void ADAU1452::setRTASmoothing(byte value)
 
     rta_smoothing = value;
     rta_multiplier = value / 10.0;
+}
+
+void ADAU1452::setBiAmpMode(BiAmpMode mode)
+{
+    biAmpMode = mode;
+    setStereoMode(DSPChannels::MASTER);
+
+    bitWrite(flagRegister, DSPSETS_MASTER_SUB_SYNC, mode == LF_MASTER_HF_SUBMIX);
+
+    gotoRegister(MOD_BIAMP_MODE_STEREOMUXSIGMA300NS41INDEX_ADDR);
+    for (byte i = 0; i < 3; i++) {
+        Wire.write(0x00);
+    }
+    Wire.write(mode * 4);
+    Wire.endTransmission();
+}
+
+void ADAU1452::toggleMasterSubSync()
+{  
+    bitToggle(flagRegister, DSPSETS_MASTER_SUB_SYNC);
+    // точно ли нужно принудительно выставлять уровни, если я все равно
+    // смогу подстраивать балансировку между Master и Submix?
+    /*if (sync) {
+        for (byte i = 0; i < DSP_CHANNEL_COUNT; i++) {
+            channel ch = static_cast<channel>(i);
+            setDecibelSendLevel(ch, DSPChannels::BUS_SUBMIX, getFaderPosition(ch, DSPChannels::BUS_MASTER));
+        }
+        setDecibelFaderPosition(DSPChannels::SUBMIX, getFaderPosition(DSPChannels::MASTER));
+    }*/
 }
 
 ADAU1452 DSP;

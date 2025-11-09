@@ -11,6 +11,7 @@
 
 #define SEMITONE_INCREMENT 0x1894
 #define DSPSETS_IS_BASSBOOSTED 0
+#define DSPSETS_MASTER_SUB_SYNC 1
 
 typedef DSPChannels::channel channel;
 typedef DSPChannels::bus bus;
@@ -18,15 +19,9 @@ class A2DPExternalVolumeControl;
 
 class ADAU1452
 {
-  private:
-    A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
-    void gotoRegister(__register reg, byte requestSize = 0);
-    void writeAsFloat(__register reg, byte value);
-    byte findValue(const unsigned int* tab, byte max, int value);
-    int flagRegister = 0x00000000;  // импровизированный регистр настроек
-    float rta_multiplier = RTA_SMOOTH_MULTIPLIER;
-
   public:
+    enum BiAmpMode { BYPASS = 0, LF_LEFT_HF_RIGHT = 1, LF_MASTER_HF_SUBMIX = 2 };
+
     ADAU1452();
     void init();
 
@@ -43,12 +38,13 @@ class ADAU1452
     DSPChannels::StereoMode getStereoMode(channel id) { return DSPChannels::list[id]->curStereoMode; }
     DSPChannels::Channel *const getChannelPointer(channel id) { return DSPChannels::list[id]; }
     bool canBeRoutedTo(channel id, bus to) { return DSPChannels::list[id]->sends[to].fader[0] != 0; }
+    BiAmpMode getBiAmpState() { return biAmpMode; }
     //int8_t getDecibelSignalLevel(channel id, bool right);
 
     void setDecibelFaderPosition(channel id, decibel val, bool sync = true);
     void setDecibelSendLevel(channel id, bus to, decibel val);
     void setStereoBalance(channel id, int8_t val);
-    void setStereoMode(channel id, DSPChannels::StereoMode mode);
+    void setStereoMode(channel id, DSPChannels::StereoMode mode = DSPChannels::STEREO);
     
     void setRTASmoothing(byte value);
     int8_t rta_smoothing = RTA_SMOOTH_MULTIPLIER * 10;
@@ -79,8 +75,25 @@ class ADAU1452
     void setPitchBusShift(int8_t value);
     int8_t pitch_shift = 0;
 
+    // bi-amping
+    void setBiAmpMode(BiAmpMode mode);
+    void toggleMasterSubSync();
+
     // прочие костыли
     int* getFlagRegisterPtr() { return &flagRegister; };
+
+private:
+    A2DPExternalVolumeControl* avrcp_volume_sync = NULL;
+
+    void gotoRegister(__register reg, byte requestSize = 0);
+    void writeAsFloat(__register reg, byte value);
+    byte findValue(const unsigned int* tab, byte max, int value);
+
+    BiAmpMode biAmpMode = BYPASS;
+    
+    int flagRegister = 0x00000000;  // импровизированный регистр настроек
+
+    float rta_multiplier = RTA_SMOOTH_MULTIPLIER;
 };
 
 class A2DPExternalVolumeControl : public A2DPVolumeControl

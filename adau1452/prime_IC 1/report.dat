@@ -1,3 +1,4 @@
-__pointer_setup__, MP2_DM0, 16, 828, 828, 180, 0
-__pointer_setup__, MP1_DM1, 20, 116, 116, 5544, 0
-__pointer_setup__, MP2_DM1, 24, 5660, 5660, 400, 0
+__pointer_setup__, MP2_DM0, 16, 864, 864, 180, 0
+__pointer_setup__, MP1_DM0, 20, 1044, 1044, 12, 0
+__pointer_setup__, MP1_DM1, 24, 136, 136, 5572, 0
+__pointer_setup__, MP2_DM1, 28, 5708, 5708, 400, 0

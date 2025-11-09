@@ -153,6 +153,7 @@ void LEDUI::MixerScreen::onHold()
         // сколько у меня потом будет каналов, как-то стремно.
         switch (_group->onScreenChannels[selected]) {
         case DSPChannels::MASTER: open(&Menus::MasterChannel::it()); break;
+        case DSPChannels::SUBMIX: open(&Menus::SubmixChannel::it()); break;
         case DSPChannels::REVERB: open(&Menus::ReverbChannel::it()); break;
         case DSPChannels::BLUETOOTH: open(&Menus::BluetoothChannel::it()); break;
         case DSPChannels::PITCH: open(&Menus::PitchChannel::it()); break;

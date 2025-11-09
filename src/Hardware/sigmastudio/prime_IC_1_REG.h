@@ -1,7 +1,7 @@
 /*
  * File:           D:\Users\lethanner\Documents\Arduino\ltda-prime\src\Hardware\sigmastudio\prime_IC_1_REG.h
  *
- * Created:        Sunday, November 9, 2025 1:57:39 PM
+ * Created:        Sunday, November 9, 2025 10:08:33 PM
  * Description:    prime:IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,

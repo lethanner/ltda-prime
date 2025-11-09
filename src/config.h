@@ -8,7 +8,7 @@
 #define BLUETOOTH_NAME "LTDA Prime"
 #define WIFI_DEFAULT_NAME "LTDA-AP"
 #define WIFI_DEFAULT_PASS "LETHTECH"
-#define STR_DEV_INFO "Prime v0.7.2-alpha"
+#define STR_DEV_INFO "Prime v0.7.3-alpha"
 
 #define MULTICAST_IP 224, 135, 0, 1
 #define MULTICAST_PORT 12345

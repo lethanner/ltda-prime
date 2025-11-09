@@ -48,7 +48,12 @@ const Localization::Strings Localization::russian = {
     .error = "Ошибка.",
     .wifiStaEstab = "Соединен с WiFi.",
     .wifiStaLost = "Сеть WiFi потеряна.",
-    .wifiStaNotFound = "Сеть не найдена."
+    .wifiStaNotFound = "Сеть не найдена.",
+    .biAmpBypass = "Отключено",
+    .biAmpMono = "Моно НЧ->Л,ВЧ->П",
+    .biAmpStereo = "Стерео НЧ->М,ВЧ->С",
+    .syncMasterSub = "?BСинхр. с Master",
+    .submix = "Субмикс"
 };
 
 const Localization::Strings Localization::english = {
@@ -99,5 +104,10 @@ const Localization::Strings Localization::english = {
     .error = "Error.",
     .wifiStaEstab = "Connected to AP.",
     .wifiStaLost = "Connection lost.",
-    .wifiStaNotFound = "AP not in range."
+    .wifiStaNotFound = "AP not in range.",
+    .biAmpBypass = "Bypass",
+    .biAmpMono = "Mono LF->L,HF->R",
+    .biAmpStereo = "Stereo LF->M,HF->S",
+    .syncMasterSub = "?BSync to master",
+    .submix = "Submix"
 };

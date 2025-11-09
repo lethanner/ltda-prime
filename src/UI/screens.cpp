@@ -52,6 +52,33 @@ void Menus::MasterChannel::onClick()
     }
 }
 
+void Menus::SubmixChannel::onClick()
+{
+    switch (selected) {
+    case 0:  // preferences
+        open(&Menus::Preferences::it());
+        break;
+    case 1:  // send to monitor
+        LEDUI::setMonitorDataFeed(DSPChannels::SUBMIX);
+        open(&LEDUI::MixerScreen::it());  // выход
+        break;
+    case 2:  // stereo balance
+        open(&Adjusters::Balance::it());
+        Adjusters::Balance::it().overrideValuePtr(
+         &DSP.getChannelPointer(DSPChannels::SUBMIX)->balpan);
+        break;
+    case 3:  // stereo mode
+        open(&Menus::MStereoMode::it());
+        Menus::MStereoMode::it().overrideSelection(DSP.getStereoMode(DSPChannels::SUBMIX));
+        // у канала Submix нет режима вычитания - отрезаем последний пункт
+        Menus::MStereoMode::it().overrideEntryCount(2);
+        break;
+    case 4:  // sync to master
+        DSP.toggleMasterSubSync();
+        break;
+    }
+}
+
 void Menus::BluetoothChannel::onClick()
 {
     switch (selected) {
@@ -170,6 +197,9 @@ void Menus::Preferences::onClick()
     case 2: // wireless
         open(&Menus::MRadio::it());
         break;
+    case 3: // bi-amping
+        open(&Menus::BiAmp::it());
+        break;
     }
 }
 
@@ -201,6 +231,12 @@ void Menus::MRadio::onClick()
 
     open(&LEDUI::MixerScreen::it());
     LEDUI::statusbarMessage(message);
+}
+
+void Menus::BiAmp::onClick()
+{
+    DSP.setBiAmpMode(static_cast<ADAU1452::BiAmpMode>(selected));
+    open(&LEDUI::MixerScreen::it());
 }
 
 void Adjusters::ReverbTime::onTurn(int8_t dir)

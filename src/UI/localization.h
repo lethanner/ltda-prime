@@ -52,6 +52,11 @@ namespace Localization {
         const char* wifiStaEstab;
         const char* wifiStaLost;
         const char* wifiStaNotFound;
+        const char* biAmpBypass;
+        const char* biAmpMono;
+        const char* biAmpStereo;
+        const char* syncMasterSub;
+        const char* submix;
     };
 
     extern const Strings russian;
@@ -67,6 +72,9 @@ namespace Localization {
     const char* const chmenu_master[] = { act->master,          act->preferences,
                                           act->send_to_monitor, act->stereobalance,
                                           act->stereomode,      act->bassboost };
+    const char* const chmenu_submix[] = { act->submix,          act->preferences,
+                                          act->send_to_monitor, act->stereobalance,
+                                          act->stereomode,      act->syncMasterSub };
     const char* const chmenu_reverb[] = { act->reverb,        act->preferences,
                                           act->stereobalance, act->reverb_time,
                                           act->hf_damping,    act->bassreverbgain };
@@ -82,8 +90,9 @@ namespace Localization {
     const char* const sofdestmenu[] = { act->to, SOF_DESTINATION_LABELS };
     const char* const bassboostmenu[] = { act->bassboost, act->enable, act->intensity, act->gain };
     const char* const languagemenu[] = { act->language, "English", "Русский" };
-    const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth, act->radio };
+    const char* const prefsmenu[] = { act->preferences, act->language, act->rtasmooth, act->radio, "Bi-Amping" };
     const char* const stereomodemenu[] = { act->stereomode, act->stereo, act->forcemono,
                                            act->vocalfilter };
     const char* const radioselectmenu[] = { act->radio, act->off, "Wi-Fi AP", "Wi-Fi client", "Bluetooth" };
+    const char* const biampmenu[] = { "Bi-Amping", act->biAmpBypass, act->biAmpMono, act->biAmpStereo };
 };  //namespace Localization

@@ -18,299 +18,299 @@
     <IC name=" IC 1 " type="ADAU1452">
         <Schematic>
             <Algorithm name="AsrcInSigma300Alg1" friendlyname="From ASRC" cell="AsrcIn1 ">
-                <Link pin="O_C0_A0_P1_out" dir="out" link="Link77" />
-                <Link pin="O_C0_A0_P2_out" dir="out" link="Link76" />
-                <Link pin="O_C0_A0_P3_out" dir="out" link="Link79" />
-                <Link pin="O_C0_A0_P4_out" dir="out" link="Link80" />
-                <Link pin="O_C0_A0_P5_out" dir="out" link="Link82" />
-                <Link pin="O_C0_A0_P6_out" dir="out" link="Link81" />
+                <Link pin="O_C0_A0_P1_out" dir="out" link="Link79" />
+                <Link pin="O_C0_A0_P2_out" dir="out" link="Link78" />
+                <Link pin="O_C0_A0_P3_out" dir="out" link="Link81" />
+                <Link pin="O_C0_A0_P4_out" dir="out" link="Link82" />
+                <Link pin="O_C0_A0_P5_out" dir="out" link="Link84" />
+                <Link pin="O_C0_A0_P6_out" dir="out" link="Link83" />
             </Algorithm>
             <Algorithm name="RegReadAlg300ADCIn1" friendlyname="Auxiliary ADC Input" cell="ADC In1 ">
-                <Link pin="O_C187_A0_P1_out" dir="out" link="Link28" />
+                <Link pin="O_C187_A0_P1_out" dir="out" link="Link24" />
             </Algorithm>
             <Algorithm name="RegReadAlg300ADCIn2" friendlyname="Auxiliary ADC Input" cell="ADC In1_2 ">
-                <Link pin="O_C357_A0_P1_out" dir="out" link="Link31" />
+                <Link pin="O_C357_A0_P1_out" dir="out" link="Link27" />
             </Algorithm>
             <Algorithm name="RegReadAlg300ADCIn3" friendlyname="Auxiliary ADC Input" cell="ADC In1_3 ">
-                <Link pin="O_C411_A0_P1_out" dir="out" link="Link35" />
+                <Link pin="O_C411_A0_P1_out" dir="out" link="Link31" />
             </Algorithm>
             <Algorithm name="RegReadAlg300ADCIn4" friendlyname="Auxiliary ADC Input" cell="ADC In1_4 ">
-                <Link pin="O_C429_A0_P1_out" dir="out" link="Link37" />
+                <Link pin="O_C429_A0_P1_out" dir="out" link="Link33" />
             </Algorithm>
             <Algorithm name="ICInputADAU145X1" friendlyname="ADAU145x Inputs 0-15" cell="Input1 ">
-                <Link pin="O_C506_A0_P1_out" dir="out" link="Link59" />
-                <Link pin="O_C506_A0_P2_out" dir="out" link="Link58" />
+                <Link pin="O_C506_A0_P1_out" dir="out" link="Link55" />
+                <Link pin="O_C506_A0_P2_out" dir="out" link="Link54" />
             </Algorithm>
             <Algorithm name="DCBlockAlgDblPrecS3001" friendlyname="DC Blocking" cell="DCB1 ">
-                <Link pin="I_C227_A0_P1_in" dir="in" link="Link28" />
-                <Link pin="O_C227_A0_P2_out" dir="out" link="Link29" />
+                <Link pin="I_C227_A0_P1_in" dir="in" link="Link24" />
+                <Link pin="O_C227_A0_P2_out" dir="out" link="Link25" />
             </Algorithm>
             <Algorithm name="DCBlockAlgDblPrecS3002" friendlyname="DC Blocking" cell="DCB1_2 ">
-                <Link pin="I_C359_A0_P1_in" dir="in" link="Link31" />
-                <Link pin="O_C359_A0_P2_out" dir="out" link="Link32" />
+                <Link pin="I_C359_A0_P1_in" dir="in" link="Link27" />
+                <Link pin="O_C359_A0_P2_out" dir="out" link="Link28" />
             </Algorithm>
             <Algorithm name="DCBlockAlgDblPrecS3003" friendlyname="DC Blocking" cell="DCB1_3 ">
-                <Link pin="I_C413_A0_P1_in" dir="in" link="Link35" />
-                <Link pin="O_C413_A0_P2_out" dir="out" link="Link34" />
+                <Link pin="I_C413_A0_P1_in" dir="in" link="Link31" />
+                <Link pin="O_C413_A0_P2_out" dir="out" link="Link30" />
             </Algorithm>
             <Algorithm name="DCBlockAlgDblPrecS3004" friendlyname="DC Blocking" cell="DCB1_4 ">
-                <Link pin="I_C431_A0_P1_in" dir="in" link="Link37" />
-                <Link pin="O_C431_A0_P2_out" dir="out" link="Link38" />
+                <Link pin="I_C431_A0_P1_in" dir="in" link="Link33" />
+                <Link pin="O_C431_A0_P2_out" dir="out" link="Link34" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg5" friendlyname="Multi-Channel - Double Precision" cell="AUX2 EQ ">
-                <Link pin="I_C540_A0_P1_in" dir="in" link="Link58" />
-                <Link pin="O_C540_A0_P2_out" dir="out" link="Link41" />
+                <Link pin="I_C540_A0_P1_in" dir="in" link="Link54" />
+                <Link pin="O_C540_A0_P2_out" dir="out" link="Link37" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg6" friendlyname="Multi-Channel - Double Precision" cell="AUX1 EQ ">
-                <Link pin="I_C543_A0_P1_in" dir="in" link="Link59" />
-                <Link pin="O_C543_A0_P2_out" dir="out" link="Link40" />
+                <Link pin="I_C543_A0_P1_in" dir="in" link="Link55" />
+                <Link pin="O_C543_A0_P2_out" dir="out" link="Link36" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg2" friendlyname="2x1 Mixer (No Slew)" cell="SPDIF_mono_mix ">
-                <Link pin="I_C23_A0_P1_in" dir="in" link="Link77" />
-                <Link pin="I_C23_A0_P2_in" dir="in" link="Link76" />
-                <Link pin="O_C23_A0_P3_out" dir="out" link="Link75" />
+                <Link pin="I_C23_A0_P1_in" dir="in" link="Link79" />
+                <Link pin="I_C23_A0_P2_in" dir="in" link="Link78" />
+                <Link pin="O_C23_A0_P3_out" dir="out" link="Link77" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg3" friendlyname="2x1 Mixer (No Slew)" cell="BT_mono_mix ">
-                <Link pin="I_C127_A0_P1_in" dir="in" link="Link79" />
-                <Link pin="I_C127_A0_P2_in" dir="in" link="Link80" />
-                <Link pin="O_C127_A0_P3_out" dir="out" link="Link78" />
+                <Link pin="I_C127_A0_P1_in" dir="in" link="Link81" />
+                <Link pin="I_C127_A0_P2_in" dir="in" link="Link82" />
+                <Link pin="O_C127_A0_P3_out" dir="out" link="Link80" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg4" friendlyname="2x1 Mixer (No Slew)" cell="USB_mono_mix ">
-                <Link pin="I_C256_A0_P1_in" dir="in" link="Link82" />
-                <Link pin="I_C256_A0_P2_in" dir="in" link="Link81" />
-                <Link pin="O_C256_A0_P3_out" dir="out" link="Link83" />
+                <Link pin="I_C256_A0_P1_in" dir="in" link="Link84" />
+                <Link pin="I_C256_A0_P2_in" dir="in" link="Link83" />
+                <Link pin="O_C256_A0_P3_out" dir="out" link="Link85" />
             </Algorithm>
             <Algorithm name="Sigma300SubAlg1" friendlyname="Subtraction" cell="Sub1 ">
-                <Link pin="I_C376_A0_P2_in" dir="in" link="Link77" />
-                <Link pin="I_C376_A0_P3_in" dir="in" link="Link76" />
-                <Link pin="O_C376_A0_P1_out" dir="out" link="Link93" />
+                <Link pin="I_C376_A0_P2_in" dir="in" link="Link79" />
+                <Link pin="I_C376_A0_P3_in" dir="in" link="Link78" />
+                <Link pin="O_C376_A0_P1_out" dir="out" link="Link95" />
             </Algorithm>
             <Algorithm name="Sigma300SubAlg2" friendlyname="Subtraction" cell="Sub1_2 ">
-                <Link pin="I_C144_A0_P2_in" dir="in" link="Link79" />
-                <Link pin="I_C144_A0_P3_in" dir="in" link="Link80" />
-                <Link pin="O_C144_A0_P1_out" dir="out" link="Link94" />
+                <Link pin="I_C144_A0_P2_in" dir="in" link="Link81" />
+                <Link pin="I_C144_A0_P3_in" dir="in" link="Link82" />
+                <Link pin="O_C144_A0_P1_out" dir="out" link="Link96" />
             </Algorithm>
             <Algorithm name="Sigma300SubAlg3" friendlyname="Subtraction" cell="Sub1_3 ">
-                <Link pin="I_C279_A0_P2_in" dir="in" link="Link82" />
-                <Link pin="I_C279_A0_P3_in" dir="in" link="Link81" />
-                <Link pin="O_C279_A0_P1_out" dir="out" link="Link95" />
+                <Link pin="I_C279_A0_P2_in" dir="in" link="Link84" />
+                <Link pin="I_C279_A0_P3_in" dir="in" link="Link83" />
+                <Link pin="O_C279_A0_P1_out" dir="out" link="Link97" />
             </Algorithm>
             <Algorithm name="BitShiftADAU145XAlg1" friendlyname="BitShift" cell="Shift1 ">
-                <Link pin="I_C247_A0_P1_in" dir="in" link="Link29" />
-                <Link pin="O_C247_A0_P2_out" dir="out" link="Link30" />
+                <Link pin="I_C247_A0_P1_in" dir="in" link="Link25" />
+                <Link pin="O_C247_A0_P2_out" dir="out" link="Link26" />
             </Algorithm>
             <Algorithm name="BitShiftADAU145XAlg2" friendlyname="BitShift" cell="Shift1_2 ">
-                <Link pin="I_C388_A0_P1_in" dir="in" link="Link32" />
-                <Link pin="O_C388_A0_P2_out" dir="out" link="Link33" />
+                <Link pin="I_C388_A0_P1_in" dir="in" link="Link28" />
+                <Link pin="O_C388_A0_P2_out" dir="out" link="Link29" />
             </Algorithm>
             <Algorithm name="BitShiftADAU145XAlg3" friendlyname="BitShift" cell="Shift1_3 ">
-                <Link pin="I_C416_A0_P1_in" dir="in" link="Link34" />
-                <Link pin="O_C416_A0_P2_out" dir="out" link="Link36" />
+                <Link pin="I_C416_A0_P1_in" dir="in" link="Link30" />
+                <Link pin="O_C416_A0_P2_out" dir="out" link="Link32" />
             </Algorithm>
             <Algorithm name="BitShiftADAU145XAlg4" friendlyname="BitShift" cell="Shift1_4 ">
-                <Link pin="I_C434_A0_P1_in" dir="in" link="Link38" />
-                <Link pin="O_C434_A0_P2_out" dir="out" link="Link39" />
+                <Link pin="I_C434_A0_P1_in" dir="in" link="Link34" />
+                <Link pin="O_C434_A0_P2_out" dir="out" link="Link35" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30014" friendlyname="Data/Register Readback" cell="AUX1-2_Readback ">
-                <Link pin="I_C592_A0_P1_in" dir="in" link="Link40" />
-                <Link pin="O_C592_A0_P2_out" dir="out" link="Link100" />
+                <Link pin="I_C592_A0_P1_in" dir="in" link="Link36" />
+                <Link pin="O_C592_A0_P2_out" dir="out" link="Link102" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30015" friendlyname="Data/Register Readback" cell="AUX1-2_Readback ">
-                <Link pin="I_C592_A1_P1_in" dir="in" link="Link41" />
-                <Link pin="O_C592_A1_P2_out" dir="out" link="Link101" />
+                <Link pin="I_C592_A1_P1_in" dir="in" link="Link37" />
+                <Link pin="O_C592_A1_P2_out" dir="out" link="Link103" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg1" friendlyname="Multi-Channel - Double Precision" cell="AUX3 EQ ">
-                <Link pin="I_C288_A0_P1_in" dir="in" link="Link30" />
-                <Link pin="O_C288_A0_P2_out" dir="out" link="Link102" />
+                <Link pin="I_C288_A0_P1_in" dir="in" link="Link26" />
+                <Link pin="O_C288_A0_P2_out" dir="out" link="Link104" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg2" friendlyname="Multi-Channel - Double Precision" cell="AUX4 EQ ">
-                <Link pin="I_C396_A0_P1_in" dir="in" link="Link33" />
-                <Link pin="O_C396_A0_P2_out" dir="out" link="Link103" />
+                <Link pin="I_C396_A0_P1_in" dir="in" link="Link29" />
+                <Link pin="O_C396_A0_P2_out" dir="out" link="Link105" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg3" friendlyname="Multi-Channel - Double Precision" cell="AUX5 EQ ">
-                <Link pin="I_C419_A0_P1_in" dir="in" link="Link36" />
-                <Link pin="O_C419_A0_P2_out" dir="out" link="Link104" />
+                <Link pin="I_C419_A0_P1_in" dir="in" link="Link32" />
+                <Link pin="O_C419_A0_P2_out" dir="out" link="Link106" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg4" friendlyname="Multi-Channel - Double Precision" cell="AUX6 EQ ">
-                <Link pin="I_C437_A0_P1_in" dir="in" link="Link39" />
-                <Link pin="O_C437_A0_P2_out" dir="out" link="Link105" />
+                <Link pin="I_C437_A0_P1_in" dir="in" link="Link35" />
+                <Link pin="O_C437_A0_P2_out" dir="out" link="Link107" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns2" friendlyname="Stereo" cell="SPDIF_stereomode ">
-                <Link pin="I_C45_A0_P3_in" dir="in" link="Link77" />
-                <Link pin="I_C45_A0_P4_in" dir="in" link="Link76" />
-                <Link pin="I_C45_A0_P5_in" dir="in" link="Link75" />
-                <Link pin="I_C45_A0_P6_in" dir="in" link="Link75" />
-                <Link pin="I_C45_A0_P7_in" dir="in" link="Link93" />
-                <Link pin="I_C45_A0_P8_in" dir="in" link="Link93" />
-                <Link pin="O_C45_A0_P1_out" dir="out" link="Link46" />
-                <Link pin="O_C45_A0_P2_out" dir="out" link="Link47" />
+                <Link pin="I_C45_A0_P3_in" dir="in" link="Link79" />
+                <Link pin="I_C45_A0_P4_in" dir="in" link="Link78" />
+                <Link pin="I_C45_A0_P5_in" dir="in" link="Link77" />
+                <Link pin="I_C45_A0_P6_in" dir="in" link="Link77" />
+                <Link pin="I_C45_A0_P7_in" dir="in" link="Link95" />
+                <Link pin="I_C45_A0_P8_in" dir="in" link="Link95" />
+                <Link pin="O_C45_A0_P1_out" dir="out" link="Link42" />
+                <Link pin="O_C45_A0_P2_out" dir="out" link="Link43" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns3" friendlyname="Stereo" cell="BT_stereomode ">
-                <Link pin="I_C150_A0_P3_in" dir="in" link="Link79" />
-                <Link pin="I_C150_A0_P4_in" dir="in" link="Link80" />
-                <Link pin="I_C150_A0_P5_in" dir="in" link="Link78" />
-                <Link pin="I_C150_A0_P6_in" dir="in" link="Link78" />
-                <Link pin="I_C150_A0_P7_in" dir="in" link="Link94" />
-                <Link pin="I_C150_A0_P8_in" dir="in" link="Link94" />
-                <Link pin="O_C150_A0_P1_out" dir="out" link="Link50" />
-                <Link pin="O_C150_A0_P2_out" dir="out" link="Link51" />
+                <Link pin="I_C150_A0_P3_in" dir="in" link="Link81" />
+                <Link pin="I_C150_A0_P4_in" dir="in" link="Link82" />
+                <Link pin="I_C150_A0_P5_in" dir="in" link="Link80" />
+                <Link pin="I_C150_A0_P6_in" dir="in" link="Link80" />
+                <Link pin="I_C150_A0_P7_in" dir="in" link="Link96" />
+                <Link pin="I_C150_A0_P8_in" dir="in" link="Link96" />
+                <Link pin="O_C150_A0_P1_out" dir="out" link="Link46" />
+                <Link pin="O_C150_A0_P2_out" dir="out" link="Link47" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns4" friendlyname="Stereo" cell="USB_stereomode ">
-                <Link pin="I_C260_A0_P3_in" dir="in" link="Link82" />
-                <Link pin="I_C260_A0_P4_in" dir="in" link="Link81" />
-                <Link pin="I_C260_A0_P5_in" dir="in" link="Link83" />
-                <Link pin="I_C260_A0_P6_in" dir="in" link="Link83" />
-                <Link pin="I_C260_A0_P7_in" dir="in" link="Link95" />
-                <Link pin="I_C260_A0_P8_in" dir="in" link="Link95" />
-                <Link pin="O_C260_A0_P1_out" dir="out" link="Link54" />
-                <Link pin="O_C260_A0_P2_out" dir="out" link="Link55" />
+                <Link pin="I_C260_A0_P3_in" dir="in" link="Link84" />
+                <Link pin="I_C260_A0_P4_in" dir="in" link="Link83" />
+                <Link pin="I_C260_A0_P5_in" dir="in" link="Link85" />
+                <Link pin="I_C260_A0_P6_in" dir="in" link="Link85" />
+                <Link pin="I_C260_A0_P7_in" dir="in" link="Link97" />
+                <Link pin="I_C260_A0_P8_in" dir="in" link="Link97" />
+                <Link pin="O_C260_A0_P1_out" dir="out" link="Link50" />
+                <Link pin="O_C260_A0_P2_out" dir="out" link="Link51" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg17" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A0_P1_in" dir="in" link="Link100" />
-                <Link pin="O_C455_A0_P2_out" dir="out" link="Link106" />
+                <Link pin="I_C455_A0_P1_in" dir="in" link="Link102" />
+                <Link pin="O_C455_A0_P2_out" dir="out" link="Link108" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg18" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A1_P1_in" dir="in" link="Link100" />
-                <Link pin="O_C455_A1_P2_out" dir="out" link="Link107" />
+                <Link pin="I_C455_A1_P1_in" dir="in" link="Link102" />
+                <Link pin="O_C455_A1_P2_out" dir="out" link="Link109" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg19" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A2_P1_in" dir="in" link="Link101" />
-                <Link pin="O_C455_A2_P2_out" dir="out" link="Link108" />
+                <Link pin="I_C455_A2_P1_in" dir="in" link="Link103" />
+                <Link pin="O_C455_A2_P2_out" dir="out" link="Link110" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg20" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A3_P1_in" dir="in" link="Link101" />
-                <Link pin="O_C455_A3_P2_out" dir="out" link="Link109" />
+                <Link pin="I_C455_A3_P1_in" dir="in" link="Link103" />
+                <Link pin="O_C455_A3_P2_out" dir="out" link="Link111" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg23" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A4_P1_in" dir="in" link="Link102" />
-                <Link pin="O_C455_A4_P2_out" dir="out" link="Link110" />
+                <Link pin="I_C455_A4_P1_in" dir="in" link="Link104" />
+                <Link pin="O_C455_A4_P2_out" dir="out" link="Link112" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg24" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A5_P1_in" dir="in" link="Link102" />
-                <Link pin="O_C455_A5_P2_out" dir="out" link="Link111" />
+                <Link pin="I_C455_A5_P1_in" dir="in" link="Link104" />
+                <Link pin="O_C455_A5_P2_out" dir="out" link="Link113" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg15" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A6_P1_in" dir="in" link="Link103" />
-                <Link pin="O_C455_A6_P2_out" dir="out" link="Link112" />
+                <Link pin="I_C455_A6_P1_in" dir="in" link="Link105" />
+                <Link pin="O_C455_A6_P2_out" dir="out" link="Link114" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg16" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A7_P1_in" dir="in" link="Link103" />
-                <Link pin="O_C455_A7_P2_out" dir="out" link="Link113" />
+                <Link pin="I_C455_A7_P1_in" dir="in" link="Link105" />
+                <Link pin="O_C455_A7_P2_out" dir="out" link="Link115" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg25" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A8_P1_in" dir="in" link="Link104" />
-                <Link pin="O_C455_A8_P2_out" dir="out" link="Link114" />
+                <Link pin="I_C455_A8_P1_in" dir="in" link="Link106" />
+                <Link pin="O_C455_A8_P2_out" dir="out" link="Link116" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg26" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A9_P1_in" dir="in" link="Link104" />
-                <Link pin="O_C455_A9_P2_out" dir="out" link="Link115" />
+                <Link pin="I_C455_A9_P1_in" dir="in" link="Link106" />
+                <Link pin="O_C455_A9_P2_out" dir="out" link="Link117" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg27" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A10_P1_in" dir="in" link="Link105" />
-                <Link pin="O_C455_A10_P2_out" dir="out" link="Link116" />
+                <Link pin="I_C455_A10_P1_in" dir="in" link="Link107" />
+                <Link pin="O_C455_A10_P2_out" dir="out" link="Link118" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg28" friendlyname="Gain (HW slew)" cell="AUX_in ">
-                <Link pin="I_C455_A11_P1_in" dir="in" link="Link105" />
-                <Link pin="O_C455_A11_P2_out" dir="out" link="Link117" />
+                <Link pin="I_C455_A11_P1_in" dir="in" link="Link107" />
+                <Link pin="O_C455_A11_P2_out" dir="out" link="Link119" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg7" friendlyname="Multi-Channel - Double Precision" cell="SPDIF_EQ ">
-                <Link pin="I_C145_A0_P1_in" dir="in" link="Link46" />
-                <Link pin="I_C145_A0_P3_in" dir="in" link="Link47" />
-                <Link pin="O_C145_A0_P2_out" dir="out" link="Link48" />
-                <Link pin="O_C145_A0_P4_out" dir="out" link="Link49" />
+                <Link pin="I_C145_A0_P1_in" dir="in" link="Link42" />
+                <Link pin="I_C145_A0_P3_in" dir="in" link="Link43" />
+                <Link pin="O_C145_A0_P2_out" dir="out" link="Link44" />
+                <Link pin="O_C145_A0_P4_out" dir="out" link="Link45" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg8" friendlyname="Multi-Channel - Double Precision" cell="BT_EQ ">
-                <Link pin="I_C425_A0_P1_in" dir="in" link="Link50" />
-                <Link pin="I_C425_A0_P3_in" dir="in" link="Link51" />
-                <Link pin="O_C425_A0_P2_out" dir="out" link="Link52" />
-                <Link pin="O_C425_A0_P4_out" dir="out" link="Link53" />
+                <Link pin="I_C425_A0_P1_in" dir="in" link="Link46" />
+                <Link pin="I_C425_A0_P3_in" dir="in" link="Link47" />
+                <Link pin="O_C425_A0_P2_out" dir="out" link="Link48" />
+                <Link pin="O_C425_A0_P4_out" dir="out" link="Link49" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg9" friendlyname="Multi-Channel - Double Precision" cell="USB_EQ ">
-                <Link pin="I_C527_A0_P1_in" dir="in" link="Link54" />
-                <Link pin="I_C527_A0_P3_in" dir="in" link="Link55" />
-                <Link pin="O_C527_A0_P2_out" dir="out" link="Link56" />
-                <Link pin="O_C527_A0_P4_out" dir="out" link="Link57" />
+                <Link pin="I_C527_A0_P1_in" dir="in" link="Link50" />
+                <Link pin="I_C527_A0_P3_in" dir="in" link="Link51" />
+                <Link pin="O_C527_A0_P2_out" dir="out" link="Link52" />
+                <Link pin="O_C527_A0_P4_out" dir="out" link="Link53" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3001" friendlyname="Data/Register Readback" cell="SPDIF_Readback ">
-                <Link pin="I_C17_A0_P1_in" dir="in" link="Link48" />
+                <Link pin="I_C17_A0_P1_in" dir="in" link="Link44" />
                 <Link pin="O_C17_A0_P2_out" dir="out" link="Link4" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3002" friendlyname="Data/Register Readback" cell="SPDIF_Readback ">
-                <Link pin="I_C17_A1_P1_in" dir="in" link="Link49" />
+                <Link pin="I_C17_A1_P1_in" dir="in" link="Link45" />
                 <Link pin="O_C17_A1_P2_out" dir="out" link="Link5" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3003" friendlyname="Data/Register Readback" cell="BT_Readback ">
-                <Link pin="I_C26_A0_P1_in" dir="in" link="Link52" />
+                <Link pin="I_C26_A0_P1_in" dir="in" link="Link48" />
                 <Link pin="O_C26_A0_P2_out" dir="out" link="Link6" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3004" friendlyname="Data/Register Readback" cell="BT_Readback ">
-                <Link pin="I_C26_A1_P1_in" dir="in" link="Link53" />
+                <Link pin="I_C26_A1_P1_in" dir="in" link="Link49" />
                 <Link pin="O_C26_A1_P2_out" dir="out" link="Link7" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3009" friendlyname="Data/Register Readback" cell="USB_Readback ">
-                <Link pin="I_C61_A0_P1_in" dir="in" link="Link56" />
+                <Link pin="I_C61_A0_P1_in" dir="in" link="Link52" />
                 <Link pin="O_C61_A0_P2_out" dir="out" link="Link8" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30010" friendlyname="Data/Register Readback" cell="USB_Readback ">
-                <Link pin="I_C61_A1_P1_in" dir="in" link="Link57" />
+                <Link pin="I_C61_A1_P1_in" dir="in" link="Link53" />
                 <Link pin="O_C61_A1_P2_out" dir="out" link="Link9" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg1" friendlyname="Gain (HW slew)" cell="SPDIF_in ">
                 <Link pin="I_C22_A0_P1_in" dir="in" link="Link4" />
-                <Link pin="O_C22_A0_P2_out" dir="out" link="Link92" />
+                <Link pin="O_C22_A0_P2_out" dir="out" link="Link94" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg2" friendlyname="Gain (HW slew)" cell="SPDIF_in ">
                 <Link pin="I_C22_A1_P1_in" dir="in" link="Link5" />
-                <Link pin="O_C22_A1_P2_out" dir="out" link="Link91" />
+                <Link pin="O_C22_A1_P2_out" dir="out" link="Link93" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg3" friendlyname="Gain (HW slew)" cell="BT_in ">
                 <Link pin="I_C89_A0_P1_in" dir="in" link="Link6" />
-                <Link pin="O_C89_A0_P2_out" dir="out" link="Link90" />
+                <Link pin="O_C89_A0_P2_out" dir="out" link="Link92" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg4" friendlyname="Gain (HW slew)" cell="BT_in ">
                 <Link pin="I_C89_A1_P1_in" dir="in" link="Link7" />
-                <Link pin="O_C89_A1_P2_out" dir="out" link="Link89" />
+                <Link pin="O_C89_A1_P2_out" dir="out" link="Link91" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg5" friendlyname="Gain (HW slew)" cell="USB_in ">
                 <Link pin="I_C118_A0_P1_in" dir="in" link="Link8" />
-                <Link pin="O_C118_A0_P2_out" dir="out" link="Link88" />
+                <Link pin="O_C118_A0_P2_out" dir="out" link="Link90" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg6" friendlyname="Gain (HW slew)" cell="USB_in ">
                 <Link pin="I_C118_A1_P1_in" dir="in" link="Link9" />
-                <Link pin="O_C118_A1_P2_out" dir="out" link="Link87" />
+                <Link pin="O_C118_A1_P2_out" dir="out" link="Link89" />
             </Algorithm>
             <Algorithm name="NxNMixAlg1" friendlyname="NxM Mixer" cell="FX_sends ">
-                <Link pin="I_C163_A0_P2_in" dir="in" link="Link92" />
-                <Link pin="I_C163_A0_P3_in" dir="in" link="Link91" />
-                <Link pin="I_C163_A0_P6_in" dir="in" link="Link90" />
-                <Link pin="I_C163_A0_P7_in" dir="in" link="Link89" />
-                <Link pin="I_C163_A0_P8_in" dir="in" link="Link88" />
-                <Link pin="I_C163_A0_P9_in" dir="in" link="Link87" />
-                <Link pin="I_C163_A0_P10_in" dir="in" link="Link106" />
-                <Link pin="I_C163_A0_P11_in" dir="in" link="Link107" />
-                <Link pin="I_C163_A0_P12_in" dir="in" link="Link108" />
-                <Link pin="I_C163_A0_P13_in" dir="in" link="Link109" />
-                <Link pin="I_C163_A0_P14_in" dir="in" link="Link110" />
-                <Link pin="I_C163_A0_P15_in" dir="in" link="Link111" />
-                <Link pin="I_C163_A0_P16_in" dir="in" link="Link112" />
-                <Link pin="I_C163_A0_P17_in" dir="in" link="Link113" />
-                <Link pin="I_C163_A0_P18_in" dir="in" link="Link114" />
-                <Link pin="I_C163_A0_P19_in" dir="in" link="Link115" />
-                <Link pin="I_C163_A0_P20_in" dir="in" link="Link116" />
-                <Link pin="I_C163_A0_P21_in" dir="in" link="Link117" />
-                <Link pin="O_C163_A0_P1_out" dir="out" link="Link18" />
-                <Link pin="O_C163_A0_P4_out" dir="out" link="Link19" />
-                <Link pin="O_C163_A0_P9_out" dir="out" link="Link22" />
+                <Link pin="I_C163_A0_P2_in" dir="in" link="Link94" />
+                <Link pin="I_C163_A0_P3_in" dir="in" link="Link93" />
+                <Link pin="I_C163_A0_P6_in" dir="in" link="Link92" />
+                <Link pin="I_C163_A0_P7_in" dir="in" link="Link91" />
+                <Link pin="I_C163_A0_P8_in" dir="in" link="Link90" />
+                <Link pin="I_C163_A0_P9_in" dir="in" link="Link89" />
+                <Link pin="I_C163_A0_P10_in" dir="in" link="Link108" />
+                <Link pin="I_C163_A0_P11_in" dir="in" link="Link109" />
+                <Link pin="I_C163_A0_P12_in" dir="in" link="Link110" />
+                <Link pin="I_C163_A0_P13_in" dir="in" link="Link111" />
+                <Link pin="I_C163_A0_P14_in" dir="in" link="Link112" />
+                <Link pin="I_C163_A0_P15_in" dir="in" link="Link113" />
+                <Link pin="I_C163_A0_P16_in" dir="in" link="Link114" />
+                <Link pin="I_C163_A0_P17_in" dir="in" link="Link115" />
+                <Link pin="I_C163_A0_P18_in" dir="in" link="Link116" />
+                <Link pin="I_C163_A0_P19_in" dir="in" link="Link117" />
+                <Link pin="I_C163_A0_P20_in" dir="in" link="Link118" />
+                <Link pin="I_C163_A0_P21_in" dir="in" link="Link119" />
+                <Link pin="O_C163_A0_P1_out" dir="out" link="Link14" />
+                <Link pin="O_C163_A0_P4_out" dir="out" link="Link15" />
+                <Link pin="O_C163_A0_P9_out" dir="out" link="Link18" />
             </Algorithm>
             <Algorithm name="Reverb_S3001" friendlyname="Reverb" cell="Reverb_proc ">
-                <Link pin="I_C63_A0_P1_in" dir="in" link="Link18" />
-                <Link pin="I_C63_A0_P2_in" dir="in" link="Link19" />
+                <Link pin="I_C63_A0_P1_in" dir="in" link="Link14" />
+                <Link pin="I_C63_A0_P2_in" dir="in" link="Link15" />
                 <Link pin="O_C63_A0_P3_out" dir="out" link="Link0" />
                 <Link pin="O_C63_A0_P4_out" dir="out" link="Link1" />
             </Algorithm>
             <Algorithm name="PitchShiftsADAU145XAlg1" friendlyname="Pitch Transposer" cell="Pitch_proc ">
-                <Link pin="I_C47_A0_P1_in" dir="in" link="Link22" />
-                <Link pin="O_C47_A0_P2_out" dir="out" link="Link23" />
+                <Link pin="I_C47_A0_P1_in" dir="in" link="Link18" />
+                <Link pin="O_C47_A0_P2_out" dir="out" link="Link19" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3007" friendlyname="Data/Register Readback" cell="Reverb_Readback ">
                 <Link pin="I_C40_A0_P1_in" dir="in" link="Link0" />
@@ -321,179 +321,207 @@
                 <Link pin="O_C40_A1_P2_out" dir="out" link="Link11" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30013" friendlyname="Data/Register Readback" cell="Pitch_Readback ">
-                <Link pin="I_C108_A0_P1_in" dir="in" link="Link23" />
-                <Link pin="O_C108_A0_P2_out" dir="out" link="Link96" />
+                <Link pin="I_C108_A0_P1_in" dir="in" link="Link19" />
+                <Link pin="O_C108_A0_P2_out" dir="out" link="Link98" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg7" friendlyname="Gain (HW slew)" cell="Reverb_FX ">
                 <Link pin="I_C162_A0_P1_in" dir="in" link="Link10" />
-                <Link pin="O_C162_A0_P2_out" dir="out" link="Link24" />
+                <Link pin="O_C162_A0_P2_out" dir="out" link="Link20" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg8" friendlyname="Gain (HW slew)" cell="Reverb_FX ">
                 <Link pin="I_C162_A1_P1_in" dir="in" link="Link11" />
-                <Link pin="O_C162_A1_P2_out" dir="out" link="Link25" />
+                <Link pin="O_C162_A1_P2_out" dir="out" link="Link21" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg13" friendlyname="Gain (HW slew)" cell="Pitch_FX ">
-                <Link pin="I_C100_A0_P1_in" dir="in" link="Link96" />
-                <Link pin="O_C100_A0_P2_out" dir="out" link="Link26" />
+                <Link pin="I_C100_A0_P1_in" dir="in" link="Link98" />
+                <Link pin="O_C100_A0_P2_out" dir="out" link="Link22" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg14" friendlyname="Gain (HW slew)" cell="Pitch_FX ">
-                <Link pin="I_C100_A1_P1_in" dir="in" link="Link96" />
-                <Link pin="O_C100_A1_P2_out" dir="out" link="Link27" />
+                <Link pin="I_C100_A1_P1_in" dir="in" link="Link98" />
+                <Link pin="O_C100_A1_P2_out" dir="out" link="Link23" />
             </Algorithm>
             <Algorithm name="NxNMixAlg2" friendlyname="NxM Mixer" cell="Output_sends ">
-                <Link pin="I_C312_A0_P2_in" dir="in" link="Link92" />
-                <Link pin="I_C312_A0_P3_in" dir="in" link="Link91" />
-                <Link pin="I_C312_A0_P4_in" dir="in" link="Link90" />
-                <Link pin="I_C312_A0_P5_in" dir="in" link="Link89" />
-                <Link pin="I_C312_A0_P6_in" dir="in" link="Link88" />
-                <Link pin="I_C312_A0_P7_in" dir="in" link="Link87" />
-                <Link pin="I_C312_A0_P8_in" dir="in" link="Link24" />
-                <Link pin="I_C312_A0_P9_in" dir="in" link="Link25" />
-                <Link pin="I_C312_A0_P13_in" dir="in" link="Link26" />
-                <Link pin="I_C312_A0_P14_in" dir="in" link="Link27" />
-                <Link pin="I_C312_A0_P15_in" dir="in" link="Link106" />
-                <Link pin="I_C312_A0_P16_in" dir="in" link="Link107" />
-                <Link pin="I_C312_A0_P17_in" dir="in" link="Link108" />
-                <Link pin="I_C312_A0_P18_in" dir="in" link="Link109" />
-                <Link pin="I_C312_A0_P19_in" dir="in" link="Link110" />
-                <Link pin="I_C312_A0_P20_in" dir="in" link="Link111" />
-                <Link pin="I_C312_A0_P23_in" dir="in" link="Link112" />
-                <Link pin="I_C312_A0_P24_in" dir="in" link="Link113" />
-                <Link pin="I_C312_A0_P25_in" dir="in" link="Link114" />
-                <Link pin="I_C312_A0_P26_in" dir="in" link="Link115" />
-                <Link pin="I_C312_A0_P27_in" dir="in" link="Link116" />
-                <Link pin="I_C312_A0_P28_in" dir="in" link="Link117" />
-                <Link pin="O_C312_A0_P1_out" dir="out" link="Link20" />
-                <Link pin="O_C312_A0_P11_out" dir="out" link="Link21" />
-                <Link pin="O_C312_A0_P12_out" dir="out" link="Link85" />
-                <Link pin="O_C312_A0_P13_out" dir="out" link="Link84" />
-                <Link pin="O_C312_A0_P21_out" dir="out" link="Link97" />
-                <Link pin="O_C312_A0_P22_out" dir="out" link="Link99" />
+                <Link pin="I_C312_A0_P2_in" dir="in" link="Link94" />
+                <Link pin="I_C312_A0_P3_in" dir="in" link="Link93" />
+                <Link pin="I_C312_A0_P4_in" dir="in" link="Link92" />
+                <Link pin="I_C312_A0_P5_in" dir="in" link="Link91" />
+                <Link pin="I_C312_A0_P6_in" dir="in" link="Link90" />
+                <Link pin="I_C312_A0_P7_in" dir="in" link="Link89" />
+                <Link pin="I_C312_A0_P8_in" dir="in" link="Link20" />
+                <Link pin="I_C312_A0_P9_in" dir="in" link="Link21" />
+                <Link pin="I_C312_A0_P13_in" dir="in" link="Link22" />
+                <Link pin="I_C312_A0_P14_in" dir="in" link="Link23" />
+                <Link pin="I_C312_A0_P15_in" dir="in" link="Link108" />
+                <Link pin="I_C312_A0_P16_in" dir="in" link="Link109" />
+                <Link pin="I_C312_A0_P17_in" dir="in" link="Link110" />
+                <Link pin="I_C312_A0_P18_in" dir="in" link="Link111" />
+                <Link pin="I_C312_A0_P19_in" dir="in" link="Link112" />
+                <Link pin="I_C312_A0_P20_in" dir="in" link="Link113" />
+                <Link pin="I_C312_A0_P23_in" dir="in" link="Link114" />
+                <Link pin="I_C312_A0_P24_in" dir="in" link="Link115" />
+                <Link pin="I_C312_A0_P25_in" dir="in" link="Link116" />
+                <Link pin="I_C312_A0_P26_in" dir="in" link="Link117" />
+                <Link pin="I_C312_A0_P27_in" dir="in" link="Link118" />
+                <Link pin="I_C312_A0_P28_in" dir="in" link="Link119" />
+                <Link pin="O_C312_A0_P1_out" dir="out" link="Link16" />
+                <Link pin="O_C312_A0_P11_out" dir="out" link="Link17" />
+                <Link pin="O_C312_A0_P12_out" dir="out" link="Link87" />
+                <Link pin="O_C312_A0_P13_out" dir="out" link="Link86" />
+                <Link pin="O_C312_A0_P21_out" dir="out" link="Link99" />
+                <Link pin="O_C312_A0_P22_out" dir="out" link="Link101" />
             </Algorithm>
             <Algorithm name="SuperBassAlgStereoS3001" friendlyname="Super Bass SWSlewG3" cell="Master_bassboost ">
-                <Link pin="I_C31_A0_P1_in" dir="in" link="Link20" />
-                <Link pin="I_C31_A0_P2_in" dir="in" link="Link21" />
-                <Link pin="O_C31_A0_P3_out" dir="out" link="Link73" />
-                <Link pin="O_C31_A0_P4_out" dir="out" link="Link74" />
+                <Link pin="I_C31_A0_P1_in" dir="in" link="Link16" />
+                <Link pin="I_C31_A0_P2_in" dir="in" link="Link17" />
+                <Link pin="O_C31_A0_P3_out" dir="out" link="Link75" />
+                <Link pin="O_C31_A0_P4_out" dir="out" link="Link76" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg5" friendlyname="2x1 Mixer (No Slew)" cell="Submix_mono_mix ">
-                <Link pin="I_C334_A0_P1_in" dir="in" link="Link85" />
-                <Link pin="I_C334_A0_P2_in" dir="in" link="Link84" />
-                <Link pin="O_C334_A0_P3_out" dir="out" link="Link86" />
+                <Link pin="I_C334_A0_P1_in" dir="in" link="Link87" />
+                <Link pin="I_C334_A0_P2_in" dir="in" link="Link86" />
+                <Link pin="O_C334_A0_P3_out" dir="out" link="Link88" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg6" friendlyname="2x1 Mixer (No Slew)" cell="SPDIFO_mono_mix ">
-                <Link pin="I_C697_A0_P1_in" dir="in" link="Link97" />
-                <Link pin="I_C697_A0_P2_in" dir="in" link="Link99" />
-                <Link pin="O_C697_A0_P3_out" dir="out" link="Link98" />
+                <Link pin="I_C697_A0_P1_in" dir="in" link="Link99" />
+                <Link pin="I_C697_A0_P2_in" dir="in" link="Link101" />
+                <Link pin="O_C697_A0_P3_out" dir="out" link="Link100" />
             </Algorithm>
             <Algorithm name="Mixer2x1NoSlewS300Alg1" friendlyname="2x1 Mixer (No Slew)" cell="Master_mono_mix ">
-                <Link pin="I_C201_A0_P1_in" dir="in" link="Link73" />
-                <Link pin="I_C201_A0_P2_in" dir="in" link="Link74" />
-                <Link pin="O_C201_A0_P3_out" dir="out" link="Link72" />
+                <Link pin="I_C201_A0_P1_in" dir="in" link="Link75" />
+                <Link pin="I_C201_A0_P2_in" dir="in" link="Link76" />
+                <Link pin="O_C201_A0_P3_out" dir="out" link="Link74" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns5" friendlyname="Stereo" cell="Submix_stereomode ">
-                <Link pin="I_C338_A0_P3_in" dir="in" link="Link85" />
-                <Link pin="I_C338_A0_P4_in" dir="in" link="Link84" />
-                <Link pin="I_C338_A0_P5_in" dir="in" link="Link86" />
-                <Link pin="I_C338_A0_P6_in" dir="in" link="Link86" />
-                <Link pin="O_C338_A0_P1_out" dir="out" link="Link64" />
-                <Link pin="O_C338_A0_P2_out" dir="out" link="Link65" />
+                <Link pin="I_C338_A0_P3_in" dir="in" link="Link87" />
+                <Link pin="I_C338_A0_P4_in" dir="in" link="Link86" />
+                <Link pin="I_C338_A0_P5_in" dir="in" link="Link88" />
+                <Link pin="I_C338_A0_P6_in" dir="in" link="Link88" />
+                <Link pin="O_C338_A0_P1_out" dir="out" link="Link58" />
+                <Link pin="O_C338_A0_P2_out" dir="out" link="Link59" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns6" friendlyname="Stereo" cell="SPDIFO_stereomode ">
-                <Link pin="I_C701_A0_P3_in" dir="in" link="Link97" />
-                <Link pin="I_C701_A0_P4_in" dir="in" link="Link99" />
-                <Link pin="I_C701_A0_P5_in" dir="in" link="Link98" />
-                <Link pin="I_C701_A0_P6_in" dir="in" link="Link98" />
-                <Link pin="O_C701_A0_P1_out" dir="out" link="Link68" />
-                <Link pin="O_C701_A0_P2_out" dir="out" link="Link69" />
+                <Link pin="I_C701_A0_P3_in" dir="in" link="Link99" />
+                <Link pin="I_C701_A0_P4_in" dir="in" link="Link101" />
+                <Link pin="I_C701_A0_P5_in" dir="in" link="Link100" />
+                <Link pin="I_C701_A0_P6_in" dir="in" link="Link100" />
+                <Link pin="O_C701_A0_P1_out" dir="out" link="Link60" />
+                <Link pin="O_C701_A0_P2_out" dir="out" link="Link61" />
             </Algorithm>
             <Algorithm name="stereomuxSigma300ns1" friendlyname="Stereo" cell="Master_stereomode ">
-                <Link pin="I_C205_A0_P3_in" dir="in" link="Link73" />
-                <Link pin="I_C205_A0_P4_in" dir="in" link="Link74" />
-                <Link pin="I_C205_A0_P5_in" dir="in" link="Link72" />
-                <Link pin="I_C205_A0_P6_in" dir="in" link="Link72" />
-                <Link pin="O_C205_A0_P1_out" dir="out" link="Link60" />
-                <Link pin="O_C205_A0_P2_out" dir="out" link="Link61" />
+                <Link pin="I_C205_A0_P3_in" dir="in" link="Link75" />
+                <Link pin="I_C205_A0_P4_in" dir="in" link="Link76" />
+                <Link pin="I_C205_A0_P5_in" dir="in" link="Link74" />
+                <Link pin="I_C205_A0_P6_in" dir="in" link="Link74" />
+                <Link pin="O_C205_A0_P1_out" dir="out" link="Link56" />
+                <Link pin="O_C205_A0_P2_out" dir="out" link="Link57" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg11" friendlyname="Multi-Channel - Double Precision" cell="Submix_EQ ">
-                <Link pin="I_C724_A0_P1_in" dir="in" link="Link64" />
-                <Link pin="I_C724_A0_P3_in" dir="in" link="Link65" />
-                <Link pin="O_C724_A0_P2_out" dir="out" link="Link66" />
-                <Link pin="O_C724_A0_P4_out" dir="out" link="Link67" />
+                <Link pin="I_C724_A0_P1_in" dir="in" link="Link58" />
+                <Link pin="I_C724_A0_P3_in" dir="in" link="Link59" />
+                <Link pin="O_C724_A0_P2_out" dir="out" link="Link122" />
+                <Link pin="O_C724_A0_P4_out" dir="out" link="Link123" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg12" friendlyname="Multi-Channel - Double Precision" cell="SPDIFO_EQ ">
-                <Link pin="I_C757_A0_P1_in" dir="in" link="Link68" />
-                <Link pin="I_C757_A0_P3_in" dir="in" link="Link69" />
-                <Link pin="O_C757_A0_P2_out" dir="out" link="Link70" />
-                <Link pin="O_C757_A0_P4_out" dir="out" link="Link71" />
+                <Link pin="I_C757_A0_P1_in" dir="in" link="Link60" />
+                <Link pin="I_C757_A0_P3_in" dir="in" link="Link61" />
+                <Link pin="O_C757_A0_P2_out" dir="out" link="Link62" />
+                <Link pin="O_C757_A0_P4_out" dir="out" link="Link63" />
             </Algorithm>
             <Algorithm name="EQGenFilterDPS300Alg10" friendlyname="Multi-Channel - Double Precision" cell="Master_EQ ">
-                <Link pin="I_C648_A0_P1_in" dir="in" link="Link60" />
-                <Link pin="I_C648_A0_P3_in" dir="in" link="Link61" />
-                <Link pin="O_C648_A0_P2_out" dir="out" link="Link62" />
-                <Link pin="O_C648_A0_P4_out" dir="out" link="Link63" />
-            </Algorithm>
-            <Algorithm name="HWGainADAU145XAlg11" friendlyname="Gain (HW slew)" cell="Submix_out ">
-                <Link pin="I_C329_A0_P1_in" dir="in" link="Link66" />
-                <Link pin="O_C329_A0_P2_out" dir="out" link="Link16" />
-            </Algorithm>
-            <Algorithm name="HWGainADAU145XAlg12" friendlyname="Gain (HW slew)" cell="Submix_out ">
-                <Link pin="I_C329_A1_P1_in" dir="in" link="Link67" />
-                <Link pin="O_C329_A1_P2_out" dir="out" link="Link17" />
+                <Link pin="I_C648_A0_P1_in" dir="in" link="Link56" />
+                <Link pin="I_C648_A0_P3_in" dir="in" link="Link57" />
+                <Link pin="O_C648_A0_P2_out" dir="out" link="Link121" />
+                <Link pin="O_C648_A0_P4_out" dir="out" link="Link120" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg21" friendlyname="Gain (HW slew)" cell="SPDIFO_out ">
-                <Link pin="I_C692_A0_P1_in" dir="in" link="Link70" />
-                <Link pin="O_C692_A0_P2_out" dir="out" link="Link42" />
+                <Link pin="I_C692_A0_P1_in" dir="in" link="Link62" />
+                <Link pin="O_C692_A0_P2_out" dir="out" link="Link38" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg22" friendlyname="Gain (HW slew)" cell="SPDIFO_out ">
-                <Link pin="I_C692_A1_P1_in" dir="in" link="Link71" />
-                <Link pin="O_C692_A1_P2_out" dir="out" link="Link43" />
-            </Algorithm>
-            <Algorithm name="ReadBackAlgNewSigma30011" friendlyname="Data/Register Readback" cell="Submix_Readback ">
-                <Link pin="I_C316_A0_P1_in" dir="in" link="Link16" />
-                <Link pin="O_C316_A0_P2_out" dir="out" link="Link15" />
-            </Algorithm>
-            <Algorithm name="ReadBackAlgNewSigma30012" friendlyname="Data/Register Readback" cell="Submix_Readback ">
-                <Link pin="I_C316_A1_P1_in" dir="in" link="Link17" />
-                <Link pin="O_C316_A1_P2_out" dir="out" link="Link14" />
+                <Link pin="I_C692_A1_P1_in" dir="in" link="Link63" />
+                <Link pin="O_C692_A1_P2_out" dir="out" link="Link39" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30016" friendlyname="Data/Register Readback" cell="SPDIFO_Readback ">
-                <Link pin="I_C687_A0_P1_in" dir="in" link="Link42" />
-                <Link pin="O_C687_A0_P2_out" dir="out" link="Link44" />
+                <Link pin="I_C687_A0_P1_in" dir="in" link="Link38" />
+                <Link pin="O_C687_A0_P2_out" dir="out" link="Link40" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma30017" friendlyname="Data/Register Readback" cell="SPDIFO_Readback ">
-                <Link pin="I_C687_A1_P1_in" dir="in" link="Link43" />
-                <Link pin="O_C687_A1_P2_out" dir="out" link="Link45" />
+                <Link pin="I_C687_A1_P1_in" dir="in" link="Link39" />
+                <Link pin="O_C687_A1_P2_out" dir="out" link="Link41" />
             </Algorithm>
-            <Algorithm name="HWGainADAU145XAlg9" friendlyname="Gain (HW slew)" cell="Master_out ">
-                <Link pin="I_C188_A0_P1_in" dir="in" link="Link62" />
-                <Link pin="O_C188_A0_P2_out" dir="out" link="Link12" />
+            <Algorithm name="ICSigma300SpdifOut1" friendlyname="SPDIF output" cell="SpdifOut1 ">
+                <Link pin="I_C120_A0_P1_in" dir="in" link="Link40" />
+            </Algorithm>
+            <Algorithm name="ICSigma300SpdifOut2" friendlyname="SPDIF output" cell="SpdifOut2 ">
+                <Link pin="I_C159_A0_P1_in" dir="in" link="Link41" />
+            </Algorithm>
+            <Algorithm name="CrossoverFilter2WayAlgSP_S3002" friendlyname="2-Way Crossover Filter - Single Precision" cell="Crossover1 ">
+                <Link pin="I_C293_A1_P1_in" dir="in" link="Link120" />
+                <Link pin="O_C293_A1_P2_out" dir="out" link="Link64" />
+                <Link pin="O_C293_A1_P3_out" dir="out" link="Link65" />
+            </Algorithm>
+            <Algorithm name="CrossoverFilter2WayAlgSP_S3001" friendlyname="2-Way Crossover Filter - Single Precision" cell="Crossover1 ">
+                <Link pin="I_C293_A0_P1_in" dir="in" link="Link121" />
+                <Link pin="O_C293_A0_P2_out" dir="out" link="Link124" />
+                <Link pin="O_C293_A0_P3_out" dir="out" link="Link125" />
+            </Algorithm>
+            <Algorithm name="stereomuxSigma300ns41" friendlyname="4 Channel" cell="BiAmp_mode ">
+                <Link pin="I_C791_A0_P5_in" dir="in" link="Link121" />
+                <Link pin="I_C791_A0_P6_in" dir="in" link="Link120" />
+                <Link pin="I_C791_A0_P7_in" dir="in" link="Link122" />
+                <Link pin="I_C791_A0_P8_in" dir="in" link="Link123" />
+                <Link pin="I_C791_A0_P9_in" dir="in" link="Link124" />
+                <Link pin="I_C791_A0_P10_in" dir="in" link="Link125" />
+                <Link pin="I_C791_A0_P11_in" dir="in" link="Link122" />
+                <Link pin="I_C791_A0_P12_in" dir="in" link="Link123" />
+                <Link pin="I_C791_A0_P13_in" dir="in" link="Link124" />
+                <Link pin="I_C791_A0_P14_in" dir="in" link="Link64" />
+                <Link pin="I_C791_A0_P15_in" dir="in" link="Link125" />
+                <Link pin="I_C791_A0_P16_in" dir="in" link="Link65" />
+                <Link pin="O_C791_A0_P1_out" dir="out" link="Link73" />
+                <Link pin="O_C791_A0_P2_out" dir="out" link="Link70" />
+                <Link pin="O_C791_A0_P3_out" dir="out" link="Link71" />
+                <Link pin="O_C791_A0_P4_out" dir="out" link="Link72" />
             </Algorithm>
             <Algorithm name="HWGainADAU145XAlg10" friendlyname="Gain (HW slew)" cell="Master_out ">
-                <Link pin="I_C188_A1_P1_in" dir="in" link="Link63" />
-                <Link pin="O_C188_A1_P2_out" dir="out" link="Link13" />
+                <Link pin="I_C188_A1_P1_in" dir="in" link="Link70" />
+                <Link pin="O_C188_A1_P2_out" dir="out" link="Link67" />
+            </Algorithm>
+            <Algorithm name="HWGainADAU145XAlg11" friendlyname="Gain (HW slew)" cell="Submix_out ">
+                <Link pin="I_C329_A0_P1_in" dir="in" link="Link71" />
+                <Link pin="O_C329_A0_P2_out" dir="out" link="Link68" />
+            </Algorithm>
+            <Algorithm name="HWGainADAU145XAlg12" friendlyname="Gain (HW slew)" cell="Submix_out ">
+                <Link pin="I_C329_A1_P1_in" dir="in" link="Link72" />
+                <Link pin="O_C329_A1_P2_out" dir="out" link="Link69" />
+            </Algorithm>
+            <Algorithm name="HWGainADAU145XAlg9" friendlyname="Gain (HW slew)" cell="Master_out ">
+                <Link pin="I_C188_A0_P1_in" dir="in" link="Link73" />
+                <Link pin="O_C188_A0_P2_out" dir="out" link="Link66" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3005" friendlyname="Data/Register Readback" cell="Master_Readback ">
-                <Link pin="I_C35_A0_P1_in" dir="in" link="Link12" />
+                <Link pin="I_C35_A0_P1_in" dir="in" link="Link66" />
                 <Link pin="O_C35_A0_P2_out" dir="out" link="Link2" />
             </Algorithm>
             <Algorithm name="ReadBackAlgNewSigma3006" friendlyname="Data/Register Readback" cell="Master_Readback ">
-                <Link pin="I_C35_A1_P1_in" dir="in" link="Link13" />
+                <Link pin="I_C35_A1_P1_in" dir="in" link="Link67" />
                 <Link pin="O_C35_A1_P2_out" dir="out" link="Link3" />
             </Algorithm>
-            <Algorithm name="ICOutADAU145X2" friendlyname="Output" cell="Submix_I2S ">
-                <Link pin="I_C321_A0_P1_in" dir="in" link="Link15" />
-                <Link pin="I_C321_A0_P2_in" dir="in" link="Link14" />
+            <Algorithm name="ReadBackAlgNewSigma30011" friendlyname="Data/Register Readback" cell="Submix_Readback ">
+                <Link pin="I_C316_A0_P1_in" dir="in" link="Link68" />
+                <Link pin="O_C316_A0_P2_out" dir="out" link="Link13" />
             </Algorithm>
-            <Algorithm name="ICSigma300SpdifOut1" friendlyname="SPDIF output" cell="SpdifOut1 ">
-                <Link pin="I_C120_A0_P1_in" dir="in" link="Link44" />
-            </Algorithm>
-            <Algorithm name="ICSigma300SpdifOut2" friendlyname="SPDIF output" cell="SpdifOut2 ">
-                <Link pin="I_C159_A0_P1_in" dir="in" link="Link45" />
+            <Algorithm name="ReadBackAlgNewSigma30012" friendlyname="Data/Register Readback" cell="Submix_Readback ">
+                <Link pin="I_C316_A1_P1_in" dir="in" link="Link69" />
+                <Link pin="O_C316_A1_P2_out" dir="out" link="Link12" />
             </Algorithm>
             <Algorithm name="ICOutADAU145X1" friendlyname="Output" cell="Master_I2S ">
                 <Link pin="I_C230_A0_P1_in" dir="in" link="Link2" />
                 <Link pin="I_C230_A0_P2_in" dir="in" link="Link3" />
+            </Algorithm>
+            <Algorithm name="ICOutADAU145X2" friendlyname="Output" cell="Submix_I2S ">
+                <Link pin="I_C321_A0_P1_in" dir="in" link="Link13" />
+                <Link pin="I_C321_A0_P2_in" dir="in" link="Link12" />
             </Algorithm>
         </Schematic>
     </IC>

@@ -44,6 +44,12 @@ It can operate both as an audio amplifier and a mixing console, do basic audio p
     <li>Bassboost feature on Master channel</li>
     <li>Forced mono and Vocal suppression modes for stereo channels</li>
     <li>Bluetooth device volume synced with DSP volume</li>
+    <li><a href="https://en.wikipedia.org/wiki/Bi-amping_and_tri-amping">Bi-Amping</a> feature
+        <ol>
+            <li><b>Mono Bi-Amping:</b> LF routed to left, HF routed to right (Submix are not affected)</li>
+            <li><b>Stereo Bi-Amping:</b> LF routed to Master, HF routed forcibly from Master to Submix (needs an external amplifier)</li>
+        </ol>
+    </li>
 </ul>
 <p><b>WARNING!</b> This list is not final.</p>
 <h3>Hardware</h3>
