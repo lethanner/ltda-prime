@@ -1,6 +1,8 @@
 #include "DSP.h"
 #include "lut.h"
 #include "shiftreg.h"
+#include "sigmastudio/prime_IC_1_PARAM.h"
+#include "sigmastudio/prime_IC_1_REG.h"
 
 ADAU1452::ADAU1452()
 {
@@ -33,13 +35,13 @@ void ADAU1452::init()
     // это помогает обнулить ASRC, после чего можно с помощью команд переключить их туда, куда надо
 
     // ASRC 2 (на нём висит USB), тупо переключаем номер serial input
-    gotoRegister(0xF102);
+    gotoRegister(REG_ASRC_INPUT2_IC_1_ADDR);
     Wire.write(0x00);
     Wire.write(0xA1);
     Wire.endTransmission();
 
     // ASRC 0, переключаем род работы с serial input на S/PDIF receiver
-    gotoRegister(0xF100);
+    gotoRegister(REG_ASRC_INPUT0_IC_1_ADDR);
     Wire.write(0x00);
     Wire.write(0x83);
     Wire.endTransmission();
@@ -88,7 +90,7 @@ void ADAU1452::writeAsFloat(__register reg, byte value)
 // получение состояния ядра аудиопроцессора
 byte ADAU1452::getCoreState()
 {
-    gotoRegister(DSP_CORE_STATUS_REG, 2);
+    gotoRegister(REG_CORE_STATUS_IC_1_ADDR, 2);
     Wire.read();  // пропустить старший байт регистра
     return Wire.read();
 }
@@ -220,7 +222,7 @@ void ADAU1452::toggleBassBoost()
     bitToggle(flagRegister, DSPSETS_IS_BASSBOOSTED);
     bool state = !bitRead(flagRegister, DSPSETS_IS_BASSBOOSTED);
 
-    gotoRegister(DSP_BASSBOOST_REG);
+    gotoRegister(MOD_MASTER_BASSBOOST_ALG0_SUPERBASSALGSTEREOS3001BYPASS_ADDR);
     Wire.write(state);
     for (byte i = 0; i < 3; i++) {
         Wire.write(0x00);
@@ -232,7 +234,7 @@ void ADAU1452::setBBGain(byte value)
 {
     value = constrain(value, 1, 30);
 
-    writeAsFloat(DSP_BB_GAIN_REG, value);
+    writeAsFloat(MOD_MASTER_BASSBOOST_ALG0_SUPERBASSALGSTEREOS3001POSTGAIN_ADDR, value);
     bassboostGain = value;
 }
 
@@ -240,7 +242,7 @@ void ADAU1452::setBBIntensity(byte value)
 {
     value = constrain(value, 1, 30);
 
-    writeAsFloat(DSP_BB_INTENSITY_REG, value);
+    writeAsFloat(MOD_MASTER_BASSBOOST_ALG0_SUPERBASSALGSTEREOS3001K_ADDR, value);
     bassboostIntensity = value;
 }
 
@@ -248,7 +250,7 @@ void ADAU1452::setReverbTime(byte value)
 {
     value = constrain(value, 0, 3);
 
-    gotoRegister(DSP_REVERB_TIME_REG);
+    gotoRegister(MOD_REVERB_PROC_ALG0_REVERBS3001LOOPGAIN_ADDR);
     for (byte i = 0; i < 8; i++) {
         Wire.write(LUT::reverbtime[value][i]);
     }
@@ -261,7 +263,7 @@ void ADAU1452::setReverbHFDamping(byte value)
 {
     value = constrain(value, 0, 2);
 
-    gotoRegister(DSP_REVERB_HFDAMP_REG);
+    gotoRegister(MOD_REVERB_PROC_ALG0_REVERBS3001LP_ADDR);
     for (byte i = 0; i < 4; i++) {
         Wire.write(LUT::rev_hf_damping[value][i]);
     }
@@ -274,7 +276,7 @@ void ADAU1452::setReverbBassGain(byte value)
 {
     value = constrain(value, 0, 2);
 
-    gotoRegister(DSP_REVERB_BGAIN_REG);
+    gotoRegister(MOD_REVERB_PROC_ALG0_REVERBS3001BASSGAIN_ADDR);
     for (byte i = 0; i < 4; i++) {
         Wire.write(LUT::rev_bass_gain[value][i]);
     }
@@ -288,7 +290,7 @@ void ADAU1452::setPitchBusShift(int8_t value)
     value = constrain(value, -16, +16);
     int32_t _val = SEMITONE_INCREMENT * value;
 
-    gotoRegister(DSP_PITCH_SHIFT_REG);
+    gotoRegister(MOD_PITCH_PROC_ALG0_PITCHSHIFTSADAU145XALG1FREQ_ADDR);
     for (byte i = 0; i < 4; i++) {
         Wire.write((_val >> (24 - (i * 8))) & 0xFF);
     }

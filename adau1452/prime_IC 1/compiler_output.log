@@ -1,11 +1,11 @@
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Wednesday, October 15, 2025 1:07:49 AM #####
+##### Compile Started: Sunday, November 9, 2025 1:57:07 PM #####
 ADAU145X Assembler, Analog Devices Inc.
 Version: 4.5.0,1779  (built 10/28/2019)
 
-##### Compile Started: Wednesday, October 15, 2025 1:07:49 AM #####
+##### Compile Started: Sunday, November 9, 2025 1:57:07 PM #####
 ##### Compile succeeded:  0 errors, 0 warnings #####
 
 ##### Summary #####
@@ -20,9 +20,12 @@ STREAM                        Inst      Inst      DM0     DM1     PM
 Instance                      (cycles)  (size)    
 --------------------------------------------------------------------------------------
 STACK                          -         -        16      0       0       
-                              825       1076      239     5463    0
+Reverb_proc                   447       558       81      5079    0
+Master_bassboost              138       197       56      67      0
 AUX_in                        96        132       36      12      0
 Output_sends                  83        131       132     6       0
+FX_sends                      52        77        54      2       0
+Pitch_proc                    60        62        9       302     0
 Master_EQ                     40        47        50      53      0
 SPDIFO_EQ                     40        47        50      53      0
 Submix_EQ                     40        47        50      53      0
@@ -30,49 +33,62 @@ USB_EQ                        40        45        50      53      0
 BT_EQ                         40        45        50      53      0
 SPDIF_EQ                      40        45        50      53      0
 FRAMEWORK                     58        39        12      7       0
-AUX6 EQ                       22        25        35      34      0
-AUX4 EQ                       22        25        35      34      0
-AUX3 EQ                       22        25        35      34      0
-AUX5 EQ                       22        25        35      34      0
+Master_out                    16        26        6       2       0
+SPDIFO_out                    16        26        6       2       0
+Submix_out                    16        26        6       2       0
 AUX1 EQ                       22        25        35      34      0
 AUX2 EQ                       22        25        35      34      0
+AUX6 EQ                       22        25        35      34      0
+AUX5 EQ                       22        25        35      34      0
+AUX3 EQ                       22        25        35      34      0
+AUX4 EQ                       22        25        35      34      0
 USB_in                        16        22        6       2       0
 BT_in                         16        22        6       2       0
 SPDIF_in                      16        22        6       2       0
-USB_stereomode                10        12        7       0       0
+Pitch_FX                      16        22        6       2       0
+Reverb_FX                     16        22        6       2       0
 SPDIF_stereomode              10        12        7       0       0
 BT_stereomode                 10        12        7       0       0
+USB_stereomode                10        12        7       0       0
 Master_Readback               6         10        2       2       0
 SPDIFO_Readback               6         10        2       2       0
 Submix_Readback               6         10        2       2       0
+SPDIFO_stereomode             8         10        1       0       0
+Master_stereomode             8         10        1       0       0
+Submix_stereomode             8         9         1       0       0
 DCB1_4                        8         8         3       3       0
 DCB1                          8         8         3       3       0
 DCB1_2                        8         8         3       3       0
 DCB1_3                        8         8         3       3       0
 AsrcIn1                       8         8         0       6       0
+Master_mono_mix               6         7         2       1       0
+Submix_mono_mix               6         7         2       1       0
+SPDIFO_mono_mix               6         7         2       1       0
 SPDIF_mono_mix                6         7         2       1       0
 BT_mono_mix                   6         7         2       1       0
 USB_mono_mix                  6         7         2       1       0
-AUX1-2_Readback               6         6         2       2       0
 USB_Readback                  6         6         2       2       0
 BT_Readback                   6         6         2       2       0
-Reverb_Readback               6         6         2       2       0
 SPDIF_Readback                6         6         2       2       0
+AUX1-2_Readback               6         6         2       2       0
+Reverb_Readback               6         6         2       2       0
+Master_I2S                    3         5         0       0       0
+Submix_I2S                    3         5         0       0       0
+Shift1_4                      4         4         1       0       0
 Shift1_3                      4         4         1       0       0
 Shift1_2                      4         4         1       0       0
 Shift1                        4         4         1       0       0
-Shift1_4                      4         4         1       0       0
-Sub1_3                        4         4         0       1       0
-Sub1_2                        4         4         0       1       0
 Sub1                          4         4         0       1       0
-Input1                        4         4         0       0       0
-ADC In1_4                     4         4         0       0       0
-ADC In1_3                     4         4         0       0       0
+Sub1_2                        4         4         0       1       0
+Sub1_3                        4         4         0       1       0
 ADC In1_2                     4         4         0       0       0
+ADC In1_3                     4         4         0       0       0
+ADC In1_4                     4         4         0       0       0
+Input1                        4         4         0       0       0
 ADC In1                       4         4         0       0       0
 Pitch_Readback                3         3         1       1       0
-SpdifOut1                     2         3         0       0       0
 SpdifOut2                     2         3         0       0       0
+SpdifOut1                     2         3         0       0       0
 --------------------------------------------------------------------------------------
 Total                         1673      2084      1023    6057    0
 --------------------------------------------------------------------------------------

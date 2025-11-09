@@ -1,17 +1,19 @@
 #include "channels.h"
+#include "sigmastudio/prime_IC_1_PARAM.h"
+#include "sigmastudio/prime_IC_1_REG.h"
 using namespace DSPChannels;
 
 #define NO_SEND { { 0, 0 } }
 // clang-format off
 Channel DSPChannels::spdif = {
-    .fader = {0x017F, 0x0182},
-    .readback = {0x0178, 0x0179},
-    .stereoMode = 0x033B,
-    .sends = { { { 0x0225, 0x023C }, 0, false },
-               { { 0x0251, 0x0268 }, 0, false },
-               { { 0x0190, 0x01A3 }, 0, true },
-               { { 0x01B4, 0x01B5 }, 0, true },
-               { { 0x027D, 0x0294 }, 0, false } },
+    .fader = {MOD_SPDIF_IN_ALG0_TARGET_ADDR, MOD_SPDIF_IN_ALG1_TARGET_ADDR},
+    .readback = {MOD_SPDIF_READBACK_ALG0_READBACKALGNEWSIGMA3001VALUE_ADDR, MOD_SPDIF_READBACK_ALG1_READBACKALGNEWSIGMA3002VALUE_ADDR},
+    .stereoMode = MOD_SPDIF_STEREOMODE_STEREOMUXSIGMA300NS2INDEX_ADDR,
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0000_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0101_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0200_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0301_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0000_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0101_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0200_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0201_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0400_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0501_ADDR }, 0, false } },
     .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
@@ -21,14 +23,14 @@ Channel DSPChannels::spdif = {
 };
 
 Channel DSPChannels::bluetooth = {
-    .fader = {0x0185, 0x0188},
-    .readback = {0x017A, 0x017B},
-    .stereoMode = 0x03F0,
-    .sends = { { { 0x0227, 0x023E }, 0, false },
-               { { 0x0253, 0x026A }, 0, false },
-               { { 0x0192, 0x01A5 }, 0, true },
-               { { 0x01B6, 0x01B7 }, 0, true },
-               { { 0x027F, 0x0296 }, 0, false } },
+    .fader = {MOD_BT_IN_ALG0_TARGET_ADDR, MOD_BT_IN_ALG1_TARGET_ADDR},
+    .readback = {MOD_BT_READBACK_ALG0_READBACKALGNEWSIGMA3003VALUE_ADDR, MOD_BT_READBACK_ALG1_READBACKALGNEWSIGMA3004VALUE_ADDR},
+    .stereoMode = MOD_BT_STEREOMODE_STEREOMUXSIGMA300NS3INDEX_ADDR,
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0002_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0103_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0202_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0303_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0002_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0103_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0202_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0203_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0402_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0503_ADDR }, 0, false } },
     .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
@@ -38,14 +40,14 @@ Channel DSPChannels::bluetooth = {
 };
 
 Channel DSPChannels::usb = {
-    .fader = {0x018B, 0x018E},
-    .readback = {0x017C, 0x017D},
-    .stereoMode = 0x03F1,
-    .sends = { { { 0x0229, 0x0240 }, 0, false },
-               { { 0x0255, 0x026C }, 0, false },
-               { { 0x0194, 0x01A7 }, 0, true },
-               { { 0x01B8, 0x01B9 }, 0, true },
-               { { 0x0281, 0x0298 }, 0, false } },
+    .fader = {MOD_USB_IN_ALG0_TARGET_ADDR, MOD_USB_IN_ALG1_TARGET_ADDR},
+    .readback = {MOD_USB_READBACK_ALG0_READBACKALGNEWSIGMA3009VALUE_ADDR, MOD_USB_READBACK_ALG1_READBACKALGNEWSIGMA30010VALUE_ADDR},
+    .stereoMode = MOD_USB_STEREOMODE_STEREOMUXSIGMA300NS4INDEX_ADDR,
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0004_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0105_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0204_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0305_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0004_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0105_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0204_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0205_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0404_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0505_ADDR }, 0, false } },
     .type = CH_DIGITAL,
     .curStereoMode = STEREO,
     .faderPosition = 0,
@@ -55,13 +57,13 @@ Channel DSPChannels::usb = {
 };
 
 Channel DSPChannels::reverb = {
-    .fader = {0x021A, 0x021D},
-    .readback = {0x0216, 0x0217},
+    .fader = {MOD_REVERB_FX_ALG0_TARGET_ADDR, MOD_REVERB_FX_ALG1_TARGET_ADDR},
+    .readback = {MOD_REVERB_READBACK_ALG0_READBACKALGNEWSIGMA3007VALUE_ADDR, MOD_REVERB_READBACK_ALG1_READBACKALGNEWSIGMA3008VALUE_ADDR},
     .stereoMode = 0,
-    .sends = { { { 0x022B, 0x0242 }, 0, false },
-               { { 0x0257, 0x026E }, 0, false },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0006_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0107_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0206_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0307_ADDR }, 0, false },
                NO_SEND, NO_SEND,
-               { { 0x0283, 0x029A }, 0, false } },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0406_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0507_ADDR }, 0, false } },
     .type = CH_FX,
     .faderPosition = 0,
     .balpan = 0,
@@ -70,13 +72,13 @@ Channel DSPChannels::reverb = {
 };
 
 Channel DSPChannels::pitch = {
-    .fader = {0x0220, 0x0223},
-    .readback = {0x0218, 0},
+    .fader = {MOD_PITCH_FX_ALG0_TARGET_ADDR, MOD_PITCH_FX_ALG1_TARGET_ADDR},
+    .readback = {MOD_PITCH_READBACK_READBACKALGNEWSIGMA30013VALUE_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x022D, 0x0244 }, 0, false },
-               { { 0x0259, 0x0270 }, 0, false },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0008_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0109_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0208_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0309_ADDR }, 0, false },
                NO_SEND, NO_SEND,
-               { { 0x0285, 0x029C }, 0, false } },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0408_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0509_ADDR }, 0, false } },
     .type = CH_FX,
     .faderPosition = 0,
     .balpan = 0,
@@ -85,9 +87,9 @@ Channel DSPChannels::pitch = {
 };
 
 Channel DSPChannels::master = {
-    .fader = {0x0334, 0x0337},
-    .readback = {0x0339, 0x033A},
-    .stereoMode = 0x03FE,
+    .fader = {MOD_MASTER_OUT_ALG0_TARGET_ADDR, MOD_MASTER_OUT_ALG1_TARGET_ADDR},
+    .readback = {MOD_MASTER_READBACK_ALG0_READBACKALGNEWSIGMA3005VALUE_ADDR, MOD_MASTER_READBACK_ALG1_READBACKALGNEWSIGMA3006VALUE_ADDR},
+    .stereoMode = MOD_MASTER_STEREOMODE_STEREOMUXSIGMA300NS1INDEX_ADDR,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
 
     .type = CH_OUTPUT,
@@ -99,9 +101,9 @@ Channel DSPChannels::master = {
 };
 
 Channel DSPChannels::submix = {
-    .fader = {0x0324, 0x0327},
-    .readback = {0x032F, 0x0330},
-    .stereoMode = 0x03FC,
+    .fader = {MOD_SUBMIX_OUT_ALG0_TARGET_ADDR, MOD_SUBMIX_OUT_ALG1_TARGET_ADDR},
+    .readback = {MOD_SUBMIX_READBACK_ALG0_READBACKALGNEWSIGMA30011VALUE_ADDR, MOD_SUBMIX_READBACK_ALG1_READBACKALGNEWSIGMA30012VALUE_ADDR},
+    .stereoMode = MOD_SUBMIX_STEREOMODE_STEREOMUXSIGMA300NS5INDEX_ADDR,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
 
     .type = CH_OUTPUT,
@@ -113,9 +115,9 @@ Channel DSPChannels::submix = {
 };
 
 Channel DSPChannels::spdifo = {
-    .fader = {0x032A, 0x032D},
-    .readback = {0x0331, 0x0332},
-    .stereoMode = 0x03FD,
+    .fader = {MOD_SPDIFO_OUT_ALG0_TARGET_ADDR, MOD_SPDIFO_OUT_ALG1_TARGET_ADDR},
+    .readback = {MOD_SPDIFO_READBACK_ALG0_READBACKALGNEWSIGMA30016VALUE_ADDR, MOD_SPDIFO_READBACK_ALG1_READBACKALGNEWSIGMA30017VALUE_ADDR},
+    .stereoMode = MOD_SPDIFO_STEREOMODE_STEREOMUXSIGMA300NS6INDEX_ADDR,
     .sends = { NO_SEND, NO_SEND, NO_SEND, NO_SEND, NO_SEND },
     
     .type = CH_OUTPUT,
@@ -127,14 +129,14 @@ Channel DSPChannels::spdifo = {
 };
 
 Channel DSPChannels::aux1 = {
-    .fader = {0x0119, 0x011C},
-    .readback = {0x0078, 0},
+    .fader = {MOD_AUX_IN_ALG0_TARGET_ADDR, MOD_AUX_IN_ALG1_TARGET_ADDR},
+    .readback = {MOD_AUX1_2_READBACK_ALG0_READBACKALGNEWSIGMA30014VALUE_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x022F, 0x0246 }, 0, false },
-               { { 0x025B, 0x0272 }, 0, false },
-               { { 0x0196, 0x01A9 }, 0, true },
-               { { 0x01BA, 0x01BB }, 0, true },
-               { { 0x0287, 0x029E }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0010_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0111_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0210_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0311_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0006_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0107_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0206_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0207_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0410_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0511_ADDR }, 0, false } },
     
     .type = CH_ANALOG,
     .faderPosition = 0,
@@ -144,14 +146,14 @@ Channel DSPChannels::aux1 = {
 };
 
 Channel DSPChannels::aux2 = {
-    .fader = {0x011F, 0x0122},
-    .readback = {0x0079, 0},
+    .fader = {MOD_AUX_IN_ALG2_TARGET_ADDR, MOD_AUX_IN_ALG3_TARGET_ADDR},
+    .readback = {MOD_AUX1_2_READBACK_ALG1_READBACKALGNEWSIGMA30015VALUE_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x0231, 0x0248 }, 0, false },
-               { { 0x025D, 0x0274 }, 0, false },
-               { { 0x0198, 0x01AB }, 0, true },
-               { { 0x01BC, 0x01BD }, 0, true },
-               { { 0x0289, 0x02A0 }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0012_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0113_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0212_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0313_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0008_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0109_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0208_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0209_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0412_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0513_ADDR }, 0, false } },
 
     .type = CH_ANALOG,
     .faderPosition = 0,
@@ -161,14 +163,14 @@ Channel DSPChannels::aux2 = {
 };
 
 Channel DSPChannels::aux3 = {
-    .fader = {0x0125, 0x0128},
-    .readback = {0xF5A0, 0},
+    .fader = {MOD_AUX_IN_ALG4_TARGET_ADDR, MOD_AUX_IN_ALG5_TARGET_ADDR},
+    .readback = {REG_ADC_READ0_IC_1_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x0233, 0x024A }, 0, false },
-               { { 0x025F, 0x0276 }, 0, false },
-               { { 0x019A, 0x01AD }, 0, true },
-               { { 0x01BE, 0x01BF }, 0, true },
-               { { 0x028B, 0x02A2 }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0014_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0115_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0214_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0315_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0010_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0111_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0210_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0211_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0414_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0515_ADDR }, 0, false } },
 
     .type = CH_ANALOG,
     .faderPosition = 0,
@@ -178,14 +180,14 @@ Channel DSPChannels::aux3 = {
 };
 
 Channel DSPChannels::aux4 = {
-    .fader = {0x012B, 0x012E},
-    .readback = {0xF5A1, 0},
+    .fader = {MOD_AUX_IN_ALG6_TARGET_ADDR, MOD_AUX_IN_ALG7_TARGET_ADDR},
+    .readback = {REG_ADC_READ1_IC_1_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x0235, 0x024C }, 0, false },
-               { { 0x0261, 0x0278 }, 0, false },
-               { { 0x019C, 0x01AF }, 0, true },
-               { { 0x01C0, 0x01C1 }, 0, true },
-               { { 0x028D, 0x02A4 }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0016_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0117_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0216_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0317_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0012_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0113_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0212_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0213_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0416_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0517_ADDR }, 0, false } },
 
     .type = CH_ANALOG,
     .faderPosition = 0,
@@ -195,14 +197,14 @@ Channel DSPChannels::aux4 = {
 };
 
 Channel DSPChannels::aux5 = {
-    .fader = {0x0131, 0x0134},
-    .readback = {0xF5A2, 0},
+    .fader = {MOD_AUX_IN_ALG8_TARGET_ADDR, MOD_AUX_IN_ALG9_TARGET_ADDR},
+    .readback = {REG_ADC_READ2_IC_1_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x0237, 0x024E }, 0, false },
-               { { 0x0263, 0x027A }, 0, false },
-               { { 0x019E, 0x01B1 }, 0, true },
-               { { 0x01C2, 0x01C3 }, 0, true },
-               { { 0x028F, 0x02A6 }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0018_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0119_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0218_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0319_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0014_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0115_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0214_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0215_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0418_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0519_ADDR }, 0, false } },
 
     .type = CH_ANALOG,
     .faderPosition = 0,
@@ -212,14 +214,14 @@ Channel DSPChannels::aux5 = {
 };
 
 Channel DSPChannels::aux6 = {
-    .fader = {0x0137, 0x013A},
-    .readback = {0xF5A3, 0},
+    .fader = {MOD_AUX_IN_ALG10_TARGET_ADDR, MOD_AUX_IN_ALG11_TARGET_ADDR},
+    .readback = {REG_ADC_READ3_IC_1_ADDR, 0},
     .stereoMode = 0,
-    .sends = { { { 0x0239, 0x0250 }, 0, false },
-               { { 0x0265, 0x027C }, 0, false },
-               { { 0x01A0, 0x01B3 }, 0, true },
-               { { 0x01C4, 0x01C5 }, 0, true },
-               { { 0x0291, 0x02A8 }, 0, false } },
+    .sends = { { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0020_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0121_ADDR }, 0, false },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0220_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0321_ADDR }, 0, false },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0016_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0117_ADDR }, 0, true },
+               { { MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0216_ADDR, MOD_FX_SENDS_ALG0_NXNMIXALG1VOL0217_ADDR }, 0, true },
+               { { MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0420_ADDR, MOD_OUTPUT_SENDS_ALG0_NXNMIXALG2VOL0521_ADDR }, 0, false } },
 
     .type = CH_ANALOG,
     .faderPosition = 0,
